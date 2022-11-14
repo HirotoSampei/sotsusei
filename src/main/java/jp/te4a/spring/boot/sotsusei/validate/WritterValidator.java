@@ -1,4 +1,4 @@
-package jp.te4a.spring.boot.myapp13.validate;
+package jp.te4a.spring.boot.sotsusei.validate;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.constraints.Min;

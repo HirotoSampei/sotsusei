@@ -1,4 +1,4 @@
-package jp.te4a.spring.boot.myapp13.controller;
+package jp.te4a.spring.boot.sotsusei.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,17 +12,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jp.te4a.spring.boot.myapp13.form.BookForm;
-import jp.te4a.spring.boot.myapp13.service.BookService;
+import jp.te4a.spring.boot.sotsusei.form.TournamentForm;
+import jp.te4a.spring.boot.sotsusei.service.TournamentService;
 
 @Controller
 @RequestMapping("books")
-public class BookController {
+public class TournamentController {
   @Autowired
-  BookService bookService;
+  TournamentService bookService;
   @ModelAttribute 
-  BookForm setUpForm() {
-    return new BookForm();
+  TournamentForm setUpForm() {
+    return new TournamentForm();
   }
   @GetMapping
   String list(Model model) {
@@ -30,7 +30,7 @@ public class BookController {
     return "books/list";
   }
   @PostMapping(path="create")
-  String create(@Validated BookForm form, BindingResult result , Model model) {
+  String create(@Validated TournamentForm form, BindingResult result , Model model) {
     if(result.hasErrors()) {
       return list(model);
     }
@@ -38,13 +38,13 @@ public class BookController {
     return "redirect:/books";
   }
   @PostMapping(path = "edit", params = "form")
-  String editForm(@RequestParam Integer id, BookForm form) {
-    BookForm bookForm = bookService.findOne(id);
+  String editForm(@RequestParam Integer id, TournamentForm form) {
+    TournamentForm bookForm = bookService.findOne(id);
     BeanUtils.copyProperties(bookForm,  form);
     return "books/edit";
   }
   @PostMapping(path = "edit")
-  String edit(@RequestParam Integer id, @Validated BookForm form,
+  String edit(@RequestParam Integer id, @Validated TournamentForm form,
                                                                                                                            BindingResult result) {
   if(result.hasErrors()) {
   return editForm(id, form);

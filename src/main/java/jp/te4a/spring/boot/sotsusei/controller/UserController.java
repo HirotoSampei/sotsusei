@@ -1,4 +1,4 @@
-package jp.te4a.spring.boot.myapp13.controller;
+package jp.te4a.spring.boot.sotsusei.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import jp.te4a.spring.boot.myapp13.form.UserForm;
-import jp.te4a.spring.boot.myapp13.service.UserService;
+import jp.te4a.spring.boot.sotsusei.form.UserForm;
+import jp.te4a.spring.boot.sotsusei.service.UserService;
 
 @Controller
 @RequestMapping("users")

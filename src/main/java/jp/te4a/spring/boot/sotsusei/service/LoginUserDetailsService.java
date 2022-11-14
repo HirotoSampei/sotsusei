@@ -1,4 +1,4 @@
-package jp.te4a.spring.boot.myapp13.service;
+package jp.te4a.spring.boot.sotsusei.service;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import jp.te4a.spring.boot.myapp13.bean.UserBean;
-import jp.te4a.spring.boot.myapp13.security.LoginUserDetails;
-import jp.te4a.spring.boot.myapp13.security.UserRepository;
+import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.security.LoginUserDetails;
+import jp.te4a.spring.boot.sotsusei.security.UserRepository;
 
 @Service
 public class LoginUserDetailsService implements UserDetailsService {

@@ -1,14 +1,14 @@
-package jp.te4a.spring.boot.myapp13.form;
+package jp.te4a.spring.boot.sotsusei.form;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import jp.te4a.spring.boot.myapp13.validate.Writter;
+import jp.te4a.spring.boot.sotsusei.validate.Writter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
-public class BookForm {
+public class TournamentForm {
   private Integer id ;
   @NotNull
   @Size(min = 3)

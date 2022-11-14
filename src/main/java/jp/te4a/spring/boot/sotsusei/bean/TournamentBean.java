@@ -1,4 +1,4 @@
-package jp.te4a.spring.boot.myapp13.bean;
+package jp.te4a.spring.boot.sotsusei.bean;
  import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookBean {
+public class TournamentBean {
   @Id
   @GeneratedValue
   private Integer id ;
