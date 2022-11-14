@@ -9,12 +9,12 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>jp.te4a.spring.boot</groupId>
-	<artifactId>MyBootApp13</artifactId>
+	<artifactId>SOTSUSEI</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>MyBootApp13</name>
+	<name>SOTSUSEI</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
-		<java.version>18</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		
