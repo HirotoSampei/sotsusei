@@ -32,6 +32,6 @@ public class UserController {
                  return list(model);
             }
             userService.create(form);
-            return "redirect:/loginForm";
+            return "redirect:/users";
     }
 }
