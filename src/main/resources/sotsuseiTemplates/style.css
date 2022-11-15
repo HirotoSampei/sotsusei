@@ -3,7 +3,7 @@ body{
     background-color: black;
   }
   .header-container{
-    background-color: blue;
+    background-color: red;
     margin: 0px;
     padding: 20px;
     display: flex;
@@ -11,13 +11,13 @@ body{
   }
   .left-container{
     display: flex;
-    background-color: red;
+    background-color: greenyellow;
     margin: 0px;
     justify-content: flex-start;
   }
   .right-container{
     display: flex;
-    background-color: red;
+    background-color: greenyellow;
     margin: 0px;
     justify-content: flex-end;
   }
@@ -43,4 +43,10 @@ body{
   main p{
     font-size: 20px;
     color: white;
+  }
+
+  #temp-footer{
+    display: flex;
+    background-color: red;
+    justify-content: center;
   }
