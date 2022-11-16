@@ -22,30 +22,30 @@
 </header>
 
 <main>
-  <p>This is the test message start</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message</p>
-  <p>This is the test message end</p>
-  
+  <div id="input-container">
+    <p>大会名：<input type="text" name="" id=""></p> 
+    <p>ゲーム：
+      <select>
+        <option>Game 1</option>
+        <option>Game 2</option>
+        <option>Game 3</option>
+        <option>Game 4</option>
+        <option>Game 5</option>
+      </select>
+    </p>  
+    <div id="description-container">
+      <p>概要：</p>
+      <textarea name="" id="" cols="30" rows="5"></textarea>
+    </div>
+    <p>開始日時：<input type="datetime-local" name="" id=""></p>
+    <p>終了日時：<input type="datetime-local" name="" id=""></p>
+    <p>参加者上限：<input type="number" name="" id=""></p>
+    <p>締め切り：<input type="datetime-local" name="" id=""></p>
+  </div>
+  <div id="button-container">
+    <input type="button" class="button-item" onclick="alert('戻る')" value="戻る">
+    <input type="button" class="button-item" onclick="alert('作成')" value="作成">
+  </div>
 </main>
 
 <footer>
