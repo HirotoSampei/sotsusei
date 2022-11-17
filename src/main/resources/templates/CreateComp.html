@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang=ja dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>template</title>
+  <link rel="stylesheet" href="..\static\css\CreateCompStyle.css">
+</head>
+<body>
+
+<header>
+  <div class="header-container">
+    <div class="left-container">
+      <img src=..\images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <div class="header-item">
+        <input type="search" name="search" placeholder="大会を検索">
+        <input type="submit" name="submit" id="search_button" value="検索">
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="header-item">user icon</div>
+      <div class="header-item">user name</div>
+      </div>
+  </div>
+
+</header>
+
+<main>
+  <div id="input-container">
+    <p>大会名　　：<input type="text" class="input-item" name="" id=""></p> 
+    <p>ゲーム　　：
+      <select class="input-item">
+        <option>Game 1</option>
+        <option>Game 2</option>
+        <option>Game 3</option>
+        <option>Game 4</option>
+        <option>Game 5</option>
+      </select>
+    </p>  
+    <div id="description-container">
+      <p>概要　　　：</p>
+      <textarea class="input-item-ta" name="" id="" cols="30" rows="5" style="resize: none"></textarea>
+    </div>
+    <p>開始日時　：<input type="datetime-local" class="input-item" name="kaisi" id=""></p>
+    <p>終了日時　：<input type="datetime-local" class="input-item" name="" id=""></p>
+    <p>参加者上限：<input type="number"  class="input-item" name="" id=""></p>
+    <p>締め切り　：<input type="datetime-local" class="input-item" name="" id=""></p>
+  </div>
+  <div id="button-container">
+    <input type="button" class="button-item" onclick="alert('戻る')" value="戻る">
+    <input type="button" class="button-item" onclick="alert('作成')" value="作成">
+  </div>
+</main>
+
+<footer>
+  <div id="temp-footer">©Competition Assistance Tool</div>
+</footer>
+
+</body>
+</html>
