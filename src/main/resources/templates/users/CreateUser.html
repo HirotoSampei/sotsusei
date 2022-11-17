@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>ユーザー作成</title>
-  <link rel="stylesheet" href="..\static\css\CreateUserStyle.css">
+  <link rel="stylesheet" href="..\..\static\css\CreateUserStyle.css">
 </head>
 <body>
 
 <header>
   <div class="header-container">
     <div class="left-container">
-      <img src=../images/cat_logo.png  class="header-item" width="90px" height="60px">
+      <img src=images\cat_logo.png  class="header-item" width="90px" height="60px">
       <div class="header-item">
         <input type="search" name="search" placeholder="大会を検索">
         <input type="submit" name="submit" id="search_button" value="検索">
@@ -29,11 +29,20 @@
   <p>パスワード　　　：<input type="text" class="input-item" name="" id=""></p>
   <p>確認　　　　　　：<input type="text" class="input-item" name="" id=""></p>
   <p>メールアドレス　：<input type="email" class="input-item" name="" id=""></p>
-  <p>プレイするゲーム：</p>
-  <p><input type="checkbox" name="riyu" value="1">Game1</p>
-  <p><input type="checkbox" name="riyu" value="1">Game1</p>
-  <p><input type="checkbox" name="riyu" value="1">Game1</p>
-  <p>自己紹介　　　　：</p>
+  <details>
+    <summary>プレイするゲーム(複数選択)</summary>
+    <p><input type="checkbox" name="riyu" value="1">Tom Clancy's Rainbow Six Siege【PS4】</p>
+    <p><input type="checkbox" name="riyu" value="1">Tom Clancy's Rainbow Six Siege【PC】</p>
+    <p><input type="checkbox" name="riyu" value="1">Keep Talking and Nobody explodes【PC】</p>
+  </details>
+  <div id="description-container">
+    <p>自己紹介　　　：</p><textarea class="input-item-ta" name="" id="" cols="30" rows="5" style="resize: none"></textarea>
+  </div>
+  <div style="margin: 30px;"></div>
+  <div id="button-container">
+    <input type="button" class="button-item" onclick="alert('戻る')" value="戻る">
+    <input type="button" class="button-item" onclick="alert('作成')" value="作成">
+  </div>
 </main>
 
 <footer>
