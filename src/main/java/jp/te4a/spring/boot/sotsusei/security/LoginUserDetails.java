@@ -8,7 +8,7 @@ import lombok.Data;
 public class LoginUserDetails extends User {
     private final UserBean user;
     public LoginUserDetails(UserBean userBean) {
-        super(userBean.getUsername(), userBean.getPassword(),
+        super(userBean.getUser_name(), userBean.getPassword(),
         		AuthorityUtils.createAuthorityList("ROLE_USER"));
         this.user = userBean;
     }
