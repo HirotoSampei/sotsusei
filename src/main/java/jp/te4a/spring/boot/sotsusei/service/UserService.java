@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
-import jp.te4a.spring.boot.sotsusei.security.UserRepository;
+import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 
 @Service
 public class UserService {
