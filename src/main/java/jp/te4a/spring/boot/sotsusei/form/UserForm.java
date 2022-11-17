@@ -1,4 +1,4 @@
-package jp.te4a.spring.boot.myapp13.form;
+package jp.te4a.spring.boot.sotsusei.form;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
