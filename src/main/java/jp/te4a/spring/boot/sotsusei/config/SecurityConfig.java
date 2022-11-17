@@ -27,7 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/loginForm").permitAll()
                 .antMatchers("/users").permitAll()
                 .antMatchers("/users/create").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/comp").permitAll()
+                .antMatchers("/comp/create").permitAll()
+                .anyRequest().authenticated();
+            /*     
             .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
@@ -38,5 +41,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .and()
               .logout()
                  .logoutSuccessUrl("/loginForm");
+            */
     }
 }
