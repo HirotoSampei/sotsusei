@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>大会登録画面</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+  </head>
+  <body>
+
+    <form th:action="@{/comp/create}" th:object="${compForm}" method="post">
+        <table>
+        <tr><td>大会名:</td><td><input type="text" name="comp_name" th:field="*{comp_name}" th:errorclass="error-input" />
+        <span th:if="${#fields.hasErrors('comp_name')}" th:errors="*{comp_name}" class="error-messages">error!</span>
+        </td></tr>
+        <tr><td>主催者ID:</td><td><input type="text" name="host_user_id" th:field="*{host_user_id}" th:errorclass="error-input" />
+        <span th:if="${#fields.hasErrors('host_user_id')}" th:errors="*{host_user_id}" class="error-messages">error!</span>
+        </td></tr>
+        <tr><td>ゲーム：</td>
+        <td>
+        <select name="game_id">
+          <option value="0"></option>
+          <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name}" th:selected="${game.game_id == selectedValue}"></option>
+        </select>
+        </td>
+        </tr>
+        <tr><td>大会概要：</td><td><input type="text" name="description" /></td></tr>
+        <tr>
+        <td>開始日時：</td><td><input type="text" name="start_date" th:field="*{start_date}" th:errorclass="error-input" />
+        <span th:if="${#fields.hasErrors('start_date')}" th:errors="*{start_date}" class="error-messages">error!</span>
+        </td></tr>
+        <td>終了日時：</td><td><input type="text" name="end_date" th:field="*{end_date}" th:errorclass="error-input" />
+        <span th:if="${#fields.hasErrors('end_date')}" th:errors="*{end_date}" class="error-messages">error!</span>
+        </td></tr>
+        <td>参加人数上限：</td><td><input type="text" name="limit_of_participants" th:field="*{limit_of_participants}" th:errorclass="error-input" />
+        <span th:if="${#fields.hasErrors('limit_of_participants')}" th:errors="*{limit_of_participants}" class="error-messages">error!</span>
+        </td></tr>
+        <td>締め切り日時：</td><td><input type="text" name="deadline" th:field="*{deadline}" th:errorclass="error-input" />
+        <span th:if="${#fields.hasErrors('deadline')}" th:errors="*{deadline}" class="error-messages">error!</span>
+        </td></tr>
+        </table>
+        <input type="submit" value="作成" />
+	</form>
+
+    <hr />
+    <table>
+      <tr th:each="cm : ${comp}">
+        <td th:text="${cm.comp_id}"></td>
+        <td th:text="${cm.comp_name}"></td>
+        <td th:text="${cm.host_user_id}"></td>
+        <td th:text="${cm.game_id}"></td>
+        <td th:text="${cm.description}"></td>
+        <td th:text="${cm.start_date}"></td>
+        <td th:text="${cm.end_date}"></td>
+        <td th:text="${cm.limit_of_participants}"></td>
+        <td th:text="${cm.deadline}"></td>
+      </tr>
+    </table>
+  </body>
+</html>
