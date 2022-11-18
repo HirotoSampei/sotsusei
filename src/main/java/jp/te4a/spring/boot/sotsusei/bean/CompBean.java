@@ -3,7 +3,9 @@ package jp.te4a.spring.boot.sotsusei.bean;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.*;
 @Entity
@@ -23,11 +25,11 @@ public class CompBean {
   private Integer game_id;
   private String description;
   @Column(nullable = false)
-  private Date start_date;
+  private LocalDateTime start_date;
   @Column(nullable = false)
-  private Date end_date;
+  private LocalDateTime end_date;
   @Column(nullable = false)
   private Integer limit_of_participants;
   @Column(nullable = false)
-  private Date deadline;
+  private LocalDateTime deadline;
 }

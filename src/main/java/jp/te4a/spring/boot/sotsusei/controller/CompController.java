@@ -1,5 +1,7 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +44,7 @@ public class CompController {
   String list(Model model) {
     model.addAttribute("comp", compService.findAll());
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
-    return "comp/comp_register";
+    return "comp/CreateComp";
   }
   @PostMapping(path="create") //大会作成画面
   String create(@Validated CompForm form, BindingResult result , Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
