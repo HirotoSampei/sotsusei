@@ -34,7 +34,7 @@
       <p>ゲーム　  :
         <select class="input-item" name="game_id">
           <option value="0"></option>
-          <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name}" th:selected="${game.game_id == selectedValue}"></option>
+          <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
         </select>
       </p>  
       <div id="description-container">
