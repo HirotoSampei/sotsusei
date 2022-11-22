@@ -53,16 +53,32 @@ body{
     margin: 10px;
     padding: px;
   }
-  
+  .title{
+    font-size: 30px;
+  }
   .left-main-item{
     background-color: aqua;
     margin: 10px;
     padding: 40px;
   }
+  #people{
+    height: 30px;
+    margin-top: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
   .center-main-item{
+
     background-color: aqua;
     margin: 10px;
-    padding: 40px;
+    padding: 0px;
+    height: 150px;
+  }
+  .title-people-container{
+    display: flex;
+    background-color: rgb(16, 61, 61);
+
+
   }
   main p{
     font-size: 30px;
