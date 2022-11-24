@@ -42,7 +42,7 @@ body{
     padding-right:10%;
     padding-bottom: 2%;
     border-radius: 15px 15px 15px 15px;
-
+    
   }
   main p{
     font-size: 30px;
@@ -56,6 +56,7 @@ body{
   .input-item{
     height: 30px;
     font-size: 90%;
+    color: white;
     background-color: transparent; /* 無色するやつ */
     border-color : transparent;
     
@@ -63,7 +64,19 @@ body{
   .input-item-ta{
     width: 500px;
     font-size: 27px;
-
+    overflow-y: scroll;
+  }
+  .input-item-chat{
+    color: rgb(170, 170, 170);
+    background-color: transparent; /* 無色するやつ */
+    border-color : black;
+    
+  }
+  .input-item-ta-chat{
+    color: rgb(120, 120, 120);
+    width: 500px;
+    font-size: 27px;
+    overflow-y: scroll;
   }
   #button-container{
     display: flex;
@@ -79,8 +92,32 @@ body{
     padding-bottom: 15px;
     border-radius: 30px 30px 30px 30px;
     cursor: pointer;
+    margin-right: auto;
+  }
+  .button-item-par{
+    background-color: rgb(60, 255, 40);
+    font-size: 30px;
+    color: rgb(10, 108, 255);
+    padding-top: 15px;
+    padding-left: 90px;
+    padding-right: 90px;
+    padding-bottom: 15px;
+    border-radius: 30px 30px 30px 30px;
+    cursor: pointer;
+    margin-right: 28%;
+  }
+  .button-item-chat{
+    background-color: white;
+    color: black;
+    cursor: pointer;
   }
   .button-item:active{
+    background-color: gray;
+  }
+  .button-item-imp:active{
+    background-color: gray;
+  }
+  .button-item-chat:active{
     background-color: gray;
   }
 
