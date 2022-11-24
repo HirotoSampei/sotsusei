@@ -1,6 +1,6 @@
 body{
     margin: 0px;
-    background-color: green;
+    background-color: black;
   }
   .header-container{
     background: linear-gradient(red,70%, black);
@@ -55,30 +55,61 @@ body{
   }
   .title{
     font-size: 30px;
+    color: white;
+  }
+  .people{
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
   }
   .left-main-item{
     background-color: aqua;
     margin: 10px;
     padding: 40px;
   }
-  #people{
+  .game-title{
+    color: white;
+  }
+  .people-logo{
     height: 30px;
-    margin-top: 5px;
+    margin-bottom: 5px;
     margin-left: 10px;
     margin-right: 10px;
   }
   .center-main-item{
 
-    background-color: aqua;
+    background-color: rgb(84,84,84);
     margin: 10px;
-    padding: 0px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    padding-left: 30px;
     height: 150px;
+    border-radius: 15px 15px 15px 15px;
+  }
+  .heading{
+
+    background-color: rgb(84,84,84);
+    margin: 10px;
+    padding: 10px;
+    
+    border-radius: 15px 15px 15px 15px;
+  }
+  .heading p{
+    color: white;
+    font-size: 30px;
+    margin: 0px;
+    font-weight: bold;
   }
   .title-people-container{
     display: flex;
-    background-color: rgb(16, 61, 61);
+    /*background-color: rgb(16, 61, 61);*/
+    align-items: center;
 
-
+  }
+  .schedule{
+    padding-left: 30px;
+    font-size: 25px;
+    color: white;
   }
   main p{
     font-size: 30px;
