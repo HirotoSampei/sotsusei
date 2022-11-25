@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserForm {
-	@NotNull
-	@Size(min=6, max=12)
-	private String username;
-	@Size(min=6, max=12)
+	private Integer user_id;
+	private String user_name;
 	private String password;
+	private String mail_address;
+    private String note;
+	private boolean is_banned;
+	private boolean is_admin;
 }
