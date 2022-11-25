@@ -1,10 +1,10 @@
 package jp.te4a.spring.boot.sotsusei.bean;
- import lombok.AllArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-import java.sql.Date;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.*;
@@ -21,8 +21,9 @@ public class CompBean {
   private String comp_name;
   @Column(nullable = false)
   private Integer host_user_id;
-  @Column(nullable = false)
-  private Integer game_id;
+  @ManyToOne()
+  @JoinColumn(name = "game_id", referencedColumnName = "game_id")
+  private GameBean gameBean;
   private String description;
   @Column(nullable = false)
   private LocalDateTime start_date;
