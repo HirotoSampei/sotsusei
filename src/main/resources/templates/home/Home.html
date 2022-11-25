@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang=ja dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>ホーム</title>
+  <link rel="stylesheet" href="../../static/css/HomeStyle.css" th:href="@{/css/HomeStyle.css}">
+</head>
+<body>
+
+<header>
+  <div class="header-container">
+    <div class="left-container">
+      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <div class="header-item">
+        <input type="search" name="search" placeholder="大会を検索">
+        <input type="submit" name="submit" id="search_button" value="検索">
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="header-item">user icon</div>
+      <div class="header-item">user name</div>
+      </div>
+  </div>
+
+</header>
+
+<main class="main-container">
+  <div class="left-main-container">
+    <input class="left-main-item" type="button" onclick="location.href='comp/CreateComp'" value="大会を開く">
+  </div>
+  <div class="center-main-container">
+    <div class="heading"><p>■受付中の大会</p></div>
+    <div class="center-main-item">
+      <table>
+        <tr th:each="cm : ${comp}">
+          <div class="title-people-container">
+            <div class="title" th:text="${cm.comp_name}"></div>
+            <img src="..\..\images\people.png" class="people-logo">
+            <div class="people" th:text="${'2/' + cm.limit_of_participants}"></div> 
+          </div>  
+          <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
+          <div style="color: white;">日程：</div>
+          <div class="schedule" th:text="${cm.start_date + '~' + cm.end_date}"></div>
+       </tr>
+     </table>
+    </div>
+  </div>
+  <div class="right-main-container">
+    <div class="heading"><p>■参加している大会</p></div>
+    <div class="right-main-item">
+      <div class="title">初心者歓迎！ほげほげ大会</div>
+      <div class="game-title">🎮【PC】Tom Clansy's Reinbow Six Siege</div>
+      <div class="nickname">ニックネーム：hogehogenick</div>
+    </div>
+    <div class="right-main-item">参加済み大会2</div>
+    <div class="right-main-item">参加済み大会3</div>
+    <div class="right-main-item">参加済み大会4</div>
+    <div class="right-main-item">参加済み大会5</div>
+  </div>
+</main>
+
+<footer>
+  <div id="temp-footer">©Competition Assistance Tool</div>
+</footer>
+
+</body>
+</html>

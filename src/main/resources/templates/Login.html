@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang=ja dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>ログイン</title>
+  <link rel="stylesheet" href="..\static\css\LoginStyle.css" th:href="@{/css/LoginStyle.css}" >
+</head>
+<body>
+
+<header>
+  <div class="header-container">
+    <div class="left-container">
+      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <div class="header-item">
+        <input type="search" name="search" placeholder="大会を検索">
+        <input type="submit" name="submit" id="search_button" value="検索">
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="header-item">user icon</div>
+      <div class="header-item">user name</div>
+      </div>
+  </div>
+
+</header>
+<form class="form-signin" method="post" th:action="@{/login}" >
+  <main>
+    <p>メールアドレス：<input type="email" class="input-item" name="mail_address"></p>
+    <p>パスワード　　：<input type="password" class="input-item" name="password"></p>
+    <div class="button-container">
+      <button class="button-item" type="submit">ログイン</button>
+      <div style="margin:10px;"></div>
+      <button class="button-item" onclick="location.href='users'">新規登録</button>
+    </div>
+  </main>
+</form>
+<footer>
+  <div id="temp-footer">©Competition Assistance Tool</div>
+</footer>
+
+</body>
+</html>
