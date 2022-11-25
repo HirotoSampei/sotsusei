@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>ログイン</title>
-  <link rel="stylesheet" href="..\..\static\css\LoginStyle.css">
+  <link rel="stylesheet" href="..\static\css\LoginStyle.css" th:href="@{/css/LoginStyle.css}" >
 </head>
 <body>
 
@@ -23,17 +23,17 @@
   </div>
 
 </header>
-
-<main>
-  <p>メールアドレス：<input type="email" class="input-item" ></p>
-  <p>パスワード　　：<input type="password" class="input-item"></p>
-  <div class="button-container">
-    <button class="button-item">ログイン</button>
-    <div style="margin:10px;"></div>
-    <button class="button-item">新規登録</button>
-  </div>
-</main>
-
+<form class="form-signin" method="post" th:action="@{/login}" >
+  <main>
+    <p>メールアドレス：<input type="email" class="input-item" name="mail_address"></p>
+    <p>パスワード　　：<input type="password" class="input-item" name="password"></p>
+    <div class="button-container">
+      <button class="button-item" type="submit">ログイン</button>
+      <div style="margin:10px;"></div>
+      <button class="button-item" onclick="location.href='users'">新規登録</button>
+    </div>
+  </main>
+</form>
 <footer>
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>
