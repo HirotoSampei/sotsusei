@@ -11,10 +11,7 @@
   <div class="header-container">
     <div class="left-container">
       <img src=cat_logo.png  class="header-item" width="90px" height="60px">
-      <div class="header-item">
-        <input type="search" name="search" placeholder="大会を検索">
-        <input type="submit" name="submit" id="search_button" value="検索">
-      </div>
+    
     </div>
     <div class="right-container">
       <div class="header-item">user icon</div>
@@ -23,11 +20,11 @@
   </div>
 
 </header>
-<form th:action="@{/comp/create}" th:object="${compForm}" method="post">
+<form th:action="@{/comp/edit}" th:object="${compForm}" method="post">
   <main>
     <table>
     <div id="input-container">
-      <p>大会名　  :<input type="text" class="input-item" name="comp_name" th:field="*{comp_name}"></p> 
+      <p>大会名　  :<input type="text" class="input-item" name="comp_name" th:field="*{comp_name}" ></p> 
       <tr><td>主催者ID:</td><td><input type="text" name="host_user_id" th:field="*{host_user_id}" th:errorclass="error-input" />
       <span th:if="${#fields.hasErrors('host_user_id')}" th:errors="*{host_user_id}" class="error-messages">error!</span>
       </td></tr>
@@ -48,14 +45,13 @@
     </div>
     <div id="button-container">
       <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
-      <input type="submit" class="button-item" value="作成">
+      <input type="hidden" name="comp_id" th:value="${param.comp_id[0]}" />
+      <input type="submit" value="更新" />
     </div>
-    <table>
+    </table>
   </main>
 </form>
-<footer>
-  <div id="temp-footer">©Competition Assistance Tool</div>
-</footer>
+
 
 </body>
 </html>

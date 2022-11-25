@@ -10,4 +10,6 @@ public interface CompRepository extends JpaRepository<CompBean, Integer>{
 	@Query("SELECT X FROM CompBean X ORDER BY X.comp_id")
 	  List<CompBean> findAllOrderByComp_id();
 	  
+	@Query("SELECT X FROM CompBean X WHERE X.host_user_id = ?1 ORDER BY X.comp_id")
+	  List<CompBean> findByHost_user_id(Integer host_user_id);
 }

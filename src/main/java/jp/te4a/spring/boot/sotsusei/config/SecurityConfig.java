@@ -28,7 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/users").permitAll()
                 .antMatchers("/users/create").permitAll()
                 .antMatchers("/comp").permitAll()
+                .antMatchers("/comp/Display-Sample").permitAll()
+                .antMatchers("/comp/Overview-Sample").permitAll()
+                .antMatchers("/comp/CreateComp").permitAll()
+                .antMatchers("/comp/Edit-Sample").permitAll()
                 .antMatchers("/comp/create").permitAll()
+                .antMatchers("/comp/edit").permitAll()
+                .antMatchers("/comp/delete").permitAll()
                 .anyRequest().authenticated();
             /*     
             .and()

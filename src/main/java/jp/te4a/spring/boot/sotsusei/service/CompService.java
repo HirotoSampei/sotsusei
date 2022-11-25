@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
+import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
@@ -24,16 +25,22 @@ public class CompService {
   @Autowired
   GameRepository gameRepository;
 
-  public CompForm create(CompForm compForm) {
+  public CompForm create(CompForm compForm, Integer game_id) {
 	  CompBean compBean = new CompBean();
+    GameBean gameBean = new GameBean();
+    gameBean.setGame_id(game_id);
 	  BeanUtils.copyProperties(compForm, compBean);
+    compBean.setGameBean(gameBean);
 	  compRepository.save(compBean);
 	  return compForm;
 	}
 
-  public CompForm update(CompForm compForm) {
+  public CompForm update(CompForm compForm, Integer game_id) {
 	  CompBean compBean = new CompBean();
+    GameBean gameBean = new GameBean();
+    gameBean.setGame_id(game_id);
 	  BeanUtils.copyProperties(compForm, compBean);
+    compBean.setGameBean(gameBean);
 	  compRepository.save(compBean);
 	  return compForm;
 	}
