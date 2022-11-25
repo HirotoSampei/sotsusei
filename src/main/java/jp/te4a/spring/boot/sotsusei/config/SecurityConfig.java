@@ -35,18 +35,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/comp/create").permitAll()
                 .antMatchers("/comp/edit").permitAll()
                 .antMatchers("/comp/delete").permitAll()
-                .anyRequest().authenticated();
-            /*     
+                .anyRequest().authenticated()     
             .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
                      .loginPage("/loginForm")
                      .failureUrl("/loginForm?error")
-                     .defaultSuccessUrl("/books", true)
-                     .usernameParameter("username").passwordParameter("password")
-          .and()
-              .logout()
-                 .logoutSuccessUrl("/loginForm");
-            */
+                     .defaultSuccessUrl("/comp", true)
+                     .usernameParameter("mail_address").passwordParameter("password")
+            .and()
+                .logout()
+                .logoutSuccessUrl("/loginForm");
+            
     }
 }
