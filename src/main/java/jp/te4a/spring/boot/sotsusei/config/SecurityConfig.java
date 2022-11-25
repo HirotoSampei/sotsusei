@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/loginForm").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/users").permitAll()
                 .antMatchers("/users/create").permitAll()
                 .antMatchers("/comp").permitAll()
@@ -39,13 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
-                     .loginPage("/loginForm")
-                     .failureUrl("/loginForm?error")
+                     .loginPage("/login")
+                     .failureUrl("/login?error")
                      .defaultSuccessUrl("/comp", true)
                      .usernameParameter("mail_address").passwordParameter("password")
             .and()
                 .logout()
-                .logoutSuccessUrl("/loginForm");
+                .logoutSuccessUrl("/login");
             
     }
 }
