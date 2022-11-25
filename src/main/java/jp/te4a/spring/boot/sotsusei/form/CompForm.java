@@ -1,14 +1,11 @@
 package jp.te4a.spring.boot.sotsusei.form;
-import java.sql.Date;
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.JoinColumn;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jp.te4a.spring.boot.sotsusei.validate.Writter;
+import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 @Data
@@ -20,7 +17,8 @@ public class CompForm {
   
   private Integer host_user_id;
   
-  private Integer game_id;
+  @JoinColumn(name = "game_id", referencedColumnName = "game_id")
+  private GameBean gameBean;
   private String description;
   @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   private  LocalDateTime start_date;
