@@ -1,9 +1,5 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
@@ -19,8 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
+import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
@@ -30,6 +26,9 @@ import jp.te4a.spring.boot.sotsusei.service.CompService;
 public class CompController {
   @Autowired
   CompService compService;
+  @Autowired
+  CompRepository compRepository;
+
   @Autowired
   UserRepository userRepository;
 
@@ -41,47 +40,54 @@ public class CompController {
     return new CompForm();
   }
   @GetMapping //ホーム画面
-  String list(Model model) {
+  String display_list(Model model) {
     model.addAttribute("comp", compService.findAll());
+    return "comp/Display-Sample";
+  }
+
+  @GetMapping("/CreateComp") //大会作成画面
+  String create_list(Model model) {
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     return "comp/CreateComp";
   }
-  @PostMapping(path="create") //大会作成画面
-  String create(@Validated CompForm form, BindingResult result , Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
-    if(result.hasErrors()) {
-      return list(model);
-    }
-     
+  @GetMapping("/Overview-Sample") //大会概要画面
+  String overview_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+    /*  
     String user_id = httpServletRequest.getRemoteUser();
-    /* 
     Integer login_user_id = userRepository.findByUser_id(Integer.valueOf(user_id));
     form.setHost_user_id(login_user_id);*/
-    compService.create(form);
-    return "redirect:/comp";
+    model.addAttribute("overview", compRepository.findByHost_user_id(1));
+    return "comp/Overview-Sample";
+  }
+  @PostMapping(path="create") //大会作成処理
+  String create(@Validated CompForm form, BindingResult result , Model model, Integer game_id) {
+    if(result.hasErrors()) {
+      return create_list(model);
+    }
+    compService.create(form, game_id);
+    return "redirect:/comp/Overview-Sample";
   }
   @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
-  String editForm(@RequestParam Integer id, CompForm form) {
-    CompForm compForm = compService.findOne(id);
+  String editForm(@RequestParam Integer comp_id, CompForm form, Model model) {
+    CompForm compForm = compService.findOne(comp_id);
     BeanUtils.copyProperties(compForm,  form);
-    return "comp/edit";
+    model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+    return "comp/Edit-Sample";
   }
   @PostMapping(path = "edit") //編集した内容を登録する時の動き
-  String edit(@RequestParam Integer id, @Validated CompForm form, BindingResult result) {
+  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id) {
   if(result.hasErrors()) {
-  return editForm(id, form);
+  return editForm(comp_id, form, null);
   }
-  compService.update(form);
-  return "redirect:/comp";
+  compService.update(form,game_id);
+  return "redirect:/comp/Overview-Sample";
   }
 
 
   @PostMapping(path = "delete") //削除
-  String delete(@RequestParam Integer id) {
-    compService.delete(id);
+  String delete(@RequestParam Integer comp_id) {
+    compService.delete(comp_id);
     return "redirect:/comp";
   }
-  @PostMapping(path = "edit", params = "goToTop")
-  String goToTop() {
-    return "redirect:/comp";
-  }
+  
 }
