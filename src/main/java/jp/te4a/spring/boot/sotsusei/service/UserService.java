@@ -1,5 +1,8 @@
 package jp.te4a.spring.boot.sotsusei.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
@@ -22,5 +25,16 @@ public class UserService {
 
         userRepository.save(userBean);
         return userForm;
+    }
+
+    public List<UserForm> findAll() {
+      List<UserBean> beanList = userRepository.findAll();
+      List<UserForm> formList = new ArrayList<UserForm>();
+      for(UserBean userBean: beanList) {
+        UserForm userForm = new UserForm();
+        BeanUtils.copyProperties(userBean, userForm);
+        formList.add(userForm);
+      }
+      return formList;
     }
 }
