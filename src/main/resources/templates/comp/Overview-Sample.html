@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>大会概要画面</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+  </head>
+  <body>
+
+    <table>
+      <tr th:each="ov : ${overview}"> 
+        <td th:text="${ov.comp_name}"></td>
+        <td th:text="${ov.gameBean.game_name}"></td>
+        <td th:text="${ov.start_date}"></td>
+        <td th:text="${ov.end_date}"></td>
+        <td th:text="${'2/' + ov.limit_of_participants}"></td>
+        <td th:text="${ov.deadline}"></td> 
+        <td>
+          <form th:action="@{/comp/edit}" method="post">
+            <input type="submit" name="form" value="編集" />
+            <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
+          </form>
+        </td>
+        <td>
+          <form th:action="@{/comp/delete}" method="post">
+            <input type="submit" name="form" value="削除" />
+            <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
+          </form>
+        </td>
+      </tr>
+    </table>
+    <input type="button" onclick="location.href='/comp'" value="ホーム画面へ">
+  </body>
+</html>
