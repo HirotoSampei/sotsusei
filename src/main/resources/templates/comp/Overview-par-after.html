@@ -33,22 +33,13 @@
             <div class="title"th:text="${ov.comp_name}">初心者歓迎！ほげほげ大会</div>
             <img src="..\..\images\people.png" class="people-logo">
             <div class="people"th:text="${'2/' + ov.limit_of_participants}">20/50</div> 
-          </div>  
+          </div>
           <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom Clansy's Reinbow Six Siege</div>
           <div class="date"th:text="${ov.start_date + '~' + ov.end_date}">開催日時：2023/3/10 13:00 ~ 2023/3/10 18:00</div>
           <div class="date">概要　　：</div>
           <div class="overview"th:text="${ov.description}">ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される</div>
           <div class="deadline"th:text="${ov.deadline}">締め切り：2023/3/5 23:59</div>
-            <form th:action="@{/comp/edit}" method="post">
-              <input type="submit" name="form" value="編集" />
-              <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
-            </form>
-          
-          
-            <form th:action="@{/comp/delete}" method="post">
-              <input type="submit" name="form" value="削除" />
-              <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
-            </form>
+            
           
         </tr>
     </table>
@@ -87,8 +78,10 @@
     </div>
   </div>
   <div class="button-container">
-    <input type="button" class="button-item" onclick="location.href='/comp'" value="ホーム画面へ">
-    <div class="button-item">参加する</div>
+    <input type="button" class="button-item" onclick="location.href='/comp_register'" value="戻る">
+    <div class="button-item">キャンセル</div>
+    <a class="button-item" href="location.href='/overview'" onclick="if( !confirm('キャンセルしますか') ) { return false; }"> キャンセル </a>
+    <div class="button-item">参加者用ページ</div>
   </div>
 </main>
 
