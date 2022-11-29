@@ -10,6 +10,7 @@
 <header>
   <div class="header-container">
     <div class="left-container">
+      
       <img src=images\cat_logo.png  class="header-item" width="90px" height="60px">
       <div class="header-item">
         <input type="search" name="search" placeholder="大会を検索">
@@ -21,9 +22,9 @@
       <div class="header-item">user name</div>
       </div>
   </div>
-
 </header>
-
+<div class="main-container">
+  <div class="left-main-container">
 <tr th:each="eu : ${edituser}" > 
   <div class="user-info" >
     <div class="userid"th:text="${eu.user_id}">111111111111111</div>
@@ -32,6 +33,8 @@
     <div class="password"th:text="${eu.password}">1234</div> 
     <div class="password" th:text="${eu.password}" >1234</div>
   <div class="myintro"th:text="${eu.self-introduction}">あああ
+</div>
+</div>
 </div>
 
 

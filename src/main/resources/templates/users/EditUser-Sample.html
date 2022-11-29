@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>ユーザー編集画面</title>
-    <link rel="stylesheet" type="text/css" href="../../static/css/EditUserStyle.css" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/Style.css" th:href="@{/css/style.css}"/>
   </head>
   <body>
-
+<!--korewakarn-->
     <table>
       <tr th:each="eu : ${edituser}"> 
         <td th:text="${eu.user_name}"></td>
-        <td th:text="${eu.address}"></td>
+        <td th:text="*{eu.mail_address}"></td>
         <td th:text="${eu.password}"></td>
         <td th:text="${eu.password}"></td>
         <td th:text="${eu.self-introduction}"></td>
