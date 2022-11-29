@@ -55,11 +55,15 @@ body{
   .input-item{
     height: 30px;
     font-size: 90%;
-    
+    width: 50%;
+  }
+  .game-list{
+    width: 70%;
   }
   .input-item-ta{
     width: 500px;
     font-size: 27px;
+    width: 60%;
   }
   #button-container{
     display: flex;
