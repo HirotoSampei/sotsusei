@@ -3,15 +3,14 @@
 <head>
   <meta charset="utf-8">
   <title>ユーザー作成</title>
-  <link rel="stylesheet" href="..\..\static\css\EditUserStyle.css">
+  <link rel="stylesheet" href="..\..\static\css\EditUserStyle.css" th:href="@{/css/EditUserStyle.css}">
 </head>
 <body>
 
 <header>
   <div class="header-container">
     <div class="left-container">
-      
-      <img src=images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
       <div class="header-item">
         <input type="search" name="search" placeholder="大会を検索">
         <input type="submit" name="submit" id="search_button" value="検索">
@@ -22,22 +21,42 @@
       <div class="header-item">user name</div>
       </div>
   </div>
+
 </header>
-<div class="main-container">
-  <div class="left-main-container">
-<tr th:each="eu : ${edituser}" > 
-  <div class="user-info" >
-    <div class="userid"th:text="${eu.user_id}">111111111111111</div>
-    <div class="username"th:text="${eu.user_name}">1</div>
-    <div class="address"th:text="${eu.mail_address}">1@gmail.com</div>
-    <div class="password"th:text="${eu.password}">1234</div> 
-    <div class="password" th:text="${eu.password}" >1234</div>
-  <div class="myintro"th:text="${eu.self-introduction}">あああ
-</div>
-</div>
-</div>
 
+<form th:action="@{/users/create}" th:object="${userForm}" method="post">
+  
+  <main>
+    <p>ユーザーID  　　　:１</p>
+    <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:field="*{user_name}"></p>
+    <p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>
+    <p>確認　　　　　　：<input type="confirmation_email" class="input-item" name="confirmation_mail_address" th:field="*{mail_address}"></p>
+    <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:field="*{mail_address}"></p>
+    
 
+     
+    <details>
+      
+      <summary>プレイするゲーム(複数選択可)</summary>
+      <p><label><input type="checkbox" name="riyu" value="1">Tom Clancy's Rainbow Six Siege【PS4】</label></p><!--視覚的に選びやすくする-->
+      <p><label><input type="checkbox" name="riyu" value="1">Tom Clancy's Rainbow Six Siege【PC】</label></p>
+      <p><label><input type="checkbox" name="riyu" value="1">Keep Talking and Nobody explodes【PC】</label></p>
+    </details>
+    </label>
+
+    <div id="description-container">
+      <p>自己紹介　   　　：</p><textarea class="input-item-ta" name="note" th:field="*{note}" cols="30" rows="5" style="resize: none"></textarea>
+    </div> 
+
+    <div style="margin: 30px;"></div>
+    
+    <div id="button-container">
+      <input type="button" class="button-item" onclick="location.href='login'" value="戻る">
+      <input type="submit" class="button-item" value="ログアウト">
+      <input type="submit" class="button-item" value="編集">
+    </div>
+  </main>
+</form>
 <footer>
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>
