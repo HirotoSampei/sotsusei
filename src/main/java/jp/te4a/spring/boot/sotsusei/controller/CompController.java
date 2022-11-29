@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import antlr.collections.List;
+import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
@@ -47,25 +48,34 @@ public class CompController {
   }
 
   @GetMapping("/CreateComp") //大会作成画面
-  String create_list(Model model) {
-    model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
-    return "comp/CreateComp";
+  String create_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    int login_user_id = userBean.getUser_id();
+    if(compRepository.findall().getHost_user_id() == login_user_id){
+      return "redirect:/comp/Overview";
+    }
+    else{
+      model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+      return "comp/CreateComp";
+    }
+    
   }
   @GetMapping("/Overview") //大会概要画面
   String overview_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
-    /*  
-    String user_id = httpServletRequest.getRemoteUser();
-    Integer login_user_id = userRepository.findByUser_id(Integer.valueOf(user_id));
-    form.setHost_user_id(login_user_id);*/
-    model.addAttribute("overview", compRepository.findByHost_user_id(1));
+     
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    model.addAttribute("overview", compRepository.findByHost_user_id(userBean.getUser_id()));
     return "comp/Overview";
   }
   @PostMapping(path="create") //大会作成処理
-  String create(@Validated CompForm form, BindingResult result , Model model, Integer game_id) {
+  String create(@Validated CompForm form, BindingResult result , Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     if(result.hasErrors()) {
-      return create_list(model);
+      return create_list(model, modelMap, httpServletRequest);
     }
-    compService.create(form, game_id);
+    String user_pass = httpServletRequest.getRemoteUser();
+    compService.create(form, game_id, user_pass);
     return "redirect:/comp/Overview";
   }
   @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き

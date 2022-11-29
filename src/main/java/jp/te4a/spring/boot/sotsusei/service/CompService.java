@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
+import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
@@ -28,11 +29,13 @@ public class CompService {
   @Autowired
   GameRepository gameRepository;
 
-  public CompForm create(CompForm compForm, Integer game_id) {
+  public CompForm create(CompForm compForm, Integer game_id, String user_pass) {
 	  CompBean compBean = new CompBean();
     GameBean gameBean = new GameBean();
     gameBean.setGame_id(game_id);
+    UserBean userBean = userRepository.findByMail_address(user_pass);
 	  BeanUtils.copyProperties(compForm, compBean);
+    compBean.setHost_user_id(userBean.getUser_id());
     compBean.setGameBean(gameBean);
 	  compRepository.save(compBean);
 	  return compForm;
