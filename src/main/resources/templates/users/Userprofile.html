@@ -28,10 +28,10 @@
   
   <main>
     <p>ユーザーID  　　　:１</p>
-    <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:field="*{user_name}"value="たかし"></p>
-    <p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"value="takashi111"></p>
-    <p>確認　　　　　　：<input type="confirmation_email" class="input-item" name="confirmation_mail_address" th:field="*{mail_address}"value="takashi111"></p>
-    <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:field="*{mail_address}"value="takashi111@gmail.com"></p>
+    <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:field="*{user_name}"></p>
+    <p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>
+    <p>確認　　　　　　：<input type="confirmation_email" class="input-item" name="confirmation_mail_address" th:field="*{mail_address}"></p>
+    <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:field="*{mail_address}"></p>
     
 
      
@@ -45,7 +45,7 @@
     </label>
 
     <div id="description-container">
-      <p>自己紹介　   　　：</p><textarea class="input-item-ta" name="note" th:field="*{note}" cols="30" rows="5" style="resize: none" ></textarea>
+      <p>自己紹介　   　　：</p><textarea class="input-item-ta" name="note" th:field="*{note}" cols="30" rows="5" style="resize: none"></textarea>
     </div>
      
 
@@ -53,7 +53,8 @@
     
     <div id="button-container">
       <input type="button" class="button-item" onclick="location.href='login'" value="戻る">
-      <input type="submit" class="button-item" value="保存">
+      <input type="submit" class="button-item" value="ログアウト">
+      <input type="submit" class="button-item" value="編集">
     </div>
   </main>
 </form>
