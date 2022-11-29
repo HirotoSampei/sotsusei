@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang=ja dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>参加者画面</title>
+  <link rel="stylesheet" href="..\..\static\css\CompDispForParticipantsStyle.css" th:href="@{/css/OverviewStyle.css}">
+</head>
+<body>
+
+<header>
+  <div class="header-container">
+    <div class="left-container">
+      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <div class="header-item">
+        <input type="search" name="search" placeholder="大会を検索">
+        <input type="submit" name="submit" id="search_button" value="検索">
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="header-item">user icon</div>
+      <div class="header-item">user name</div>
+      </div>
+  </div>
+
+</header>
+
+<main>
+  <div class="main-container">
+    <div class="left-main-container">
+      <table>
+        <tr th:each="ov : ${overview}"> 
+          <div class="title-people-container">
+            <div class="title"th:text="${ov.comp_name}">初心者歓迎！ほげほげ大会</div>
+            <img src="..\..\images\people.png" class="people-logo">
+            <div class="people"th:text="${'2/' + ov.limit_of_participants}">20/50</div>   
+          </div>  
+          <div class="people">参加者一覧：</div>
+          
+          <select name="example" size="20" class="participants">
+            <option value="">hoge_user1</option>
+            <option value="">hoge_user2</option>
+            <option value="">hoge_user3</option>
+          </select>
+  
+         
+          
+          
+           
+          
+        </tr>
+    </table>
+    </div>
+    <div class="right-main-container">
+      <div class="chat">
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。あああああああああああああああああああああああああああああああああああああああああああああ</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="comment-log">hoge_user : こんにちは。</div>
+      </div>
+      <div class="comment">
+        <input type="text" class="comment-box">
+        <input type="button" value="投稿">
+      </div>
+    </div>
+  </div>
+  <div class="button-container">
+    
+    <div class="button-item">戻る</div>
+  </div>
+</main>
+
+<footer>
+  <div id="temp-footer">©Competition Assistance Tool</div>
+</footer>
+
+</body>
+</html>
