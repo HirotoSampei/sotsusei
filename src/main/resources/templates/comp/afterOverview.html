@@ -2,7 +2,7 @@
 <html lang=ja dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>template</title>
+  <title>大会概要</title>
   <link rel="stylesheet" href="..\..\static\css\OverviewStyle.css" th:href="@{/css/OverviewStyle.css}">
 </head>
 <body>
@@ -78,10 +78,13 @@
     </div>
   </div>
   <div class="button-container">
-    <input type="button" class="button-item" onclick="location.href='/comp_register'" value="戻る">
-    <div class="button-item">キャンセル</div>
-    <a class="button-item" href="location.href='/overview'" onclick="if( !confirm('キャンセルしますか') ) { return false; }"> キャンセル </a>
-    <div class="button-item">参加者用ページ</div>
+    <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
+
+    <input type="button" class="button-item" onclick="location.href='/Cancel.html'" value="キャンセル">
+
+    <!-- <a class="button-item" href="location.href='/overview'" onclick="if( !confirm('キャンセルしますか') ) { return false; }"> キャンセル </a> !-->
+    <!-- ↑ポップアップで表示したかった !-->
+    <input type="button" class="button-item" onclick="alert('参加者用ページへ')" value="参加者用ページ">
   </div>
 </main>
 
