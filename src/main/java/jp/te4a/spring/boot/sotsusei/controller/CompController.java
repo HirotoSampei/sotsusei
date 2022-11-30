@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import antlr.collections.List;
+import ch.qos.logback.core.joran.conditional.ElseAction;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
@@ -52,7 +53,11 @@ public class CompController {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     int login_user_id = userBean.getUser_id();
-    if(compRepository.findall().getHost_user_id() == login_user_id){
+    if(compRepository.findall() == null){
+      model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+      return "comp/CreateComp";
+    }
+    else if(compRepository.findall().getHost_user_id() == login_user_id){
       return "redirect:/comp/Overview";
     }
     else{
