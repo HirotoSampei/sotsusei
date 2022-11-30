@@ -53,11 +53,10 @@ body{
     color: white;
     font-weight: bold;
   }
-  
-  .people{
-    font-size: 20px;
+
+  .date{
+    font-size: 30px;
     color: white;
-    font-weight: bold;
   }
   
   .overview{
