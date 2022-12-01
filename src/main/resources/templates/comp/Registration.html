@@ -10,7 +10,7 @@
 <header>
   <div class="header-container">
     <div class="left-container">
-      <img src=images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
       <div class="header-item">
         <input type="search" name="search" placeholder="大会を検索">
         <input type="submit" name="submit" id="search_button" value="検索">
@@ -28,10 +28,10 @@
   <div class="main-container">
     <p>大会参加時ユーザー名：<input type="text" class="input-item" name="" id=""></p>
     
-    <div class="date">備考欄：</div>
+    <div class="text">備考欄：</div>
     <textarea class="input-item-ta" name="remarks" cols="30" rows="5" style="resize: none"></textarea>
 
-    <p><input type="checkbox" name="check" value="1">ルールの確認</p>
+    <input type="checkbox" id="check" value="1"><label for="check" class="text"> ルールの確認</label>
     
     <div style="margin: 30px;"></div>
     <div id="button-container">

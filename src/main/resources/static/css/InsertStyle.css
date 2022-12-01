@@ -47,14 +47,8 @@ body{
     font-size: 30px;
     color: white;
   }
-  
-  .title{
-    font-size: 35px;
-    color: white;
-    font-weight: bold;
-  }
 
-  .date{
+  .text{
     font-size: 30px;
     color: white;
   }
