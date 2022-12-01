@@ -202,10 +202,11 @@ main {
   overflow-y: auto;
 }
 
+/*ここから自動生成*/
 #hoge_user-pop-up {
   display: none;
 }
-/*ここから自動生成*/
+
 #hoge_user-pop-up:checked+.overlay {
   display: block;
   z-index: 9999;
@@ -216,6 +217,7 @@ main {
   top: 0;
   left: 0;
 }
+
 #hoge_user2-pop-up {
   display: none;
 }
