@@ -8,7 +8,7 @@
   <body>
 
     <table>
-        <tr th:each="cm : ${comp}"> 
+        <tr th:each="cm : ${complist}"> 
           <td th:text="${cm.comp_name}"></td>
           <td th:text="${'【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></td>
           <td th:text="${cm.start_date}"></td>

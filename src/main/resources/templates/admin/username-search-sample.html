@@ -8,12 +8,8 @@
   <body>
 
     <table>
-      <form th:action="@{/admin/search}" method="post">
-        ユーザー名：
-        <input type="text" name="username_searching">
-        <input type="submit" value="送信">
-      </form>
-      <!--<tr th:each="us : ${userList}"> 
+      検索結果：
+      <tr th:each="us : ${userList}"> 
         <td th:text="${us.user_name}"></td>
         <td th:text="${us.password}"></td>
         <td th:text="${us.mail_address}"></td>
@@ -21,7 +17,6 @@
         <td th:text="${us.is_banned}"></td>
         <td th:text="${us.is_admin}"></td>
       </tr>
-    -->
     </table>
   </body>
 </html>

@@ -70,4 +70,25 @@ public class UserService {
     BeanUtils.copyProperties(userBean, userForm);
     return userForm;
   }
+    public List<UserForm> findAll() {
+      List<UserBean> beanList = userRepository.findAll();
+      List<UserForm> formList = new ArrayList<UserForm>();
+      for(UserBean userBean: beanList) {
+        UserForm userForm = new UserForm();
+        BeanUtils.copyProperties(userBean, userForm);
+        formList.add(userForm);
+      }
+      return formList;
+    }
+    
+    public List<UserForm> findByUser_name(String user_name) {
+      List<UserBean> userSearch = userRepository.findByUser_nameLike("%"+user_name+"%");
+      List<UserForm> formList = new ArrayList<UserForm>();
+      for(UserBean userBean: userSearch) {
+        UserForm userForm = new UserForm();
+        BeanUtils.copyProperties(userBean, userForm);
+        formList.add(userForm);
+      }
+      return formList;
+    }
 }

@@ -1,5 +1,7 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
+
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
@@ -14,8 +16,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.servlet.ModelAndView;
 import antlr.collections.List;
+import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
@@ -28,10 +31,11 @@ import jp.te4a.spring.boot.sotsusei.service.UserService;
 @RequestMapping("admin")
 public class AdminController {
   @Autowired
-  CompService userService;
+  UserService userService;
   
   @Autowired
   CompService compService;
+
   @Autowired
   CompRepository compRepository;
 
@@ -52,7 +56,12 @@ public class AdminController {
   }
   @GetMapping("/complist") //ホーム画面
   String comp_list(Model model) {
-    model.addAttribute("comp", compService.findAll());
+    model.addAttribute("complist", compService.findAll());
     return "admin/complist-sample";
+  }
+  @PostMapping(path="search")
+  String user_search(@RequestParam String username_searching, Model model){
+    model.addAttribute("userList", userService.findByUser_name(username_searching));
+    return "admin/username-search-sample";
   }
 }
