@@ -79,6 +79,9 @@ body{
     /*background-color: aqua;*/
     border-right: 2px solid gray;
   }
+  .schedule-container{
+    display: flex;
+  }
   .people{
     font-size: 20px;
     color: white;
