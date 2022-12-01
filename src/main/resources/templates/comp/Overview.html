@@ -41,7 +41,10 @@
           </div>
           <div class="date">概要　　：</div>
           <div class="overview"th:text="${ov.description}">ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される</div>
-          <div class="deadline"th:text="${ov.deadline}">締め切り：2023/3/5 23:59</div>
+          <div class="deadline-container">
+            <div class="deadline">締め切り：</div>
+            <div class="deadline"th:text="${ov.deadline}">2023/3/5 23:59</div>
+          </div>
             <form th:action="@{/comp/edit}" method="post">
               <input type="submit" name="form" value="編集" />
               <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>

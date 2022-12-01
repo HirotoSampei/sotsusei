@@ -82,6 +82,9 @@ body{
   .schedule-container{
     display: flex;
   }
+  .deadline-container{
+    display: flex;
+  }
   .people{
     font-size: 20px;
     color: white;
