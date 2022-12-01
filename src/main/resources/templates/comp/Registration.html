@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>参加登録</title>
-  <link rel="stylesheet" href="..\..\static\css\InsertStyle.css">
+  <link rel="stylesheet" type="text/css" href="../../static/css/InsertStyle.css" th:href="@{/css/InsertStyle.css}">
 </head>
 <body>
 
@@ -25,17 +25,19 @@
 </header>
 
 <main>
-  <p>大会参加時ユーザー名：<input type="text" class="input-item" name="" id=""></p>
-  
-  <div class="date">備考欄：</div>
-  <textarea class="input-item-ta" name="remarks" cols="30" rows="5" style="resize: none"></textarea>
+  <div class="main-container">
+    <p>大会参加時ユーザー名：<input type="text" class="input-item" name="" id=""></p>
+    
+    <div class="date">備考欄：</div>
+    <textarea class="input-item-ta" name="remarks" cols="30" rows="5" style="resize: none"></textarea>
 
-  <p><input type="checkbox" name="check" value="1">ルールの確認</p>
-  
-  <div style="margin: 30px;"></div>
-  <div id="button-container">
-    <input type="submit" class="button-item" onclick="history.back(-1)" value="戻る">
-    <input type="button" class="button-item" onclick="alert('参加')" value="参加">
+    <p><input type="checkbox" name="check" value="1">ルールの確認</p>
+    
+    <div style="margin: 30px;"></div>
+    <div id="button-container">
+      <input type="submit" class="button-item" onclick="history.back(-1)" value="戻る">
+      <input type="button" class="button-item" onclick="alert('参加')" value="参加">
+    </div>
   </div>
 </main>
 

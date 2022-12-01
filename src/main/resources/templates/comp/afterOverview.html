@@ -80,10 +80,22 @@
   <div class="button-container">
     <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
 
-    <input type="button" class="button-item" onclick="location.href='/Cancel.html'" value="キャンセル">
+    <label class="open" for="pop-up">キャンセル</label>
+    <input type="checkbox" id="pop-up">
+    <div class="overlay">
+      <div class="window">
+        <label class="close" for="pop-up">×</label>
+        
+        <div id="button-container">
+          <div id="input-container">
+            <div class="cancel">キャンセルしますか？</div>
+          </div>
+          <input type="button" class="button-item" value="はい">
+          <label type="button" class="button-item-close" for="pop-up">いいえ</label>
+        </div>
+      </div>
+    </div>
 
-    <!-- <a class="button-item" href="location.href='/overview'" onclick="if( !confirm('キャンセルしますか') ) { return false; }"> キャンセル </a> !-->
-    <!-- ↑ポップアップで表示したかった !-->
     <input type="button" class="button-item" onclick="alert('参加者用ページへ')" value="参加者用ページ">
   </div>
 </main>
