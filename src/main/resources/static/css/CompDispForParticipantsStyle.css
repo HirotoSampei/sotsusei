@@ -128,13 +128,14 @@ main {
   border-radius: 0px 0px 30px 30px;
   margin-left: 30px;
 }
-#only-participants{
+
+#only-participants {
   color: white;
-  
   margin-left: 30px;
   font-size: 20px;
   font-weight: bold;
 }
+
 .comment-box {
   margin-left: 20px;
   margin-top: 10px;
@@ -152,6 +153,17 @@ main {
 
 .button-item {
   background-color: rgb(40, 40, 40);
+  font-size: 30px;
+  color: rgb(10, 108, 255);
+  padding-top: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 15px;
+  border-radius: 30px 30px 30px 30px;
+  cursor: pointer;
+}
+#button-item-back {
+  background-color: white;
   font-size: 30px;
   color: rgb(10, 108, 255);
   padding-top: 15px;
