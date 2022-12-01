@@ -1,148 +1,165 @@
-body{
-    margin: 0px;
-    background-color: black;
-  }
-  .header-container{
-    background: linear-gradient(red,70%, black);
-    margin: 0px;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-  }
-  .left-container{
-    display: flex;
-    /*background-color: greenyellow;*/
-    margin: 0px;
-    justify-content: flex-start;
-  }
-  .right-container{
-    display: flex;
-    /*background-color: greenyellow;*/
-    margin: 0px;
-    justify-content: flex-end;
-  }
-  .header-item{
-    /*background: #0bd;*/
-    color: #fff;
-    margin: 10px;
-    padding: 10px;
-  }
-  #search_button{
-    cursor: pointer;
-  }
+body {
+  margin: 0px;
+  background-color: black;
+}
 
-  main{
-    background-color: rgb(83, 83, 83);
-    margin-top: 5%;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-bottom: 5%;
-    padding-top: 2%;
-    padding-left: 5%;
-    padding-right:5%;
-    padding-bottom: 2%;
-    border-radius: 15px 15px 15px 15px;
+.header-container {
+  background: linear-gradient(red, 70%, black);
+  margin: 0px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
 
-  }
+.left-container {
+  display: flex;
+  /*background-color: greenyellow;*/
+  margin: 0px;
+  justify-content: flex-start;
+}
 
-  .title-people-container{
-    display: flex;
-    /*background-color: rgb(16, 61, 61);*/
-    align-items: center;
-    overflow-x: auto;
+.right-container {
+  display: flex;
+  /*background-color: greenyellow;*/
+  margin: 0px;
+  justify-content: flex-end;
+}
 
-  }
-  .people-logo{
-    height: 30px;
-    margin-bottom: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
-  }
-  .title{
-    font-size: 35px;
-    color: white;
-    font-weight: bold;
-  }
-  .main-container{
-    display: flex;
-  }
-  .left-main-container{
-    width: 50%;
-    /*background-color: aqua;*/
-    border-right: 2px solid gray;
-  }
-  .people{
-    font-size: 20px;
-    color: white;
-    font-weight: bold;
-  }
-  .right-main-container{
-    width: 50%;
-   /*background-color: red;*/
-  }
-  .participants{
-    width: 80%;
-    color: white;
-    padding: 10px;
-    background-color: rgb(40, 40, 40);
-    border-radius: 30px;
-  }
-  .chat{
-    background-color: rgb(40,40,40);
-    color: white;
-    height: 450px;
-    overflow: auto;
-    padding: 10px;
-    margin-top: 10px;
-    margin-bottom: 0px;
-    margin-right: 30px;
-    border-radius: 30px 30px 0px 0px;
-    margin-left: 30px;
-  }
-  .comment{
-    background-color: rgb(40, 40, 40);
-    color: white;
-    height: 50px;
-    border-top: 2px solid gray;
-    overflow: auto;
-    padding-bottom: 10px;
-    margin-top: 0px;
-    margin-bottom: 10px;
-    margin-right: 30px;
-    border-radius: 0px 0px 30px 30px;
-    margin-left: 30px;
-  }
-  .comment-box{
-    margin-left: 20px;
-    margin-top: 10px;
-    
-    height: 30px;
-    width: 80%;
-  }
+.header-item {
+  /*background: #0bd;*/
+  color: #fff;
+  margin: 10px;
+  padding: 10px;
+}
 
-  .button-container{
-    display: flex;
-    padding: 30px;
-    justify-content: space-between;
-  }
-  .button-item{
-    background-color: white;
-    font-size: 30px;
-    color: rgb(10, 108, 255);
-    padding-top: 15px;
-    padding-left: 30px;
-    padding-right: 30px;
-    padding-bottom: 15px;
-    border-radius: 30px 30px 30px 30px;
-    cursor: pointer;
-  }
-  .button-item:active{
-    background-color: gray;
-  }
+#search_button {
+  cursor: pointer;
+}
 
-  #temp-footer{
-    display: flex;
-    background: linear-gradient(black,20%, red);
-    justify-content: center;
+main {
+  background-color: rgb(83, 83, 83);
+  margin-top: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 5%;
+  padding-top: 2%;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 2%;
+  border-radius: 15px 15px 15px 15px;
 
-  }
+}
+
+.title-people-container {
+  display: flex;
+  /*background-color: rgb(16, 61, 61);*/
+  align-items: center;
+  overflow-x: auto;
+
+}
+
+.people-logo {
+  height: 30px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.title {
+  font-size: 35px;
+  color: white;
+  font-weight: bold;
+}
+
+.main-container {
+  display: flex;
+}
+
+.left-main-container {
+  width: 50%;
+  /*background-color: aqua;*/
+  border-right: 2px solid gray;
+}
+
+.people {
+  font-size: 20px;
+  color: white;
+  font-weight: bold;
+}
+
+.right-main-container {
+  width: 50%;
+  /*background-color: red;*/
+}
+
+.participants {
+  width: 80%;
+  color: white;
+  padding: 10px;
+  background-color: rgb(40, 40, 40);
+  border-radius: 30px;
+}
+
+.chat {
+  background-color: rgb(40, 40, 40);
+  color: white;
+  height: 450px;
+  overflow: auto;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-right: 30px;
+  border-radius: 30px 30px 0px 0px;
+  margin-left: 30px;
+}
+
+.comment {
+  background-color: rgb(40, 40, 40);
+  color: white;
+  height: 50px;
+  border-top: 2px solid gray;
+  overflow: auto;
+  padding-bottom: 10px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  margin-right: 30px;
+  border-radius: 0px 0px 30px 30px;
+  margin-left: 30px;
+}
+
+.comment-box {
+  margin-left: 20px;
+  margin-top: 10px;
+
+  height: 30px;
+  width: 80%;
+}
+
+.button-container {
+  display: flex;
+  padding: 30px;
+  justify-content: space-between;
+}
+
+.button-item {
+  background-color: white;
+  font-size: 30px;
+  color: rgb(10, 108, 255);
+  padding-top: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-bottom: 15px;
+  border-radius: 30px 30px 30px 30px;
+  cursor: pointer;
+}
+
+.button-item:active {
+  background-color: gray;
+}
+
+#temp-footer {
+  display: flex;
+  background: linear-gradient(black, 20%, red);
+  justify-content: center;
+
+}
