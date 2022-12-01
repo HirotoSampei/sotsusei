@@ -23,6 +23,7 @@
         <div class="header-item">user name</div>
       </div>
     </div>
+
   </header>
 
   <main>
@@ -36,11 +37,23 @@
               <div class="people" th:text="${'2/' + ov.limit_of_participants}">20/50</div>
             </div>
             <div class="people">参加者一覧：</div>
-            <select name="example" size="20" class="participants">
-              <option value="">hoge_user1</option>
-              <option value="">hoge_user2</option>
-              <option value="">hoge_user3</option>
-            </select>
+
+            <div class="participants">
+
+              <div>
+                <label for="hoge_user-pop-up">hoge_user</label>
+                <input type="checkbox" id="hoge_user-pop-up">
+                <div class="overlay">
+                  <div class="window">
+                    <div class="user-name">hoge_user</div>
+                    <div class="note">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>   
+                   
+            </div>
           </tr>
         </table>
       </div>
@@ -78,7 +91,8 @@
       </div>
     </div>
     <div class="button-container">
-      <input type="button" class="button-item" value="戻る"></input>
+
+      <div class="button-item">戻る</div>
     </div>
   </main>
 
@@ -87,4 +101,5 @@
   </footer>
 
 </body>
+
 </html>
