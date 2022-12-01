@@ -18,9 +18,6 @@ public class LoginUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String mail_address) throws UsernameNotFoundException {
-        /*Optional<UserBean> opt = userRepository.findById(mail_address);
-        UserBean user = opt.orElseThrow(() -> new UsernameNotFoundException("The requested user is not found."));
-        return new LoginUserDetails(user);*/
         if (mail_address == null || "".equals(mail_address)) {
             throw new UsernameNotFoundException("mail_address is empty");
         }

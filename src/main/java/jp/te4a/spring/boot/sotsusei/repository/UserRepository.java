@@ -13,5 +13,4 @@ public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpe
 
 	@Query("SELECT X FROM UserBean X WHERE X.mail_address = ?1")
     UserBean findByMail_address(String mail_address);
-	//Integer findByUser_id(Integer user_id);
 }
