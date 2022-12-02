@@ -20,6 +20,7 @@
         <form th:action="@{/users/edit}" method="post">
           <input type="submit" name="form" value="編集" />
           <input type="hidden" name="user_id" th:value="${us.user_id}"/>
+          <input type="hidden" name="password" th:value="${us.password}"/>
         </form>
     </tr>
     </table>

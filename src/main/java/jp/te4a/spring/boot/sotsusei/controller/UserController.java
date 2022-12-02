@@ -60,18 +60,19 @@ public class UserController {
       return "users/profile";
     }
     @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
-    String editForm(@RequestParam Integer user_id, UserForm form) {
+    String editForm(@RequestParam Integer user_id, @RequestParam String password, UserForm form) {
       UserForm userForm = userService.findOne(user_id);
       BeanUtils.copyProperties(userForm,  form);
       return "users/EditUser";
     }
     @PostMapping(path = "edit") //編集した内容を登録する時の動き
-    String edit(@RequestParam Integer user_id, @Validated UserForm form, BindingResult result) {
+    String edit(@RequestParam Integer user_id, @RequestParam String password, @Validated UserForm form, BindingResult result) {
     if(result.hasErrors()) {
-    return editForm(user_id, form);
+    return editForm(user_id, password, form);
     }
+    form.setPassword(password);
     userService.update(form);
-    return "redirect:/comp";
+    return "redirect:/users/profile";
     }
     @PostMapping(path = "delete") //削除
     String delete(@RequestParam Integer user_id) {
