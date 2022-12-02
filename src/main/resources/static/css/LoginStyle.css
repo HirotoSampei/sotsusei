@@ -55,7 +55,7 @@ body{
   .input-item{
     height: 30px;
     font-size: 90%;
-    
+    width: 50%;
   }
   .input-item-ta{
     width: 500px;
