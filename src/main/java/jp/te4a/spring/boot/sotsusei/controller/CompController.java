@@ -53,11 +53,11 @@ public class CompController {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     int login_user_id = userBean.getUser_id();
-    if(compRepository.findAllOrderByComp_id() == null){
+    if(compRepository.findAllOrderByComp_id().size() == 0){
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "comp/CreateComp";
     }
-    else if(compRepository.findByHost_user_id(login_user_id) != null){
+    else if(compRepository.findByHost_user_id(login_user_id).size() != 0){
       return "redirect:/comp/Overview";
     }
     else{
