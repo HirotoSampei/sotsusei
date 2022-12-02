@@ -2,7 +2,7 @@
 <html lang=ja dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>template</title>
+  <title>大会作成</title>
   <link rel="stylesheet" type="text/css" href="../../static/css/CreateCompStyle.css" th:href="@{/css/CreateCompStyle.css}">
 </head>
 <body>
@@ -26,31 +26,31 @@
 <form th:action="@{/comp/create}" th:object="${compForm}" method="post">
   <main>
     <table>
-    <div id="input-container">
-      <p>大会名　  :<input type="text" class="input-item" name="comp_name" th:field="*{comp_name}"></p> 
-      <tr><td>主催者ID:</td><td><input type="text" name="host_user_id" th:field="*{host_user_id}" th:errorclass="error-input" />
-      <span th:if="${#fields.hasErrors('host_user_id')}" th:errors="*{host_user_id}" class="error-messages">error!</span>
-      </td></tr>
-      <p>ゲーム　  :
-        <select class="input-item" name="game_id">
-          <option value="0"></option>
-          <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
-        </select>
-      </p>  
-      <div id="description-container">
-        <p>概要　  :</p>
-        <textarea class="input-item-ta" name="description" cols="30" rows="5" style="resize: none"></textarea>
+      <div id="input-container">
+        <p>大会名　　：<input type="text" class="input-item" name="comp_name" th:field="*{comp_name}"></p> 
+        <tr><td>主催者ID：</td><td><input type="text" name="host_user_id" th:field="*{host_user_id}" th:errorclass="error-input" />
+        <span th:if="${#fields.hasErrors('host_user_id')}" th:errors="*{host_user_id}" class="error-messages">error!</span>
+        </td></tr>
+        <p>ゲーム　　：
+          <select class="input-item" name="game_id">
+            <option value="0"></option>
+            <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
+          </select>
+        </p>  
+        <div id="description-container">
+          <p>概要　　　：</p>
+          <textarea class="input-item-ta" name="description" cols="30" rows="5" style="resize: none"></textarea>
+        </div>
+        <p>開始日時　：<input type="datetime-local" class="input-item" name="start_date" th:field="*{start_date}"></p>
+        <p>終了日時　：<input type="datetime-local" class="input-item" name="end_date" th:field="*{end_date}"></p>
+        <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:field="*{limit_of_participants}"></p>
+        <p>締め切り　：<input type="datetime-local" class="input-item" name="deadline" th:field="*{deadline}"></p>
       </div>
-      <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" th:field="*{start_date}"></p>
-      <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:field="*{end_date}"></p>
-      <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:field="*{limit_of_participants}"></p>
-      <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:field="*{deadline}"></p>
-    </div>
-    <div id="button-container">
-      <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
-      <input type="submit" class="button-item" value="作成">
-    </div>
-    <table>
+      <div id="button-container">
+        <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
+        <input type="submit" class="button-item" value="作成">
+      </div>
+    </table>
   </main>
 </form>
 <footer>
