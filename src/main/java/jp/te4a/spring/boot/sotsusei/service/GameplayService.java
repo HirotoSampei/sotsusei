@@ -11,8 +11,4 @@ public class GameplayService {
     @Autowired
     GameplayRepository gameplayRepository;
 
-    public GameplayBean create(GameplayBean gameplayBean) {
-        gameplayRepository.save(gameplayBean);
-        return gameplayBean;
-    }
 }

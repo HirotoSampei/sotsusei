@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ユーザー登録画面</title>
+  </head>
+<body>
+    <table>
+    <tr th:each="us : ${profile}">
+        <td th:text="${us.user_id}"></td>
+        <td th:text="${us.user_name}"></td>
+        <td th:text="${us.password}"></td>
+        <td th:text="${us.mail_address}"></td>
+        <td th:text="${us.note}"></td>
+        <td th:text="${us.is_banned}"></td>
+        <td th:text="${us.is_admin}"></td>
+
+        <input type="button" onclick="location.href='/comp'" value="戻る">
+        <form th:action="@{/logout}" method="post"><input type="submit" class="btn btn-default btn-xs" value="ログアウト" /></form>
+        <form th:action="@{/users/edit}" method="post">
+          <input type="submit" name="form" value="編集" />
+          <input type="hidden" name="user_id" th:value="${us.user_id}"/>
+          <input type="hidden" name="password" th:value="${us.password}"/>
+        </form>
+    </tr>
+    </table>
+</form>
+</body>
+</html>
