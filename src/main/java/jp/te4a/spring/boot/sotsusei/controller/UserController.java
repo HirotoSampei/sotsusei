@@ -57,13 +57,13 @@ public class UserController {
     String profile_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
       String user_pass = httpServletRequest.getRemoteUser();
       model.addAttribute("profile",userRepository.findByMail_address(user_pass));
-      return "users/profile";
+      return "users/Userprofile";
     }
     @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
     String editForm(@RequestParam Integer user_id, @RequestParam String password, UserForm form) {
       UserForm userForm = userService.findOne(user_id);
       BeanUtils.copyProperties(userForm,  form);
-      return "users/EditUser";
+      return "users/Edituser2";
     }
     @PostMapping(path = "edit") //編集した内容を登録する時の動き
     String edit(@RequestParam Integer user_id, @RequestParam String password, @Validated UserForm form, BindingResult result) {
