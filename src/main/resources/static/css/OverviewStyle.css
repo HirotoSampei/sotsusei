@@ -94,6 +94,24 @@ body{
     width: 50%;
    /*background-color: red;*/
   }
+  .input-nickname{
+    margin-left: 30px;
+    height: 30px;
+    
+  }
+  .agree-container{
+    display: flex;
+  }
+  .bottom-container{
+    display: flex;
+    align-items: center;
+  }
+  .bottom-container2{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 100px;
+  }
   .chat{
     background-color: rgb(40,40,40);
     color: white;
