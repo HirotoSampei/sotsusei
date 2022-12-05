@@ -25,6 +25,9 @@ body {
   justify-content: flex-end;
 
 }
+.link{
+  text-decoration: none;
+}
 
 .header-item {
   /*background: #0bd;*/
