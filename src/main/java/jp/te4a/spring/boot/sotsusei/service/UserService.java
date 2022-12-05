@@ -80,6 +80,19 @@ public class UserService {
       }
       return formList;
     }
+    public UserForm update(UserForm userForm) {
+      UserBean userBean = new UserBean();
+      BeanUtils.copyProperties(userForm, userBean);
+      userRepository.save(userBean);
+      return userForm;
+    }
+    public void delete(Integer id) { userRepository.deleteById(id); }
+    public UserForm findOne(Integer id) {
+      Optional<UserBean> userBean = userRepository.findById(id);
+      UserForm userForm = new UserForm();
+      BeanUtils.copyProperties(userBean, userForm);
+      return userForm;
+      }
     
     public List<UserForm> findByUser_name(String user_name) {
       List<UserBean> userSearch = userRepository.findByUser_nameLike("%"+user_name+"%");
