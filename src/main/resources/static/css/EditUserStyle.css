@@ -48,6 +48,9 @@ body{
     font-size: 30px;
     color: white;
   }
+  #username{
+    color: white;
+  }
   #input-container{
     display: flex;
     flex-direction: column;
@@ -55,15 +58,20 @@ body{
   .input-item{
     height: 30px;
     font-size: 90%;
-    width: 50%;
+    
   }
-  .game-list{
-    width: 70%;
+  .display-item{
+    font-size: 30px;
+    color: white;
+  }
+  .display-item-ta{
+    width: 500px;
+    font-size: 30px;
+    color: white;
   }
   .input-item-ta{
     width: 500px;
     font-size: 27px;
-    width: 60%;
   }
   #button-container{
     display: flex;
@@ -96,6 +104,7 @@ body{
     align-items: baseline;
     margin: 0px;
     padding: 0px;
+    overflow-wrap: break-word;
   }
 
   .ptext{
@@ -137,3 +146,9 @@ body{
     height: 30px;
     vertical-align: middle;
   }
+
+.user-info{
+    color: white;
+
+}
+
