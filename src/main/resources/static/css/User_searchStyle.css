@@ -1,0 +1,12 @@
+body{
+    background: linear-gradient(rgb(248, 2, 2),60%, rgb(0, 0, 0));
+    
+}
+
+input[type="search"] {
+    width: 270px; /*--幅--*/
+    padding: 25px; /*--余白--*/
+    font-size: 10px; /*--文字サイズ--*/
+    border: solid 2px #cccccc; /*--ボーダー線--*/
+    border-radius: 5px; /*--角丸--*/
+  }
