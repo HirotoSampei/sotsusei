@@ -11,7 +11,7 @@
       <form th:action="@{/admin/search}" method="post">
         ユーザー名：
         <input type="text" name="username_searching">
-        <input type="submit" value="送信">
+        <input type="submit" name="form" value="送信">
       </form>
       <!--<tr th:each="us : ${userList}"> 
         <td th:text="${us.user_name}"></td>

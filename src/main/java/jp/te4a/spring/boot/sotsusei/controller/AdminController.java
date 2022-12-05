@@ -59,7 +59,7 @@ public class AdminController {
     model.addAttribute("complist", compService.findAll());
     return "admin/complist-sample";
   }
-  @PostMapping(path="search")
+  @PostMapping(path="search", params = "form")
   String user_search(@RequestParam String username_searching, Model model){
     model.addAttribute("userList", userService.findByUser_name(username_searching));
     return "admin/username-search-sample";
