@@ -80,7 +80,9 @@ main {
   /*background-color: aqua;*/
   border-right: 2px solid gray;
 }
-
+.host-container{
+  display: flex;
+}
 .people {
   font-size: 20px;
   color: white;
@@ -188,7 +190,7 @@ main {
 }
 
 .button-item {
-  background-color: rgb(40, 40, 40);
+  background-color: rgb(255, 255, 255);
   font-size: 30px;
   color: rgb(10, 108, 255);
   padding-top: 15px;
