@@ -38,15 +38,21 @@
             </div>
             <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom
               Clansy's Reinbow Six Siege</div>
-            <div class="date" th:text="${ov.start_date + '~' + ov.end_date}">開催日時：2023/3/10 13:00 ~ 2023/3/10 18:00
+            <div class="schedule-container">
+              <div class="date">開催日時：</div>
+              <div class="date" th:text="${ov.start_date + '~' + ov.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
             </div>
             <div class="date">概要　　：</div>
             <div class="overview" th:text="${ov.description}">
               ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される
             </div>
-            <div class="deadline" th:text="${ov.deadline}">締め切り：2023/3/5 23:59</div>
-
-
+            <div class="deadline-report-container">
+              <div class="deadline-container">
+                <div class="deadline">締め切り：</div>
+                <div class="deadline" th:text="${ov.deadline}">2023/3/5 23:59</div>
+              </div>
+              <input type="button" class="report-button" onclick="" value="大会を通報">
+            </div>
           </tr>
         </table>
       </div>
@@ -92,7 +98,7 @@
         <div class="date">ルールを確認し、同意します。</div>
         <input type="checkbox" style="transform:scale(3);">
       </div>
-      <input type="button" class="button-item" onclick="history.back(-1)" value="参加する">
+      <input type="button" class="button-item" onclick="" value="参加する">
     </div>
   </main>
 
