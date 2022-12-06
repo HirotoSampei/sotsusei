@@ -36,45 +36,66 @@
               <img src="..\..\images\people.png" class="people-logo">
               <div class="people" th:text="${'2/' + ov.limit_of_participants}">20/50</div>
             </div>
-            <div class="people">参加者一覧：</div>
-
-            <div class="participants">
-
-              <div>
-                <label for="hoge_user-pop-up">hoge_user</label>
-                <input type="checkbox" id="hoge_user-pop-up">
-                <div class="overlay">
-                  <div class="window">
-                    <div class="user-name">hoge_user</div>
-                    <div class="note">
-                      <div>hoge_userの自己紹介</div>
-                    </div>
-                    <div class="button-container">
-                      <label class="button-item" for="hoge_user-pop-up">戻る</label>
-                      <input type="button" class="button-item" value="報告">
-                    </div>
-                  </div>
+            <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom
+              Clansy's Reinbow Six Siege</div>
+            <div class="schedule-container">
+              <div class="date">開催日時：</div>
+              <div class="date" th:text="${ov.start_date + '~' + ov.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
+            </div>
+            <div class="ov-participants-container">
+              <div class="overview-container">
+                <div class="people">概要　　：</div>
+                <div class="overview" th:text="${ov.description}">
+                  ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される
                 </div>
               </div>
+              <div class="participants-container">
+                <div class="people">参加者一覧：</div>
+                <div class="participants">
 
-              <div>
-                <label for="hoge_user2-pop-up">hoge_user2</label>
-                <input type="checkbox" id="hoge_user2-pop-up">
-                <div class="overlay">
-                  <div class="window">
-                    <div class="user-name">hoge_user2</div>
-                    <div class="note">
-                      <div>hoge_user2の自己紹介</div>
-                    </div>
-                    <div class="button-container">
-                      <label class="button-item" for="hoge_user2-pop-up">戻る</label>
-                      <input type="button" class="button-item" value="報告">
+                  <div>
+                    <label for="hoge_user-pop-up">hoge_user</label>
+                    <input type="checkbox" id="hoge_user-pop-up">
+                    <div class="overlay">
+                      <div class="window">
+                        <div class="user-name">hoge_user</div>
+                        <div class="note">
+                          <div>hoge_userの自己紹介</div>
+                        </div>
+                        <div class="button-container">
+                          <label class="button-item" for="hoge_user-pop-up">戻る</label>
+                          <input type="button" class="button-item" value="報告">
+                        </div>
+                      </div>
                     </div>
                   </div>
+
+                  <div>
+                    <label for="hoge_user2-pop-up">hoge_user2</label>
+                    <input type="checkbox" id="hoge_user2-pop-up">
+                    <div class="overlay">
+                      <div class="window">
+                        <div class="user-name">hoge_user2</div>
+                        <div class="note">
+                          <div>hoge_user2の自己紹介</div>
+                        </div>
+                        <div class="button-container">
+                          <label class="button-item" for="hoge_user2-pop-up">戻る</label>
+                          <input type="button" class="button-item" value="報告">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
             </div>
+
+
+
+
+
           </tr>
         </table>
       </div>
