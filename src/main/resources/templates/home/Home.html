@@ -9,22 +9,22 @@
 
 <body>
 
-<header>
-  <div class="header-container">
-    <div class="left-container">
-      <a href="users/profile">
-        <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
-      </a>
-      <div class="header-item">
-        <input type="search" name="search" placeholder="大会を検索">
-        <input type="submit" name="submit" id="search_button" value="検索">
+  <header>
+    <div class="header-container">
+      <div class="left-container">
+        <a href="users/profile">
+          <img src=..\..\images\cat_logo.png class="header-item" width="90px" height="60px">
+        </a>
+        <div class="header-item">
+          <input type="search" name="search" placeholder="大会を検索">
+          <input type="submit" name="submit" id="search_button" value="検索">
+        </div>
+      </div>
+      <div class="right-container">
+        <div class="header-item">user icon</div>
+        <div class="header-item">user name</div>
       </div>
     </div>
-    <div class="right-container">
-      <div class="header-item">user icon</div>
-      <div class="header-item">user name</div>
-    </div>
-  </div>
 
   </header>
 
@@ -37,18 +37,20 @@
         <p>■受付中の大会</p>
       </div>
       <table>
-        <tr th:each="cm : ${comp}">
-          <div class="center-main-item">
-            <div class="title-people-container">
-              <div class="title" th:text="${cm.comp_name}"></div>
-              <img src="..\..\images\people.png" class="people-logo">
-              <div class="people" th:text="${'2/' + cm.limit_of_participants}"></div>
+        <a href="https://yahoo.co.jp" class="link">
+          <tr th:each="cm : ${comp}">
+            <div class="center-main-item">
+              <div class="title-people-container">
+                <div class="title" th:text="${cm.comp_name}"></div>
+                <img src="..\..\images\people.png" class="people-logo">
+                <div class="people" th:text="${'2/' + cm.limit_of_participants}"></div>
+              </div>
+              <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
+              <div style="color: white;">日程：</div>
+              <div class="schedule" th:text="${cm.start_date + '~' + cm.end_date}"></div>
             </div>
-            <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
-            <div style="color: white;">日程：</div>
-            <div class="schedule" th:text="${cm.start_date + '~' + cm.end_date}"></div>
-          </div>
-        </tr>
+          </tr>
+        </a>
       </table>
     </div>
     <div class="right-main-container">
