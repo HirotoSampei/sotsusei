@@ -1,12 +1,26 @@
 body{
-    background: linear-gradient(rgb(248, 2, 2),60%, rgb(0, 0, 0));
+    background: linear-gradient(rgb(0, 0, 0),45%, rgb(255, 0, 0));
     
 }
 
 input[type="search"] {
-    width: 270px; /*--幅--*/
-    padding: 25px; /*--余白--*/
+    width: 270px; /*--検索バーの横幅--*/
+    padding: 50px; /*--検索バーの縦幅--*/
     font-size: 10px; /*--文字サイズ--*/
-    border: solid 2px #cccccc; /*--ボーダー線--*/
-    border-radius: 5px; /*--角丸--*/
-  }
+    border: solid 2px #cccccc; 
+    border-radius: 5px; 
+    margin:  0 auto;
+    display: flex;
+    justify-content: center
+}
+.sukima_top{
+    padding-top: 300px;
+    padding-right: 20px;
+    margin:  0 auto;
+}
+
+.editor {
+  box-sizing: border-box;
+  height: 100%;
+  padding-top: 30px;
+}
