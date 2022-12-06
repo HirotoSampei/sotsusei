@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang=ja dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>大会概要</title>
+  <link rel="stylesheet" href="..\..\static\css\OverviewStyle.css" th:href="@{/css/OverviewStyle.css}">
+</head>
+
+<body>
+
+  <header>
+    <div class="header-container">
+      <div class="left-container">
+        <img src=..\..\images\cat_logo.png class="header-item" width="90px" height="60px">
+        <div class="header-item">
+          <input type="search" name="search" placeholder="大会を検索">
+          <input type="submit" name="submit" id="search_button" value="検索">
+        </div>
+      </div>
+      <div class="right-container">
+        <div class="header-item">user icon</div>
+        <div class="header-item">user name</div>
+      </div>
+    </div>
+
+  </header>
+
+  <main>
+    <div class="main-container">
+      <div class="left-main-container">
+        <table>
+          <tr th:each="ov : ${overview}">
+            <div class="title-people-container">
+              <div class="title" th:text="${ov.comp_name}">初心者歓迎！ほげほげ大会</div>
+              <img src="..\..\images\people.png" class="people-logo">
+              <div class="people" th:text="${'2/' + ov.limit_of_participants}">20/50</div>
+            </div>
+            <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom
+              Clansy's Reinbow Six Siege</div>
+            <div class="date" th:text="${ov.start_date + '~' + ov.end_date}">開催日時：2023/3/10 13:00 ~ 2023/3/10 18:00
+            </div>
+            <div class="date">概要　　：</div>
+            <div class="overview" th:text="${ov.description}">
+              ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される
+            </div>
+            <div class="deadline" th:text="${ov.deadline}">締め切り：2023/3/5 23:59</div>
+
+
+          </tr>
+        </table>
+      </div>
+      <div class="right-main-container">
+        <div class="chat">
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。あああああああああああああああああああああああああああああああああああああああああああああ</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+          <div class="comment-log">hoge_user : こんにちは。</div>
+        </div>
+        <div class="comment">
+          <input type="text" class="comment-box">
+          <input type="button" value="投稿">
+        </div>
+      </div>
+    </div>
+    <div class="button-container">
+      <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
+
+
+
+      <input type="button" class="button-item" onclick="alert('参加する')" value="参加する">
+    </div>
+  </main>
+
+  <footer>
+    <div id="temp-footer">©Competition Assistance Tool</div>
+  </footer>
+
+</body>
+
+</html>
