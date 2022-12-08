@@ -1,6 +1,7 @@
 body{
     background: linear-gradient(rgb(0, 0, 0),45%, rgb(255, 0, 0));
-    overflow:hidden
+    overflow:hidden;
+    min-height:100vh;/*画面サイズのやつ*/  
 }
 
 input[type="search"] {
@@ -12,13 +13,11 @@ input[type="search"] {
     margin:  0 auto;
     display: flex;
     justify-content: center;
-    
 }
 .sukima_top{
     padding-top: 110px;
     padding-right: 20px;
     margin:  5px;
-    
 }
 
 .editor {
@@ -33,13 +32,12 @@ input[type="search"] {
     left: 3.7%;
     width: 155px;
     padding: 10px;
-    font-size: 20px; 
+    font-size: 28px; 
     border: solid 2px #cccccc; 
     border-radius: 5px;
 }
 #name{
     text-align: center;
-    
     font-size: 25px;
     color: white;
 }
@@ -51,7 +49,7 @@ input[type="search"] {
     padding: 10px;
     font-size: 30px; 
     border: solid 2px #cccccc; 
-    border-radius: 5px;
+    border-radius: 5px;   
 }
 .sukima_ume{
     padding-top: 350px;

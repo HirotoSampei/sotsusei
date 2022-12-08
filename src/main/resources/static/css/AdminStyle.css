@@ -27,5 +27,6 @@
 
 body{
     background: linear-gradient(rgb(248, 2, 2),60%, rgb(0, 0, 0));/*相談*/
-    overflow:hidden
+    overflow:hidden;
+    min-height:100vh;/*画面サイズのやつ*/ 
 }
