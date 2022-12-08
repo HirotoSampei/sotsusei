@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang=ja dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>通報情報</title>
+    <link rel="stylesheet" href="../../static/css/ReportedUsersStyle.css" th:href="@{/css/HomeStyle.css}">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="left-container">
+                <a href="users/profile">
+                    <img src=..\..\images\cat_logo.png class="header-item" width="90px" height="60px">
+                </a>
+                <div class="header-item">
+                    <input type="search" name="search" placeholder="大会を検索">
+                    <input type="submit" name="submit" id="search_button" value="検索">
+                </div>
+            </div>
+            <div class="right-container">
+                <div class="header-item">user icon</div>
+                <div class="header-item">user name</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="left-main-container">
+            <input class="left-main-item" type="button" onclick="location.href='comp/CreateComp'" value="大会を開く">
+        </div>
+        <div class="center-main-container">
+            <div class="heading">
+                <p>通報情報</p>
+            </div>
+            <div class="center-main-item">
+                <div class="text">大会名：hogehoge大会</div>
+                <div class="text">時刻　：2022/03/23 23:40</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div id="temp-footer">©Competition Assistance Tool</div>
+    </footer>
+
+</body>
+
+</html>
