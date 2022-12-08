@@ -299,3 +299,7 @@ body{
   .button-item-close:active{
     background-color: gray;
   }
+  .host_name{
+    color: white;
+    font-size:  25px; ;
+  }

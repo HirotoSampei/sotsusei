@@ -35,6 +35,7 @@
             <div class="people"th:text="${'2/' + ov.limit_of_participants}">20/50</div> 
           </div>  
           <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom Clansy's Reinbow Six Siege</div>
+          <div class="host_name">主催者 　:</div>
           <div class="schedule-container">
             <div class="date">開催日時：</div>
             <div class="date"th:text="${ov.start_date + '~' + ov.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
