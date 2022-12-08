@@ -1,6 +1,7 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,10 +18,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
+import jp.te4a.spring.boot.sotsusei.bean.GameplayPrimaryKey;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
+import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.GameplayService;
 import jp.te4a.spring.boot.sotsusei.service.UserService;
@@ -28,6 +32,7 @@ import jp.te4a.spring.boot.sotsusei.service.UserService;
 @Controller
 @RequestMapping("users")
 public class UserController {
+    private static final Model Model = null;
     @Autowired
     UserService userService;
     @Autowired
@@ -36,6 +41,8 @@ public class UserController {
     GameRepository gameRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    GameplayRepository gameplayRepository;
     @ModelAttribute 
     UserForm setUpForm() {
         return new UserForm();
@@ -56,22 +63,36 @@ public class UserController {
     @GetMapping(path = "profile") //プロフィール画面に飛ぶ際の動き
     String profile_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
       String user_pass = httpServletRequest.getRemoteUser();
-      model.addAttribute("profile",userRepository.findByMail_address(user_pass));
+      UserBean userBean = userRepository.findByMail_address(user_pass);
+      List<GameBean> game_List = new ArrayList<GameBean>();
+      List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(userBean.getUser_id());
+        for (int i = 0; i < gameplay_idList.size(); i++){
+            game_List.add(gameRepository.getById(gameplay_idList.get(i).getGame_id()));
+        }
+      model.addAttribute("game_List",game_List);
+      model.addAttribute("profile",userBean);
       return "users/Userprofile";
     }
     @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
-    String editForm(@RequestParam Integer user_id, @RequestParam String password, UserForm form) {
+    String editForm(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ UserForm form, Model model) {
       UserForm userForm = userService.findOne(user_id);
+      UserBean userBean = userRepository.getById(user_id);
       BeanUtils.copyProperties(userForm,  form);
+      model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+      model.addAttribute("edit",userBean);
       return "users/Edituser2";
     }
     @PostMapping(path = "edit") //編集した内容を登録する時の動き
-    String edit(@RequestParam Integer user_id, @RequestParam String password, @Validated UserForm form, BindingResult result) {
+    String edit(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ @Validated UserForm form, BindingResult result, String[] game_id) {
     if(result.hasErrors()) {
-    return editForm(user_id, password, form);
+    return editForm(user_id,/*game_List,*/ form, Model);
     }
-    form.setPassword(password);
-    userService.update(form);
+    UserBean userBean = userRepository.getById(user_id);
+    form.setPassword(userBean.getPassword());
+    form.setMail_address(userBean.getMail_address());
+    /*GameplayPrimaryKey id = gameplayRepository.findAllByGameplayPrimaryKey(user_id);
+    gameplayService.delete(id);*/
+    userService.update(form, game_id);
     return "redirect:/users/profile";
     }
     @PostMapping(path = "delete") //削除
