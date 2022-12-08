@@ -58,7 +58,7 @@ public class CompController {
       return "comp/CreateComp";
     }
     else if(compRepository.findByHost_user_id(login_user_id).size() != 0){
-      return "redirect:/comp/Overview";
+      return "redirect:/comp/OverViewForHost";
     }
     else{
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
@@ -66,13 +66,13 @@ public class CompController {
     }
     
   }
-  @GetMapping("/Overview") //大会概要画面
+  @GetMapping("/OverViewForHost") //大会概要画面
   String overview_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
      
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     model.addAttribute("overview", compRepository.findByHost_user_id(userBean.getUser_id()));
-    return "comp/Overview";
+    return "comp/OverViewForHost";
   }
   @PostMapping(path="create") //大会作成処理
   String create(@Validated CompForm form, BindingResult result , Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
@@ -81,12 +81,13 @@ public class CompController {
     }
     String user_pass = httpServletRequest.getRemoteUser();
     compService.create(form, game_id, user_pass);
-    return "redirect:/comp/Overview";
+    return "redirect:/comp/OverViewForHost";
   }
   @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
   String editForm(@RequestParam Integer comp_id, CompForm form, Model model) {
     CompForm compForm = compService.findOne(comp_id);
-    BeanUtils.copyProperties(compForm,  form);
+    //BeanUtils.copyProperties(compForm,  form);
+    model.addAttribute("editlist",compRepository.findByComp_id(comp_id));
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     return "comp/EditComp";
   }
@@ -96,7 +97,7 @@ public class CompController {
   return editForm(comp_id, form, null);
   }
   compService.update(form,game_id);
-  return "redirect:/comp/Overview";
+  return "redirect:/comp/OverViewForHost";
   }
 
 

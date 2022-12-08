@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/comp").permitAll()
                 .antMatchers("/home/Home").permitAll()
                 .antMatchers("/comp/Overview").permitAll()
+                .antMatchers("/comp/OverviewForHost").permitAll()
                 .antMatchers("/comp/CreateComp").permitAll()
                 .antMatchers("/comp/EditComp").permitAll()
                 .antMatchers("/comp/create").permitAll()

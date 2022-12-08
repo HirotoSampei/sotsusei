@@ -10,4 +10,6 @@ public interface GameRepository extends JpaRepository<GameBean, Integer>{
 	@Query("SELECT X FROM GameBean X ORDER BY X.game_id")
 	  List<GameBean> findAllOrderByGame_id();
 	  
+	@Query("SELECT X FROM GameBean X WHERE X.game_id = ?1 ORDER BY X.game_id")
+	GameBean findByGame_id(Integer game_id);
 }

@@ -94,6 +94,24 @@ body{
     width: 50%;
    /*background-color: red;*/
   }
+  .input-nickname{
+    margin-left: 30px;
+    height: 30px;
+    
+  }
+  .agree-container{
+    display: flex;
+  }
+  .bottom-container{
+    display: flex;
+    align-items: center;
+  }
+  .bottom-container2{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 100px;
+  }
   .chat{
     background-color: rgb(40,40,40);
     color: white;
@@ -178,6 +196,17 @@ body{
     border-radius: 30px 30px 30px 30px;
     cursor: pointer;
   }
+  .report-button{
+    background-color: white;
+    font-size: 20px;
+    color: rgb(10, 108, 255);
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    border-radius: 30px 30px 30px 30px;
+    cursor: pointer;
+  }
   .button-item:active{
     background-color: gray;
   }
@@ -208,6 +237,10 @@ body{
     padding-right: 30px;
     padding-bottom: 15px;
     border-radius: 30px 30px 30px 30px;
+  }
+  .deadline-report-container{
+    display: flex;
+    justify-content: space-between;
   }
   #pop-up {
     display: none;
