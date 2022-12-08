@@ -50,10 +50,18 @@ public class UserService {
       return formList;
     }
 
-    public UserForm update(UserForm userForm) {
+    public UserForm update(UserForm userForm, String[] game_id) {
       UserBean userBean = new UserBean();
+      GameplayBean gameplayBean = new GameplayBean();
       BeanUtils.copyProperties(userForm, userBean);
       userRepository.save(userBean);
+      
+      UserBean user = userRepository.findByMail_address(userForm.getMail_address());
+        for (int i = 0; i < game_id.length; i++){
+          gameplayBean.setUser_id(user.getUser_id());
+          gameplayBean.setGame_id(Integer.parseInt(game_id[i]));
+          gameplayRepository.save(gameplayBean);
+        }
       return userForm;
     }
     public void delete(Integer id) { userRepository.deleteById(id); }
