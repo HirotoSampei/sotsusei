@@ -1,56 +1,55 @@
-body{
-    background: linear-gradient(rgb(0, 0, 0),45%, rgb(255, 0, 0));
-    overflow:hidden;
-    min-height:100vh;/*画面サイズのやつ*/  
+body {
+    background: linear-gradient(rgb(0, 0, 0), 45%, rgb(255, 0, 0));
+    background-size: cover;
+    overflow: hidden;
+    background-attachment: fixed;
+    height: 100%;
+    width: 100%;
 }
 
 input[type="search"] {
-    width: 450px; /*検索バーの横幅*/
-    padding: 25px; /*検索バーの縦幅*/
-    font-size: 30px; /*文字サイズ*/
-    border: solid 2px #cccccc; 
-    border-radius: 5px; 
-    margin:  0 auto;
+    width: 450px;
+    /*検索バーの横幅*/
+    padding: 25px;
+    /*検索バーの縦幅*/
+    font-size: 30px;
+    /*文字サイズ*/
+    border: solid 2px #cccccc;
+    border-radius: 5px;
+}
+
+.search_button {
+    padding: 10px;
+    font-size: 28px;
+    border: solid 2px #cccccc;
+    border-radius: 5px;
+}
+
+.buck_button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 150px;
+    padding: 10px;
+    font-size: 30px;
+    border: solid 2px #cccccc;
+    border-radius: 5px;
+}
+
+.search_container {
+    
     display: flex;
     justify-content: center;
 }
-.sukima_top{
-    padding-top: 110px;
-    padding-right: 20px;
-    margin:  5px;
-}
 
-.editor {
-  box-sizing: border-box;
-  height: 100%;
-  padding-top: 215px;
-}
-.search_button{
-    margin-left: 50%;
-    position: fixed; 
-    top: 1; 
-    left: 3.7%;
-    width: 155px;
-    padding: 10px;
-    font-size: 28px; 
-    border: solid 2px #cccccc; 
-    border-radius: 5px;
-}
-#name{
-    text-align: center;
-    font-size: 25px;
+.user {
+    font-size: 30px;
     color: white;
+
+    
 }
-.buck_button{
-    position: fixed; 
-    bottom: 0; 
-    left:0;
-    width: 150px;
-    padding: 10px;
-    font-size: 30px; 
-    border: solid 2px #cccccc; 
-    border-radius: 5px;   
-}
-.sukima_ume{
-    padding-top: 350px;
+.container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20%;
 }
