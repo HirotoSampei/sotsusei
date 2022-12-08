@@ -28,7 +28,10 @@
   <tr th:each="us : ${profile}">
     <p><div class="display-item" th:text="${'ユーザー名    : ' + us.user_name}"></div></p>
     <p><div class="display-item" th:text="${'メールアドレス    : ' + us.mail_address}"></div></p>
-    <p>プレイするゲーム   :<div th:each="gm : ${game_List}" class="display-item" th:text="${gm.game_name + '(' + gm.hard + ')'}"></div></p>
+    <div class="play-game-container">
+      <div class="display-item">プレイするゲーム   :</div>
+      <div th:each="gm : ${game_List}" class="display-item" th:text="${gm.game_name + '(' + gm.hard + ')'}"></div>
+    </div>
     <div id="description-container">
       <div class="display-item-ta" th:text="${'自己紹介    :' + us.note}" cols="30" rows="5" style="resize: none"></div>
     </div>

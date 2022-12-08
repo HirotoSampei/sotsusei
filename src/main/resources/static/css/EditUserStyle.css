@@ -48,6 +48,13 @@ body{
     font-size: 30px;
     color: white;
   }
+  #play-game-container{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: row;
+    width:50%;
+  }
   #username{
     color: white;
   }
