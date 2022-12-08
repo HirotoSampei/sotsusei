@@ -1,32 +1,28 @@
-/*.content_top {
-  width: 400px;
-  height: 100px;
-  background-color: #00ffff;
-}*/
+body {
+  background: linear-gradient(rgb(0, 0, 0), 45%, rgb(255, 0, 0));
+  background-size: cover;
+  overflow: hidden;
+  background-attachment: fixed;
+  height: 100%;
+  width: 100%;
+}
 
-.inner_top {
-  padding-top: 250px;
+.button_design {
+  appearance: none;
+  border: 10;
+  border-radius: 10px;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 8px 16px;
+  font-size: 60px;
+}
+.top-container{
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap:2%;
 }
-.inner_bottom {
-    padding-top: 250px;
-  
-    display: flex;
-    justify-content: space-evenly;
-  }
-.button_design{
-    appearance: none;
-    border: 10;
-    border-radius: 10px;
-    background: #ffffff;
-    color: rgb(0, 0, 0);
-    padding: 8px 16px;
-    font-size: 60px;
-}
-
-body{
-    background: linear-gradient(rgb(248, 2, 2),60%, rgb(0, 0, 0));/*相談*/
-    overflow:hidden;
-    min-height:100vh;/*画面サイズのやつ*/ 
+.bottom-container{
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
 }
