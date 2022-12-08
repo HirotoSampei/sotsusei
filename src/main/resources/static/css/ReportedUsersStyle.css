@@ -1,98 +1,113 @@
 body {
-    margin: 0px;
-    background-color: black;
-  }
-  
-  .header-container {
+
+    background: linear-gradient(rgb(0, 0, 0), 45%, rgb(255, 0, 0));
+
+    background-size: cover;
+
+    overflow: hidden;
+
+    background-attachment: fixed;
+
+    height: 100%;
+
+    width: 100%;
+
+}
+
+.header-container {
     background: linear-gradient(red, 70%, black);
     margin: 0px;
     padding: 20px;
     display: flex;
     justify-content: space-between;
-  }
-  
-  .left-container {
+}
+
+.left-container {
     display: flex;
     /*background-color: greenyellow;*/
     margin: 0px;
     justify-content: flex-start;
-  }
-  
-  .right-container {
+}
+
+.right-container {
     display: flex;
     /*background-color: greenyellow;*/
     margin: 0px;
     justify-content: flex-end;
-  
-  }
-  .link{
+
+}
+
+.link {
     text-decoration: none;
-  }
-  
-  .header-item {
+}
+
+.header-item {
     /*background: #0bd;*/
     color: #fff;
     margin: 10px;
     padding: 10px;
-  }
-  
-  #search_button {
+}
+
+#search_button {
     cursor: pointer;
-  }
-  
-  .main-container {
+}
+
+.main-container {
     display: flex;
-  
-  }
-  
-  .left-main-container {
+
+}
+
+.left-main-container {
     width: 20%;
     display: flex;
     flex-direction: column-reverse;
     position: fix
-  }
-  
-  .center-main-container {
+}
+
+.center-main-container {
     width: 60%
-  }
-  
-  .right-main-container {
+}
+
+.right-main-container {
     width: 20%;
-  
-  }
-  
-  
-  .title {
+
+}
+
+
+.title {
     font-size: 30px;
     color: white;
-  }
-  
-  .people {
+}
+
+.people {
     font-size: 20px;
     color: white;
     font-weight: bold;
-  }
-  
-  .left-main-item {
+}
+
+.left-main-item {
     background-color: white;
     margin: 10px;
     font-size: 20px;
     font-weight: bolder;
-    padding: 40px;
+    padding-top: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-bottom: 30px;
     position: fixed;
     bottom: 0;
     right: 1;
     border-radius: 50px 50px 50px 50px;
     cursor: pointer;
     user-select: none;
-  }
-  
-  .nickname {
+}
+
+.nickname {
     color: white;
     font-weight: bold;
-  }
-  
-  .right-main-item {
+}
+
+.right-main-item {
     background-color: rgb(84, 84, 84);
     margin: 10px;
     padding-top: 10px;
@@ -102,29 +117,30 @@ body {
     border-radius: 15px 15px 15px 15px;
     border: 3px ridge white;
     overflow: auto;
-  }
-  
-  .left-main-item:active {
+}
+
+.left-main-item:active {
     background-color: gray;
-  }
-  
-  .game-title {
+}
+
+.game-title {
     color: white;
-  }
-  
-  .people-logo {
+}
+
+.people-logo {
     height: 30px;
     margin-bottom: 5px;
     margin-left: 10px;
     margin-right: 10px;
-  }
-  .text{
+}
+
+.text {
     color: white;
     font-size: 20px;
-  }
-  
-  .center-main-item {
-  
+}
+
+.center-main-item {
+
     background-color: rgb(84, 84, 84);
     margin: 10px;
     padding-top: 10px;
@@ -134,47 +150,47 @@ body {
     border-radius: 15px 15px 15px 15px;
     border: 3px ridge white;
     overflow: auto;
-  }
-  
-  .heading {
-  
+}
+
+.heading {
+
     background-color: rgb(84, 84, 84);
     margin: 10px;
     padding: 10px;
     border: 10px outset rgb(196, 196, 196);
     border-radius: 15px 15px 15px 15px;
-  }
-  
-  .heading p {
+}
+
+.heading p {
     color: white;
     font-size: 30px;
     margin: 0px;
     font-weight: bold;
-  }
-  
-  .title-people-container {
+}
+
+.title-people-container {
     display: flex;
     /*background-color: rgb(16, 61, 61);*/
     align-items: center;
-  
-  }
-  
-  .schedule {
+
+}
+
+.schedule {
     padding-left: 30px;
     font-size: 25px;
     color: white;
-  }
-  
-  main p {
+}
+
+main p {
     font-size: 30px;
     color: white;
-  }
-  
-  
-  
-  #temp-footer {
+}
+
+
+
+#temp-footer {
     display: flex;
     background: linear-gradient(black, 20%, red);
     justify-content: center;
-  
-  }
+
+}
