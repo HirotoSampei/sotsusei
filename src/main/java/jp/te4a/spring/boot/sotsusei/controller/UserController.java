@@ -51,8 +51,10 @@ public class UserController {
     }
     @GetMapping
     String list(Model model) { //新規登録画面に飛ぶ際の動き
-      String base64Data = imageService.getlogoImage();
-    	model.addAttribute("cat_logo_image","data:image/png;base64,"+base64Data);
+      String cat_logoData = imageService.getlogoImage();
+      String cat_iconData = imageService.geticonImage();
+      model.addAttribute("cat_icon_image","data:image/png;base64,"+cat_iconData);
+    	model.addAttribute("cat_logo_image","data:image/png;base64,"+cat_logoData);
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "users/CreateUser";
     }
@@ -73,8 +75,10 @@ public class UserController {
         for (int i = 0; i < gameplay_idList.size(); i++){
             game_List.add(gameRepository.getById(gameplay_idList.get(i).getGame_id()));
         }
-      String base64Data = imageService.getlogoImage();
-    	model.addAttribute("cat_logo_image","data:image/png;base64,"+base64Data);
+      String cat_logoData = imageService.getlogoImage();
+      String cat_iconData = imageService.geticonImage();
+      model.addAttribute("cat_icon_image","data:image/png;base64,"+cat_iconData);
+    	model.addAttribute("cat_logo_image","data:image/png;base64,"+cat_logoData);
       model.addAttribute("game_List",game_List);
       model.addAttribute("profile",userBean);
       return "users/Userprofile";
@@ -84,8 +88,10 @@ public class UserController {
       UserForm userForm = userService.findOne(user_id);
       UserBean userBean = userRepository.getById(user_id);
       BeanUtils.copyProperties(userForm,  form);
-      String base64Data = imageService.getlogoImage();
-    	model.addAttribute("cat_logo_image","data:image/png;base64,"+base64Data);
+      String cat_logoData = imageService.getlogoImage();
+      String cat_iconData = imageService.geticonImage();
+      model.addAttribute("cat_icon_image","data:image/png;base64,"+cat_iconData);
+    	model.addAttribute("cat_logo_image","data:image/png;base64,"+cat_logoData);
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       model.addAttribute("edit",userBean);
       return "users/Edituser2";
