@@ -19,4 +19,15 @@ public class ImageService {
 			return null;
 		}
     }
+
+	public String geticonImage(){
+        File fileImg = new File("src/main/resources/images/cat_icon.png");
+		try {
+			byte[] byteImg = Files.readAllBytes(fileImg.toPath());
+			String base64Data = Base64.getEncoder().encodeToString(byteImg);
+            return base64Data;
+		}catch(IOException e) {
+			return null;
+		}
+    }
 }
