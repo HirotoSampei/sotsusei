@@ -20,6 +20,7 @@ public class CompForm {
   @JoinColumn(name = "game_id", referencedColumnName = "game_id")
   private GameBean gameBean;
   private String description;
+  private String host_nickname;
   @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   private  LocalDateTime start_date;
   @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")

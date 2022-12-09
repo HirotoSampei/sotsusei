@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>大会概要 - 参加者</title>
-  <link rel="stylesheet" href="..\..\static\css\OverviewForParticipantsStyle.css" th:href="@{/css/OverviewStyle.css}">
+  <link rel="stylesheet" href="..\..\static\css\OverviewForParticipantsStyle.css" th:href="@{/css/OverviewForParticipantsStyle.css}">
 </head>
 
 <body>
@@ -30,35 +30,35 @@
     <div class="main-container">
       <div class="left-main-container">
         <table>
-          <tr th:each="ov : ${overview}">
+          <tr th:each="cp : ${comp}">
             <div class="title-people-container">
-              <div class="title" th:text="${ov.comp_name}">初心者歓迎！ほげほげ大会</div>
+              <div class="title" th:text="${cp.comp_name}">初心者歓迎！ほげほげ大会</div>
               <img src="..\..\images\people.png" class="people-logo">
-              <div class="people" th:text="${'2/' + ov.limit_of_participants}">20/50</div>
+              <div class="people" th:text="${'2/' + cp.limit_of_participants}">20/50</div>
             </div>
-            <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom
+            <div class="game-title" th:text="${'🎮【' + cp.gameBean.hard + '】' + cp.gameBean.game_name}">🎮【PC】Tom
               Clansy's Reinbow Six Siege</div>
               <div class="host-container">
-                <div class="people">主催者：</div>
-                <div class="people">hoge_host_user</div>
+                <div class="people" th:text="${'主催者：'+cp.host_nickname}">hoge_host_user</div>
               </div>
             <div class="schedule-container">
               <div class="date">開催日時：</div>
-              <div class="date" th:text="${ov.start_date + '~' + ov.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
+              <div class="date" th:text="${cp.start_date + '~' + cp.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
             </div>
             <div class="ov-participants-container">
               <div class="overview-container">
-                <div class="people">概要　　：</div>
-                <div class="overview" th:text="${ov.description}">
+                <div class="people">概要</div>
+                <div class="overview" th:text="${cp.description}">
                   ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される
                 </div>
               </div>
               <div class="participants-container">
-                <div class="people">参加者一覧：</div>
+                <div class="people">参加者一覧</div>
                 <div class="participants">
 
-                  <div>
-                    <label for="hoge_user-pop-up">hoge_user</label>
+                  <div th:each="cpart : ${comppart}">
+                    
+                    <label for="hoge_user-pop-up" th:text="${cpart.nickname}">hoge_user</label>
                     <input type="checkbox" id="hoge_user-pop-up">
                     <div class="overlay">
                       <div class="window">
@@ -72,34 +72,11 @@
                         </div>
                       </div>
                     </div>
+                  
                   </div>
-
-                  <div>
-                    <label for="hoge_user2-pop-up">hoge_user2</label>
-                    <input type="checkbox" id="hoge_user2-pop-up">
-                    <div class="overlay">
-                      <div class="window">
-                        <div class="user-name">hoge_user2</div>
-                        <div class="note">
-                          <div>hoge_user2の自己紹介</div>
-                        </div>
-                        <div class="button-container">
-                          <label class="button-item" for="hoge_user2-pop-up">戻る</label>
-                          <input type="button" class="button-item" value="報告">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
                 </div>
               </div>
-
             </div>
-
-
-
-
-
           </tr>
         </table>
       </div>
@@ -116,8 +93,8 @@
       </div>
     </div>
     <div class="button-container">
-      <input type="button" class="button-item" value="戻る">
-      <input type="button" class="button-item" value="参加キャンセル">
+      <input type="button" class="button-item" onclick="location.href='/comp'" value="ホーム画面へ">
+      <input type="button" class="button-item" onclick="location.href='/comp/cancel'"  value="参加キャンセル">
     </div>
   </main>
 
