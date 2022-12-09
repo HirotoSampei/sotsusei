@@ -37,20 +37,22 @@
         <p>■受付中の大会</p>
       </div>
       <table>
-        <a href="https://yahoo.co.jp" class="link">
           <tr th:each="cm : ${comp}">
-            <div class="center-main-item">
-              <div class="title-people-container">
-                <div class="title" th:text="${cm.comp_name}"></div>
-                <img src="..\..\images\people.png" class="people-logo">
-                <div class="people" th:text="${'2/' + cm.limit_of_participants}"></div>
+            <form th:action="@{/comp/Overview}" name="form "method="post">  
+              <div class="center-main-item linkbox">
+                <div class="title-people-container">
+                  <div class="title" th:text="${cm.comp_name}"></div>
+                  <img src="..\..\images\people.png" class="people-logo">
+                  <div class="people" th:text="${'2/' + cm.limit_of_participants}"></div>
+                </div>
+                <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
+                <div style="color: white;">日程：</div>
+                <div class="schedule" th:text="${cm.start_date + '~' + cm.end_date}"></div>
+                <input type="hidden" name="comp_id" th:value="${cm.comp_id}"/>
+                <button type="submit" title="comp_button"></button>
               </div>
-              <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
-              <div style="color: white;">日程：</div>
-              <div class="schedule" th:text="${cm.start_date + '~' + cm.end_date}"></div>
-            </div>
+            </form>      
           </tr>
-        </a>
       </table>
     </div>
     <div class="right-main-container">
