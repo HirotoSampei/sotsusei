@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>ユーザー作成</title>
-  <link rel="stylesheet" href="..\..\static\css\EditUserStyle.css" th:href="@{/css/EditUserStyle.css}">
+  <link rel="stylesheet" href="..\..\static\css\UserProfileStyle.css" th:href="@{/css/UserProfileStyle.css}">
 </head>
 <body>
 
@@ -29,9 +29,9 @@
     <p><div class="display-item" th:text="${'ユーザー名    : ' + us.user_name}"></div></p>
     <p><div class="display-item" th:text="${'メールアドレス    : ' + us.mail_address}"></div></p>
 
-    <div id class="play-game-container">
-      <div id="left-play-game-container"><div class="play-game-item">プレイするゲーム   :</div></div>
-      <div id="right-play-game-container"><div th:each="gm : ${game_List}" class="play-game-item" th:text="${gm.game_name + '(' + gm.hard + ')'}"></div></div>
+    <div class="play-game-container">
+      <div class="child left-play-game-container"><div class="play-game-item">プレイするゲーム   :</div></div>
+      <div class="child right-play-game-container"><div th:each="gm : ${game_List}" class="play-game-item" th:text="${gm.game_name + '(' + gm.hard + ')'}"></div></div>
     </div>
     <p></p>
 
