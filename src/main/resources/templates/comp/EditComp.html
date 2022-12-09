@@ -39,6 +39,7 @@
               <p>概要　  :</p>
               <textarea class="input-item-ta" name="description" cols="30" rows="5" style="resize: none">[[${el.description}]]</textarea>
             </div>
+            <p>主催者名　：<input type="text" class="input-item" name="host_nickname" th:value="${el.host_nickname}"></p>
             <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" th:value="${el.start_date}" ></p>
             <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:value="${el.end_date}" ></p>
             <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:value="${el.limit_of_participants}" ></p>
