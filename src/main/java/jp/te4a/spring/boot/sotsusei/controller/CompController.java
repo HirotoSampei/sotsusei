@@ -25,6 +25,7 @@ import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
+import jp.te4a.spring.boot.sotsusei.service.ImageService;
 
 @Controller
 @RequestMapping("comp")
@@ -42,6 +43,8 @@ public class CompController {
 
   @Autowired
   CompPartRepository compPartRepository;
+  @Autowired
+  ImageService imageService;
 
   @ModelAttribute 
   CompForm setUpForm() {
@@ -49,6 +52,8 @@ public class CompController {
   }
   @GetMapping //ホーム画面
   String display_list(Model model) {
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
     model.addAttribute("comp", compService.findAll());
     return "home/Home";
   }
@@ -59,13 +64,19 @@ public class CompController {
     UserBean userBean = userRepository.findByMail_address(user_pass);
     int login_user_id = userBean.getUser_id();
     if(compRepository.findAllOrderByComp_id().size() == 0){
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "comp/CreateComp";
     }
     else if(compRepository.findByHost_user_id(login_user_id).size() != 0){
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
       return "redirect:/comp/OverViewForHost";
     }
     else{
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "comp/CreateComp";
     }
@@ -76,6 +87,8 @@ public class CompController {
      
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
     model.addAttribute("overview", compRepository.findByHost_user_id(userBean.getUser_id()));
     return "comp/OverViewForHost";
   }
@@ -84,11 +97,15 @@ public class CompController {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
       model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
       model.addAttribute("comp", compRepository.findByComp_id(comp_id));
       return "comp/OverviewForParticipants";
     }
     else{
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
       model.addAttribute("participant_overview", compRepository.findByComp_id(comp_id));
     return "comp/Overview";
     } 
@@ -113,6 +130,8 @@ public class CompController {
     compPartBean.setUser_id(userBean.getUser_id());
     compPartBean.setNickname(nickname);
     compPartRepository.save(compPartBean);
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
     model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
     model.addAttribute("comp", compRepository.findByComp_id(comp_id));
     //model.addAttribute("user", userRepository.findByUser_id(compPartRepository.findByComp_id(comp_id).getUser_id()));
@@ -123,6 +142,8 @@ public class CompController {
   String editForm(@RequestParam Integer comp_id, CompForm form, Model model) {
     //CompForm compForm = compService.findOne(comp_id);
     //BeanUtils.copyProperties(compForm,  form);
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
     model.addAttribute("editlist",compRepository.findByComp_id(comp_id));
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     return "comp/EditComp";
