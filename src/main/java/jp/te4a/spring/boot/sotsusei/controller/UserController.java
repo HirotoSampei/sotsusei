@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
-import jp.te4a.spring.boot.sotsusei.bean.GameplayPrimaryKey;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.GameplayService;
+import jp.te4a.spring.boot.sotsusei.service.ImageService;
 import jp.te4a.spring.boot.sotsusei.service.UserService;
 
 @Controller
@@ -43,22 +43,28 @@ public class UserController {
     UserRepository userRepository;
     @Autowired
     GameplayRepository gameplayRepository;
+    @Autowired
+	  ImageService imageService;
     @ModelAttribute 
     UserForm setUpForm() {
         return new UserForm();
     }
     @GetMapping
-    String list(Model model) {
-        model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
-        return "users/CreateUser";
+    String list(Model model) { //新規登録画面に飛ぶ際の動き
+      String cat_logoData = imageService.getlogoImage();
+      String cat_iconData = imageService.geticonImage();
+      model.addAttribute("cat_icon_image","data:image/png;base64,"+cat_iconData);
+    	model.addAttribute("cat_logo_image","data:image/png;base64,"+cat_logoData);
+      model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+      return "users/CreateUser";
     }
     @PostMapping(path="create")
-        String create(@Validated UserForm form, BindingResult result, Model model, String[] game_id) {
-            if(result.hasErrors()) {
-                 return list(model);
-            }
-            userService.create(form, game_id);
-            return "redirect:/login";
+      String create(@Validated UserForm form, BindingResult result, Model model, String[] game_id) {
+        if(result.hasErrors()) {
+          return list(model);
+        }
+        userService.create(form, game_id);
+        return "redirect:/login";
     }
     @GetMapping(path = "profile") //プロフィール画面に飛ぶ際の動き
     String profile_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
@@ -69,6 +75,10 @@ public class UserController {
         for (int i = 0; i < gameplay_idList.size(); i++){
             game_List.add(gameRepository.getById(gameplay_idList.get(i).getGame_id()));
         }
+      String cat_logoData = imageService.getlogoImage();
+      String cat_iconData = imageService.geticonImage();
+      model.addAttribute("cat_icon_image","data:image/png;base64,"+cat_iconData);
+    	model.addAttribute("cat_logo_image","data:image/png;base64,"+cat_logoData);
       model.addAttribute("game_List",game_List);
       model.addAttribute("profile",userBean);
       return "users/Userprofile";
@@ -78,22 +88,25 @@ public class UserController {
       UserForm userForm = userService.findOne(user_id);
       UserBean userBean = userRepository.getById(user_id);
       BeanUtils.copyProperties(userForm,  form);
+      String cat_logoData = imageService.getlogoImage();
+      String cat_iconData = imageService.geticonImage();
+      model.addAttribute("cat_icon_image","data:image/png;base64,"+cat_iconData);
+    	model.addAttribute("cat_logo_image","data:image/png;base64,"+cat_logoData);
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       model.addAttribute("edit",userBean);
       return "users/Edituser2";
     }
     @PostMapping(path = "edit") //編集した内容を登録する時の動き
     String edit(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ @Validated UserForm form, BindingResult result, String[] game_id) {
-    if(result.hasErrors()) {
-    return editForm(user_id,/*game_List,*/ form, Model);
-    }
-    UserBean userBean = userRepository.getById(user_id);
-    form.setPassword(userBean.getPassword());
-    form.setMail_address(userBean.getMail_address());
-    /*GameplayPrimaryKey id = gameplayRepository.findAllByGameplayPrimaryKey(user_id);
-    gameplayService.delete(id);*/
-    userService.update(form, game_id);
-    return "redirect:/users/profile";
+      if(result.hasErrors()) {
+      return editForm(user_id,/*game_List,*/ form, Model);
+      }
+      UserBean userBean = userRepository.getById(user_id);
+      form.setPassword(userBean.getPassword());
+      form.setMail_address(userBean.getMail_address());
+      gameplayRepository.deleteByuser_id(user_id);
+      userService.update(form, game_id);
+      return "redirect:/users/profile";
     }
     @PostMapping(path = "delete") //削除
     String delete(@RequestParam Integer user_id) {
