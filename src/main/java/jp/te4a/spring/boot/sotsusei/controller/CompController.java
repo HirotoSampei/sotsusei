@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import antlr.collections.List;
 import ch.qos.logback.core.joran.conditional.ElseAction;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
+import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
@@ -37,6 +39,9 @@ public class CompController {
 
   @Autowired
   GameRepository gameRepository;
+
+  @Autowired
+  CompPartRepository compPartRepository;
 
   @ModelAttribute 
   CompForm setUpForm() {
@@ -67,13 +72,28 @@ public class CompController {
     
   }
   @GetMapping("/OverViewForHost") //大会概要画面
-  String overview_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+  String overviewforhost(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
      
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     model.addAttribute("overview", compRepository.findByHost_user_id(userBean.getUser_id()));
     return "comp/OverViewForHost";
   }
+  @PostMapping(path="Overview")//参加前大会概要画面
+  String overview(Model model, @RequestParam Integer comp_id, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
+      model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
+      model.addAttribute("comp", compRepository.findByComp_id(comp_id));
+      return "comp/OverviewForParticipants";
+    }
+    else{
+      model.addAttribute("participant_overview", compRepository.findByComp_id(comp_id));
+    return "comp/Overview";
+    } 
+  }
+
   @PostMapping(path="create") //大会作成処理
   String create(@Validated CompForm form, BindingResult result , Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     if(result.hasErrors()) {
@@ -83,9 +103,25 @@ public class CompController {
     compService.create(form, game_id, user_pass);
     return "redirect:/comp/OverViewForHost";
   }
+
+  @PostMapping(path="entry")
+  String entry(@RequestParam Integer comp_id, Model model, String nickname, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    CompPartBean compPartBean = new CompPartBean();
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    compPartBean.setComp_id(comp_id);
+    compPartBean.setUser_id(userBean.getUser_id());
+    compPartBean.setNickname(nickname);
+    compPartRepository.save(compPartBean);
+    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
+    model.addAttribute("comp", compRepository.findByComp_id(comp_id));
+    //model.addAttribute("user", userRepository.findByUser_id(compPartRepository.findByComp_id(comp_id).getUser_id()));
+    return "comp/OverviewForParticipants";
+  }
+
   @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
   String editForm(@RequestParam Integer comp_id, CompForm form, Model model) {
-    CompForm compForm = compService.findOne(comp_id);
+    //CompForm compForm = compService.findOne(comp_id);
     //BeanUtils.copyProperties(compForm,  form);
     model.addAttribute("editlist",compRepository.findByComp_id(comp_id));
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
@@ -104,6 +140,15 @@ public class CompController {
   @PostMapping(path = "delete") //削除
   String delete(@RequestParam Integer comp_id) {
     compService.delete(comp_id);
+    return "redirect:/comp";
+  }
+
+  @GetMapping("/cancel")
+  String cancel(ModelMap modelMap, HttpServletRequest httpServletRequest){
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    compPartRepository.deleteByuser_id(userBean.getUser_id());
+
     return "redirect:/comp";
   }
   
