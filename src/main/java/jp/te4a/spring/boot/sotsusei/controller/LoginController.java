@@ -15,8 +15,8 @@ public class LoginController {
 	
 	@GetMapping(path="login")
 	String login(Model model) {
-		String base64Data = imageService.getlogoImage();
-    	model.addAttribute("cat_logo_image","data:image/png;base64,"+base64Data);
+		/*String base64Data = imageService.getlogoImage();
+    	model.addAttribute("cat_logo_image","data:image/png;base64,"+base64Data);*/
 		return "login";
 	}
 }
