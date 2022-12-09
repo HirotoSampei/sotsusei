@@ -18,7 +18,7 @@ body{
   .right-container{
     display: flex;
     /*background-color: greenyellow;*/
-    margin: 0px;
+    margin: 0 0 0 auto;
     justify-content: flex-end;
   }
   .header-item{
@@ -175,4 +175,7 @@ body{
     color: white;
 
 }
-
+.header-icon-item{
+  /*background: #0bd;*/
+  color: #fff;
+}
