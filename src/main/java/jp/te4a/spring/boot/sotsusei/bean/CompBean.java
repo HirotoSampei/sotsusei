@@ -26,6 +26,8 @@ public class CompBean {
   private GameBean gameBean;
   private String description;
   @Column(nullable = false)
+  private String host_nickname;
+  @Column(nullable = false)
   private LocalDateTime start_date;
   @Column(nullable = false)
   private LocalDateTime end_date;

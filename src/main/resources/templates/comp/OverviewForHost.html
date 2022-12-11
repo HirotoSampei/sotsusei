@@ -2,7 +2,7 @@
 <html lang=ja dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>大会概要</title>
+  <title>大会概要 - 主催者</title>
   <link rel="stylesheet" href="..\..\static\css\OverviewStyle.css" th:href="@{/css/OverviewStyle.css}">
 </head>
 <body>
@@ -10,14 +10,14 @@
 <header>
   <div class="header-container">
     <div class="left-container">
-      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
       <div class="header-item">
         <input type="search" name="search" placeholder="大会を検索">
         <input type="submit" name="submit" id="search_button" value="検索">
       </div>
     </div>
     <div class="right-container">
-      <div class="header-item">user icon</div>
+      <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px"></div>
       <div class="header-item">user name</div>
       </div>
   </div>
@@ -33,16 +33,21 @@
             <div class="title"th:text="${ov.comp_name}">初心者歓迎！ほげほげ大会</div>
             <img src="..\..\images\people.png" class="people-logo">
             <div class="people"th:text="${'2/' + ov.limit_of_participants}">20/50</div> 
-          </div>
+          </div>  
           <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom Clansy's Reinbow Six Siege</div>
-          <div class="date"th:text="${ov.start_date + '~' + ov.end_date}">開催日時：2023/3/10 13:00 ~ 2023/3/10 18:00</div>
+          <div class="host_name">主催者 　:</div>
+          <div class="schedule-container">
+            <div class="date">開催日時：</div>
+            <div class="date"th:text="${ov.start_date + '~' + ov.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
+          </div>
           <div class="date">概要　　：</div>
           <div class="overview"th:text="${ov.description}">ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される</div>
-          <div class="deadline"th:text="${ov.deadline}">締め切り：2023/3/5 23:59</div>
-            
-          
+          <div class="deadline-container">
+            <div class="deadline">締め切り：</div>
+            <div class="deadline"th:text="${ov.deadline}">2023/3/5 23:59</div>
+          </div>
         </tr>
-    </table>
+      </table>
     </div>
     <div class="right-main-container">
       <div class="chat">
@@ -77,27 +82,23 @@
       </div>
     </div>
   </div>
-  <div class="button-container">
-    <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
 
-    <label class="open" for="pop-up">キャンセル</label>
-    <input type="checkbox" id="pop-up">
-    <div class="overlay">
-      <div class="window">
-        <label class="close" for="pop-up">×</label>
-        
-        <div id="button-container">
-          <div id="input-container">
-            <div class="cancel">キャンセルしますか？</div>
-          </div>
-          <input type="button" class="button-item" value="はい">
-          <label type="button" class="button-item-close" for="pop-up">いいえ</label>
-        </div>
-      </div>
+  <table>
+    <tr th:each="ov : ${overview}"> 
+    <div class="button-container">
+      <input type="button" class="button-item" onclick="location.href='/comp'" value="ホーム画面">
+      <form th:action="@{/comp/edit}" method="post">
+        <input type="submit" class="button-item" name="form" value="編集" />
+        <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
+      </form>
+      <form th:action="@{/comp/delete}" method="post">
+        <input type="submit" class="button-item" name="form" value="削除" />
+        <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
+      </form>
+      <input type="button" class="button-item" onclick="location.href=''" value="参加者用ページ">
     </div>
-
-    <input type="button" class="button-item" onclick="alert('参加者用ページへ')" value="参加者用ページ">
-  </div>
+    </tr>
+  </table>
 </main>
 
 <footer>

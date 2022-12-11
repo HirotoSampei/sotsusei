@@ -18,7 +18,7 @@ body{
   .right-container{
     display: flex;
     /*background-color: greenyellow;*/
-    margin: 0 0 0 auto;
+    margin: 0px;
     justify-content: flex-end;
   }
   .header-item{
@@ -39,7 +39,7 @@ body{
     margin-bottom: 5%;
     padding-top: 2%;
     padding-left: 10%;
-    padding-right:10%;
+    padding-right: 10%;
     padding-bottom: 2%;
     border-radius: 15px 15px 15px 15px;
 
@@ -48,20 +48,22 @@ body{
     font-size: 30px;
     color: white;
   }
-  #play-game-container{
+
+  .play-game-container{
     display: flex;
-    align-items: flex-start;
+    flex-wrap: wrap;
     justify-content: space-between;
     flex-direction: row;
   }
-  #left-play-game-container{
-    display: flex;
-    margin: 0px;
+  .left-play-game-container{
+    width: 270px;
+    height: 45px;
+    float: left;
     justify-content: flex-start;
   }
-  #right-play-game-container{
-    display: flex;
-    margin: 0px;
+  .right-play-game-container{
+    flex-grow: 1;
+    float: right;
     flex-direction: column;
     justify-content: flex-start;
   }
@@ -69,7 +71,7 @@ body{
   .play-game-item{
     font-size: 30px;
     color: white;
-    width: 50%;
+
   }
 
   #username{
@@ -79,11 +81,6 @@ body{
     display: flex;
     flex-direction: column;
   }
-  .input-item{
-    height: 30px;
-    font-size: 90%;
-    
-  }
   .display-item{
     font-size: 30px;
     color: white;
@@ -92,10 +89,6 @@ body{
     width: 500px;
     font-size: 30px;
     color: white;
-  }
-  .input-item-ta{
-    width: 500px;
-    font-size: 27px;
   }
   #button-container{
     display: flex;
@@ -131,51 +124,8 @@ body{
     overflow-wrap: break-word;
   }
 
-  .ptext{
-    font-size: 30px;
-    color: white;
-  }
-
-  details {
-    font-size: 30px ;
-    width: 620px;
-  }
-  
-  details > summary {
-    padding-left: 20px;
-    
-    padding-bottom: 10px;
-    height: 30px;
-    width: 15em;
-    background-color: #ddd;
-    border: none;
-    box-shadow: 3px 3px 4px black;
-    cursor: pointer;
-  }
-  
-  details > p {
-    color: black;
-    background-color: #ddd;
-    padding: 2px 6px;
-    margin: 0;
-    box-shadow: 3px 3px 4px black;
-  }
-  
-  details[open] > summary {
-    background-color: #ccf;
-  }
-
-  input[type=checkbox]{
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-  }
-
-.user-info{
+  .user-info{
     color: white;
 
 }
-.header-icon-item{
-  /*background: #0bd;*/
-  color: #fff;
-}
+

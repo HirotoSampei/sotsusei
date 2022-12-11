@@ -10,39 +10,48 @@
 <header>
   <div class="header-container">
     <div class="left-container">
-      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
       <div class="header-item">
         <input type="search" name="search" placeholder="大会を検索">
         <input type="submit" name="submit" id="search_button" value="検索">
       </div>
     </div>
     <div class="right-container">
-      <div  class="header-item">user icon</div>
+      <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px"></div>
       <div class="header-item">user name</div>
       </div>
   </div>
 
 </header>
-
-<form th:action="@{/users/edit}" th:object="${userForm}" method="post">
   
-  <main>
-    <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:field="*{user_name}"></p>
-    <!--<p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>-->
-    <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:field="*{mail_address}"></p>
+<main>
+  <form th:action="@{/users/edit}" th:object="${userForm}" method="post">
+    <th th:each="us : ${edit}">
+    <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:value="${us.user_name}"></p>
+    <!--<p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>
+    <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:value="${us.mail_address}"></p>-->
+    <details>
+      <summary>プレイするゲーム(複数選択)</summary>
+        <div th:each="game:${gameList}">
+          <input type="checkbox" name="game_id" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}">
+        </div>
+    </details>
     <div id="description-container">
-        <p>自己紹介　　　：</p><textarea class="input-item-ta" name="note" th:field="*{note}" cols="30" rows="5" style="resize: none"></textarea>
+        <p>自己紹介　　　：</p><textarea class="input-item-ta" name="note" th:text="${us.note}" cols="30" rows="5" style="resize: none"></textarea>
     </div>
     <div style="margin: 30px;"></div>
-    
     <div id="button-container">
       <input type="button" class="button-item" onclick="location.href='/users/profile'" value="戻る">
       <input type="submit" class="button-item" value="更新">
       <input type="hidden" name="user_id" th:value="${param.user_id[0]}"/>
-      <input type="hidden" name="password" th:value="${param.password[0]}"/>
     </div>
-  </main>
-</form>
+  </th>
+  </form>
+  <form th:action="@{/users/delete}" method="post">
+    <input type="submit" class="button-item" value="削除">
+    <input type="hidden" name="user_id" th:value="${param.user_id[0]}"/>
+  </form>
+</main>
 <footer>
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>

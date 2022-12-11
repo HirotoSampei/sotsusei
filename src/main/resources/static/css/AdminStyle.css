@@ -1,0 +1,28 @@
+body {
+  background: linear-gradient(rgb(0, 0, 0), 45%, rgb(255, 0, 0));
+  background-size: cover;
+  overflow: hidden;
+  background-attachment: fixed;
+  height: 100%;
+  width: 100%;
+}
+
+.button_design {
+  appearance: none;
+  border: 10;
+  border-radius: 10px;
+  background: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 8px 16px;
+  font-size: 60px;
+}
+.top-container{
+  display: flex;
+  justify-content: center;
+  gap:2%;
+}
+.bottom-container{
+  display: flex;
+  justify-content: center;
+  margin-top: 5%;
+}

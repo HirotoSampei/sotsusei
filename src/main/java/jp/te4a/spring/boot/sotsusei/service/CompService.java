@@ -17,7 +17,6 @@ import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
-import lombok.ToString;
 @Service
 public class CompService {
   @Autowired

@@ -3,49 +3,41 @@
 <head>
   <meta charset="utf-8">
   <title>ユーザー作成</title>
-  <link rel="stylesheet" href="..\..\static\css\EditUserStyle.css" th:href="@{/css/EditUserStyle.css}">
+  <link rel="stylesheet" href="..\..\static\css\UserProfileStyle.css" th:href="@{/css/UserProfileStyle.css}">
 </head>
 <body>
 
 <header>
   <div class="header-container">
     <div class="left-container">
-      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
       <div class="header-item">
         <input type="search" name="search" placeholder="大会を検索">
         <input type="submit" name="submit" id="search_button" value="検索">
       </div>
     </div>
     <div class="right-container">
-      <div class="header-item">user icon</div>
+      <img th:src="${cat_icon_image}" class="header-icon-item" width="60px" height="60px"></div>
       <div class="header-item">user name</div>
       </div>
   </div>
 
 </header>
 
-<table>
-<tr th:each="us : ${profile}">
-  <main>
+<main>
+  <tr th:each="us : ${profile}">
     <p><div class="display-item" th:text="${'ユーザー名    : ' + us.user_name}"></div></p>
     <p><div class="display-item" th:text="${'メールアドレス    : ' + us.mail_address}"></div></p>
-    
 
-     
-    <!--<details>
-      
-      <summary>プレイするゲーム(複数選択可)</summary>
-      <p><label><input type="checkbox" name="riyu" value="1">Tom Clancy's Rainbow Six Siege【PS4】</label></p>視覚的に選びやすくする
-      <p><label><input type="checkbox" name="riyu" value="1">Tom Clancy's Rainbow Six Siege【PC】</label></p>
-      <p><label><input type="checkbox" name="riyu" value="1">Keep Talking and Nobody explodes【PC】</label></p>
-    </details>
-    </label>-->
+    <div class="play-game-container">
+      <div class="child left-play-game-container"><div class="play-game-item">プレイするゲーム   :</div></div>
+      <div class="child right-play-game-container"><div th:each="gm : ${game_List}" class="play-game-item" th:text="${gm.game_name + '(' + gm.hard + ')'}"></div></div>
+    </div>
+    <p></p>
 
     <div id="description-container">
-      <p>自己紹介　   ：</p><div class="display-item-ta" th:text="${us.note}" cols="30" rows="5" style="resize: none"></div>
+      <div class="display-item-ta" th:text="${'自己紹介    : ' + us.note}" cols="30" rows="5" style="resize: none"></div>
     </div>
-     
-
     <div style="margin: 30px;"></div>
     
     <div id="button-container">
@@ -54,11 +46,11 @@
       <form th:action="@{/users/edit}" method="post">
         <input type="submit" class="button-item" name="form" value="編集" />
         <input type="hidden" name="user_id" th:value="${us.user_id}"/>
-        <input type="hidden" name="password" th:value="${us.password}"/>
+        <!--<input type="hidden" name="password" th:value="${game_List}"/>-->
       </form>
     </div>
-  </main>
-</form>
+  </tr>
+</main>
 <footer>
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>
