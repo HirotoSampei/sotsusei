@@ -23,10 +23,9 @@
   </div>
 
 </header>
-
-<form th:action="@{/users/edit}" th:object="${userForm}" method="post">
   
-  <main>
+<main>
+  <form th:action="@{/users/edit}" th:object="${userForm}" method="post">
     <th th:each="us : ${edit}">
     <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:value="${us.user_name}"></p>
     <!--<p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>
@@ -41,14 +40,18 @@
         <p>自己紹介　　　：</p><textarea class="input-item-ta" name="note" th:text="${us.note}" cols="30" rows="5" style="resize: none"></textarea>
     </div>
     <div style="margin: 30px;"></div>
-    </th>
     <div id="button-container">
       <input type="button" class="button-item" onclick="location.href='/users/profile'" value="戻る">
       <input type="submit" class="button-item" value="更新">
       <input type="hidden" name="user_id" th:value="${param.user_id[0]}"/>
     </div>
-  </main>
-</form>
+  </th>
+  </form>
+  <form th:action="@{/users/delete}" method="post">
+    <input type="submit" class="button-item" value="削除">
+    <input type="hidden" name="user_id" th:value="${param.user_id[0]}"/>
+  </form>
+</main>
 <footer>
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>
