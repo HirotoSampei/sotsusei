@@ -22,6 +22,7 @@ import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
+import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
@@ -43,6 +44,8 @@ public class UserController {
     UserRepository userRepository;
     @Autowired
     GameplayRepository gameplayRepository;
+    @Autowired
+    CompPartRepository compPartRepository;
     @Autowired
 	  ImageService imageService;
     @ModelAttribute 
@@ -105,6 +108,8 @@ public class UserController {
     @PostMapping(path = "delete") //削除
     String delete(@RequestParam Integer user_id) {
       userService.delete(user_id);
-      return "redirect:/comp";
+      gameplayRepository.deleteByuser_id(user_id);
+      compPartRepository.deleteByuser_id(user_id);
+      return "redirect:/login";
     }
 }
