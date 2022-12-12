@@ -9,11 +9,10 @@
 
     <table>
       検索結果：
-        <tr th:each="cm : ${compList}"> 
-          <td th:text="${cm.comp_id}"></td>
-          <td th:text="${cm.comp_name}"></td>
-          <!--<td th:text="${cm.game_name}"></td>-->
-          <td th:text="${cm.host_user_id}"></td>
+        <tr th:each="ud : ${userDetail}"> 
+          <td th:text="${ud.user_id}"></td>
+          <td th:text="${ud.user_name}"></td>
+          <!--ユーザー情報全表示する-->
         </tr>
     </table>
   </body>

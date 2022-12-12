@@ -80,4 +80,15 @@ public class AdminController {
     model.addAttribute("compList", compSearchRepository.findByGame_idLike(game_id));
     return "admin/comp-search-sample";
   }
+  @PostMapping(path="searchcomp-un", params = "form")
+  String comp_search_ss(@RequestParam String username_ss, Model model){
+    int user_id_ss=userRepository.findByUser_name(username_ss);
+    model.addAttribute("compList", compSearchRepository.findByUser_idLike(user_id_ss));
+    return "admin/comp-search-sample";
+  }
+  @PostMapping(path="userdetail")
+  String user_detail(@RequestParam Integer user_id, Model model){
+    model.addAttribute("userDetail", userSearchRepository.findByUser_idLike(user_id));
+    return "admin/userdetail-sample";
+  }
 }

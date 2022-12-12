@@ -25,7 +25,7 @@ public class CompsearchBean {
   private Integer comp_id;
   private String comp_name;
   private Integer host_user_id;
-  private String game_name;
+  //private Integer game_id;//
   /*private String description;
   private LocalDateTime start_date;
   private LocalDateTime end_date;
