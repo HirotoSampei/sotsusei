@@ -70,28 +70,10 @@ public class UserService {
     BeanUtils.copyProperties(userBean, userForm);
     return userForm;
   }
-    public List<UserForm> findAll() {
-      List<UserBean> beanList = userRepository.findAll();
-      List<UserForm> formList = new ArrayList<UserForm>();
-      for(UserBean userBean: beanList) {
-        UserForm userForm = new UserForm();
-        BeanUtils.copyProperties(userBean, userForm);
-        formList.add(userForm);
-      }
-      return formList;
-    }
     public UserForm update(UserForm userForm) {
       UserBean userBean = new UserBean();
       BeanUtils.copyProperties(userForm, userBean);
       userRepository.save(userBean);
       return userForm;
-    }
-    public void delete(Integer id) { userRepository.deleteById(id); }
-    public UserForm findOne(Integer id) {
-      Optional<UserBean> userBean = userRepository.findById(id);
-      UserForm userForm = new UserForm();
-      BeanUtils.copyProperties(userBean, userForm);
-      return userForm;
-      }
-    
+    }  
 }

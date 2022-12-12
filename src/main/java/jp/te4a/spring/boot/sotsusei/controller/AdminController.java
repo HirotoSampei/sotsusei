@@ -24,6 +24,8 @@ import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
+import jp.te4a.spring.boot.sotsusei.repository.UserSearchRepository;
+import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
 import jp.te4a.spring.boot.sotsusei.service.UserService;
 import jp.te4a.spring.boot.sotsusei.service.AdminService;
@@ -43,7 +45,13 @@ public class AdminController {
   CompRepository compRepository;
 
   @Autowired
+  CompSearchRepository compSearchRepository;
+
+  @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  UserSearchRepository userSearchRepository;
 
   @Autowired
   GameRepository gameRepository;
@@ -59,7 +67,7 @@ public class AdminController {
   }
   @PostMapping(path="searchuser", params = "form")
   String user_search(@RequestParam String username_searching, Model model){
-    model.addAttribute("userList", adminService.findByUser_name(username_searching));
+    model.addAttribute("userList", userSearchRepository.findByUser_nameLike(username_searching));
     return "admin/username-search-sample";
   }
   @GetMapping("/complist") //大会作成画面
@@ -69,7 +77,7 @@ public class AdminController {
   }
   @PostMapping(path="searchcomp", params = "form")
   String comp_search(@RequestParam Integer game_id, Model model){
-    model.addAttribute("compList", adminService.findByGame_id(game_id));
-    return "admin/username-search-sample";
+    model.addAttribute("compList", compSearchRepository.findByGame_idLike(game_id));
+    return "admin/comp-search-sample";
   }
 }
