@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>大会一覧サンプル</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+  </head>
+  <body>
+
+    <table>
+      検索結果：
+        <tr th:each="cm : ${compList}"> 
+          <td th:text="${cm.comp_id}"></td>
+          <td th:text="${cm.comp_name}"></td>
+          <td th:text="${cm.game_name}"></td>
+          <td th:text="${cm.host_user_id}"></td>
+        </tr>
+    </table>
+  </body>
+</html>

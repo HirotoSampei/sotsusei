@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>大会一覧サンプル</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+  </head>
+  <body>
+
+    <table>
+      <form th:action="@{/admin/searchcomp}" method="post">
+        ゲーム名：
+        <select class="input-item" name="game_id">
+          <option value="0"></option>
+          <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
+        </select>
+        <input type="submit" name="form" value="送信">
+      </form>
+        <!--<tr th:each="cm : ${complist}"> 
+          <td th:text="${cm.comp_name}"></td>
+          <td th:text="${'【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></td>
+          <td th:text="${cm.start_date}"></td>
+          <td th:text="${cm.end_date}"></td>
+          <td th:text="${'2/' + cm.limit_of_participants}"></td>
+          <td th:text="${cm.deadline}"></td>
+        </tr>-->
+    </table>
+  </body>
+</html>

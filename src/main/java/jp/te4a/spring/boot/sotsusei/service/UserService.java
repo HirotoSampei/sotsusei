@@ -70,4 +70,10 @@ public class UserService {
     BeanUtils.copyProperties(userBean, userForm);
     return userForm;
   }
+    public UserForm update(UserForm userForm) {
+      UserBean userBean = new UserBean();
+      BeanUtils.copyProperties(userForm, userBean);
+      userRepository.save(userBean);
+      return userForm;
+    }  
 }
