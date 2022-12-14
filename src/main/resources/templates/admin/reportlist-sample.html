@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>通報一覧サンプル</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/UsersearchStyleSample.css" th:href="@{/css/UsersearchStyleSample.css}"/>
+  </head>
+  <body>
+    <main class="main-container">
+    <div class="center-main-container">
+    <p>通報情報一覧：</p>
+    <table> 
+      <tr th:each="rp : ${reportList}"> 
+        <form th:action="@{/admin/reportdetail}" name="form" method="post">
+          <div class="center-main-item linkbox">
+            <div th:text="${rp.compBean.comp_name}"></div>
+            <div th:text="${rp.reported_date}"></div>
+            <input type="hidden" name="report_id" th:value="${rp.report_id}"/>
+            <input type="hidden" name="reporter_user_id" th:value="${rp.reporter_user_id}"/>
+            <input type="hidden" name="suspicious_user_id" th:value="${rp.suspicious_user_id}"/>
+            <button type="submit" title="reportdetail_button"></button>
+          </div>
+        </form>
+      </tr>
+    </table>
+    </div>
+    </main>
+  </body>
+</html>

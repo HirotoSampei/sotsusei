@@ -24,6 +24,7 @@ import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
+import jp.te4a.spring.boot.sotsusei.repository.ReportRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserSearchRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
@@ -43,6 +44,9 @@ public class AdminController {
 
   @Autowired
   CompRepository compRepository;
+
+  @Autowired
+  ReportRepository reportRepository;
 
   @Autowired
   CompSearchRepository compSearchRepository;
@@ -90,5 +94,22 @@ public class AdminController {
   String user_detail(@RequestParam Integer user_id, Model model){
     model.addAttribute("userDetail", userSearchRepository.findByUser_idLike(user_id));
     return "admin/userdetail-sample";
+  }
+  @PostMapping(path="compdetail")
+  String comp_detail(@RequestParam Integer comp_id, Model model){
+    model.addAttribute("compDetail", compRepository.findByComp_id(comp_id));
+    return "admin/compdetail-sample";
+  }
+  @GetMapping("/reportlist") //大会作成画面
+  String create_reportlist(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+      model.addAttribute("reportList", reportRepository.findAllOrderByReport_id());
+      return "admin/reportlist-sample";
+  }
+  @PostMapping(path="reportdetail")
+  String report_detail(@RequestParam Integer report_id,Integer reporter_user_id,Integer suspicious_user_id, Model model){
+    model.addAttribute("reuserDetail", userSearchRepository.findByUser_idLike(reporter_user_id));
+    model.addAttribute("suuserDetail", userSearchRepository.findByUser_idLike(suspicious_user_id));
+    model.addAttribute("reportDetail", reportRepository.findByReport_id(report_id));
+    return "admin/reportdetail-sample";
   }
 }
