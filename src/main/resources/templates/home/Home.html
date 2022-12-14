@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="right-container">
-        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px"></div>
+        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
         <div class="header-item">user name</div>
       </div>
     </div>
@@ -46,7 +46,7 @@
                   <div class="people" th:text="${'2/' + cm.limit_of_participants}"></div>
                 </div>
                 <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
-                <div style="color: white;">日程：</div>
+                <div class="day-text">日程：</div>
                 <div class="schedule" th:text="${cm.start_date + '~' + cm.end_date}"></div>
                 <input type="hidden" name="comp_id" th:value="${cm.comp_id}"/>
                 <button type="submit" title="comp_button"></button>
