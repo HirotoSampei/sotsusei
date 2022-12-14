@@ -6,17 +6,17 @@
   <title>サイトタイトル</title>
   <meta name="description" content="ディスクリプションを入力">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="..\..\static\css\AdminStyle.css">
+  <link rel="stylesheet" href="../../static/css/AdminStyle.css">
 
 <body>
 
   <div class="top-container" style="margin-top: 20%; ">
-    <input type="button" style="width:30%" class="button_design" value="ユーザー情報">
-    <input type="button" style="width:30%" class="button_design" value="通報情報">
+    <input type="button" style="width:30%" class="button_design" onclick="location.href='admin/userlist'" value="ユーザー情報">
+    <input type="button" style="width:30%" class="button_design" onclick="location.href='admin/reportlist'" value="通報情報">
   </div>
 
   <div class="bottom-container">
-    <input type="button" style="width:30%" class="button_design" value="大会一覧">
+    <input type="button" style="width:30%" class="button_design" onclick="location.href='admin/complist'" value="大会一覧">
   </div>
 
   </div>

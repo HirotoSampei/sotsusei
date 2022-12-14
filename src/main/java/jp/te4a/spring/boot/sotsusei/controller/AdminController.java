@@ -62,7 +62,7 @@ public class AdminController {
 
   @GetMapping //大会作成画面
   String admin_home(Model model) {
-    return "admin/admin-home-sample";
+    return "admin/admin_home";
   }
   @GetMapping("/userlist") //ホーム画面
   String user_list(Model model) {
