@@ -26,29 +26,29 @@
 <form th:action="@{/comp/create}" th:object="${compForm}" method="post">
   <main>
     <table>
-    <div id="input-container">
-      <p>大会名　  :<input type="text" class="input-item" name="comp_name" th:field="*{comp_name}"></p> 
-      <p>ゲーム　  :
-        <select class="input-item" name="game_id">
-          <option value="0"></option>
-          <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
-        </select>
-      </p>  
-      <div id="description-container">
-        <p>概要　  :</p>
-        <textarea class="input-item-ta" name="description" cols="30" rows="5" style="resize: none"></textarea>
+      <div id="input-container">
+        <p>大会名　  :<input type="text" class="input-item" name="comp_name" th:field="*{comp_name}"></p> 
+        <p>ゲーム　  :
+          <select class="input-item" name="game_id">
+            <option value="0"></option>
+            <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
+          </select>
+        </p>
+        <div id="description-container">
+          <p>概要　  :</p>
+          <textarea class="input-item-ta" name="description" cols="30" rows="5" style="resize: none"></textarea>
+        </div>
+        <p>主催者名　：<input type="text" class="input-item" name="host_nickname" th:field="*{host_nickname}"></p>
+        <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" th:field="*{start_date}"></p>
+        <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:field="*{end_date}"></p>
+        <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:field="*{limit_of_participants}"></p>
+        <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:field="*{deadline}"></p>
       </div>
-      <p>主催者名　：<input type="text" class="input-item" name="host_nickname" th:field="*{host_nickname}"></p>
-      <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" th:field="*{start_date}"></p>
-      <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:field="*{end_date}"></p>
-      <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:field="*{limit_of_participants}"></p>
-      <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:field="*{deadline}"></p>
-    </div>
-    <div id="button-container">
-      <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
-      <input type="submit" class="button-item" value="作成">
-    </div>
-    <table>
+      <div id="button-container">
+        <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
+        <input type="submit" class="button-item" value="作成">
+      </div>
+    </table>
   </main>
 </form>
 <footer>
