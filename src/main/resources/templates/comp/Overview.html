@@ -90,11 +90,12 @@
       </div>
     </div>
     <div class="bottom-container">
-      <input type="button" class="button-item" onclick="location.href='/comp'" value="戻る">
+      
     </div>
     <tr th:each="po : ${participant_overview}">
       <form th:action="@{/comp/entry}" name="form "method="post"> 
         <div class="bottom-container2">
+          <input type="button" class="button-item" onclick="location.href='/comp'" value="戻る">
           <div class="agree-container">
             <div class="date">ルールを確認し、同意します。</div>
             <input type="checkbox" style="transform:scale(3);">
