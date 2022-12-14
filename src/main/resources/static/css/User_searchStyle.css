@@ -5,6 +5,7 @@ body {
     background-attachment: fixed;
     height: 100%;
     width: 100%;
+    min-width: 1200px;
 }
 
 input[type="search"] {

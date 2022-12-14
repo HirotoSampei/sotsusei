@@ -1,6 +1,7 @@
 body{
     margin: 0px;
     background-color: black;
+    min-width: 900px;
   }
   .header-container{
     background: linear-gradient(red,70%, black);

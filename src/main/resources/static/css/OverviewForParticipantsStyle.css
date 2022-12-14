@@ -1,6 +1,7 @@
 body {
   margin: 0px;
   background-color: black;
+  min-width: 1200px;
 }
 
 .header-container {
