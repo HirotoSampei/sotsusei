@@ -109,7 +109,7 @@ body{
   .bottom-container2{
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 100px;
   }
   .chat{
