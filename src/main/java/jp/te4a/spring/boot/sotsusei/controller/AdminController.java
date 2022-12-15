@@ -66,17 +66,17 @@ public class AdminController {
 
   @GetMapping //大会作成画面
   String admin_home(Model model) {
-    return "admin/admin_home";
+    return "admin/AdminHome";
   }
   @GetMapping("/userlist") //ホーム画面
   String user_list(Model model) {
     model.addAttribute("userList", userService.findAll());
-    return "admin/user_search";
+    return "admin/UserSearch";
   }
   @PostMapping(path="searchuser", params = "form")
   String user_search(@RequestParam String username_searching, Model model){
     model.addAttribute("userList", userSearchRepository.findByUser_nameLike(username_searching));
-    return "admin/username-search-sample";
+    return "admin/UsernameSearch-sample";
   }
   @GetMapping("/complist") //大会作成画面
   String create_complist(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
@@ -86,13 +86,13 @@ public class AdminController {
   @PostMapping(path="searchcomp", params = "form")
   String comp_search(@RequestParam Integer game_id, Model model){
     model.addAttribute("compList", compSearchRepository.findByGame_idLike(game_id));
-    return "admin/comp-search-sample";
+    return "admin/CompSearch-sample";
   }
   @PostMapping(path="searchcomp-un", params = "form")
   String comp_search_ss(@RequestParam String username_ss, Model model){
     int user_id_ss=userRepository.findByUser_name(username_ss);
     model.addAttribute("compList", compSearchRepository.findByUser_idLike(user_id_ss));
-    return "admin/comp-search-sample";
+    return "admin/CompSearch-sample";
   }
   @PostMapping(path="userdetail")
   String user_detail(@RequestParam Integer user_id, Model model){
