@@ -10,11 +10,14 @@ public interface CompRepository extends JpaRepository<CompBean, Integer>{
 	@Query("SELECT X FROM CompBean X ORDER BY X.comp_id")
 	  List<CompBean> findAllOrderByComp_id();
 
-	@Query("SELECT X FROM CompBean X ORDER BY X.comp_id")
-	  CompBean findall();
+	@Query("SELECT X.comp_id FROM CompBean X")
+	  List<Integer> findAllByComp_id();
 	  
 	@Query("SELECT X FROM CompBean X WHERE X.host_user_id = ?1 ORDER BY X.comp_id")
-	  List<CompBean> findByHost_user_id(Integer host_user_id);
+	  CompBean findByHost_user_id(Integer host_user_id);
+
+	@Query("SELECT X.comp_id FROM CompBean X WHERE X.host_user_id = ?1")
+	CompBean findByComp_idToHost_user_id(Integer host_user_id);
 	 
 	@Query("SELECT X FROM CompBean X WHERE X.comp_id = ?1") 
 	  List<CompBean> findByComp_id(Integer comp_id);
@@ -24,4 +27,5 @@ public interface CompRepository extends JpaRepository<CompBean, Integer>{
 
 	@Query("SELECT X FROM CompBean X WHERE X.comp_name LIKE %:comp_name% ORDER BY X.comp_id")
 	  List<CompBean> findByComp_nameLike(String comp_name);
+	  CompBean findByComp_idLike(Integer comp_id);
 }
