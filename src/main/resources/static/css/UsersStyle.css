@@ -12,7 +12,6 @@ body {
 
     width: 100%;
 
-    min-width: 1200px;
 }
 
 .header-container {
@@ -66,7 +65,8 @@ body {
 }
 
 .center-main-container {
-    width: 60%
+    width: 60%;
+    
 }
 
 .right-main-container {
@@ -147,7 +147,7 @@ body {
     padding-top: 10px;
     padding-bottom: 0px;
     padding-left: 30px;
-    height: 70px;
+    height: 40px;
     border-radius: 15px 15px 15px 15px;
     border: 3px ridge white;
     overflow: auto;

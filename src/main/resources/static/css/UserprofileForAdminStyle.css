@@ -28,6 +28,37 @@ body{
     margin: 10px;
     padding: 10px;
   }
+  #ban-button{
+    display: none;
+  }
+  .overlay {
+    display: none;
+  }
+  
+  .window {
+    width: 40%;
+    height: 80%;
+    background-color: #ffffff;
+    border-radius: 6px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  #ban-button:checked+.overlay {
+    display: block;
+    z-index: 9999;
+    background-color: #00000070;
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+  }
+  .really{
+    font-size: 40px;
+    text-align: center;
+  }
   #search_button{
     cursor: pointer;
   }
@@ -40,7 +71,7 @@ body{
     margin-bottom: 5%;
     padding-top: 2%;
     padding-left: 10%;
-    padding-right:10%;
+    padding-right: 10%;
     padding-bottom: 2%;
     border-radius: 15px 15px 15px 15px;
 
@@ -49,24 +80,55 @@ body{
     font-size: 30px;
     color: white;
   }
+
+  .play-game-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+  .left-play-game-container{
+    width: 270px;
+    height: 45px;
+    float: left;
+    justify-content: flex-start;
+  }
+  .right-play-game-container{
+    flex-grow: 1;
+    float: right;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .play-game-item{
+    font-size: 30px;
+    color: white;
+
+  }
+
+  #username{
+    color: white;
+  }
   #input-container{
     display: flex;
     flex-direction: column;
   }
-  .input-item{
-    height: 30px;
-    width: 30%;
-    font-size: 90%;
-    
+  .display-item{
+    font-size: 30px;
+    color: white;
   }
-  .input-item-ta{
+  .display-item-ta{
     width: 500px;
-    font-size: 27px;
-    width: 60%;
+    font-size: 30px;
+    color: white;
   }
   #button-container{
     display: flex;
     justify-content: space-between;
+  }
+  #button-container2{
+    display: flex;
+    justify-content: space-around;
   }
   .button-item{
     background-color: white;
@@ -78,6 +140,7 @@ body{
     padding-bottom: 15px;
     border-radius: 30px 30px 30px 30px;
     cursor: pointer;
+    border: solid 3px black;
   }
   .button-item:active{
     background-color: gray;
@@ -95,4 +158,11 @@ body{
     align-items: baseline;
     margin: 0px;
     padding: 0px;
+    overflow-wrap: break-word;
   }
+
+  .user-info{
+    color: white;
+
+}
+

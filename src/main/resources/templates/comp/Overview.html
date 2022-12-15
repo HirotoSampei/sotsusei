@@ -42,15 +42,16 @@
               <div class="date">開催日時：</div>
               <div class="date" th:text="${po.start_date + '~' + po.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
             </div>
-            <div class="date">概要　　：</div>
+            <div class="deadline-container">
+              <div class="date">締め切り：</div>
+              <div class="date" th:text="${po.deadline}">2023/3/5 23:59</div>
+            </div>
+            <div class="date">概要</div>
             <div class="overview" th:text="${po.description}">
               ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される
             </div>
             <div class="deadline-report-container">
-              <div class="deadline-container">
-                <div class="deadline">締め切り：</div>
-                <div class="deadline" th:text="${po.deadline}">2023/3/5 23:59</div>
-              </div>
+              <div></div>
               <input type="button" class="report-button" onclick="" value="大会を通報">
             </div>
           </tr>
@@ -90,11 +91,12 @@
       </div>
     </div>
     <div class="bottom-container">
-      <input type="button" class="button-item" onclick="location.href='/comp'" value="戻る">
+      
     </div>
     <tr th:each="po : ${participant_overview}">
       <form th:action="@{/comp/entry}" name="form "method="post"> 
         <div class="bottom-container2">
+          <input type="button" class="button-item" onclick="location.href='/comp'" value="戻る">
           <div class="agree-container">
             <div class="date">ルールを確認し、同意します。</div>
             <input type="checkbox" style="transform:scale(3);">
