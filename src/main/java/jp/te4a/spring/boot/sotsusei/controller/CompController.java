@@ -22,6 +22,7 @@ import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
+import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
@@ -43,6 +44,10 @@ public class CompController {
 
   @Autowired
   CompPartRepository compPartRepository;
+
+  @Autowired
+  CompSearchRepository compSearchRepository;
+
   @Autowired
   ImageService imageService;
 
@@ -54,6 +59,7 @@ public class CompController {
   String display_list(Model model) {
     imageService.getlogoImage(model);
     imageService.geticonImage(model);
+    model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     model.addAttribute("comp", compService.findAll());
     return "home/Home";
   }
@@ -173,4 +179,21 @@ public class CompController {
     return "redirect:/comp";
   }
   
+  @PostMapping(path="searchgamecomp", params = "form") //大会ゲーム名検索
+  String comp_gamesearch(@RequestParam Integer game_id, Model model){
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
+    model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+    model.addAttribute("comp", compRepository.findByGame_idLike(game_id));
+    return "home/Home";
+  }
+
+  @PostMapping(path="searchcomp", params = "form") //大会検索
+  String comp_namesearch(@RequestParam String comp_name, Model model){
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
+    model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+    model.addAttribute("comp", compRepository.findByComp_nameLike(comp_name));
+    return "home/Home";
+  }
 }
