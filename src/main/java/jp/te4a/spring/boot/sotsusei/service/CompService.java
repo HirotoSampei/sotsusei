@@ -53,11 +53,12 @@ public class CompService {
 	  return compForm;
 	}
 
-  public CompForm update(CompForm compForm, Integer game_id) {
+  public CompForm update(CompForm compForm, Integer game_id, Integer user_id) {
 	  CompBean compBean = new CompBean();
     GameBean gameBean = new GameBean();
     gameBean.setGame_id(game_id);
 	  BeanUtils.copyProperties(compForm, compBean);
+    compBean.setHost_user_id(user_id);
     compBean.setGameBean(gameBean);
 	  compRepository.save(compBean);
 	  return compForm;
@@ -119,4 +120,28 @@ public class CompService {
     return participatedForm;
 
    }
-	}
+
+   public List<ParticipatedForm> compgamesearch(Integer game_id){
+    List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
+    List<CompBean> compList = compRepository.findByGame_idLike(game_id);
+    for(CompBean compBean: compList) { 
+      ParticipatedForm participatedForm = new ParticipatedForm();
+      BeanUtils.copyProperties(compBean, participatedForm);
+      participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
+      formList.add(participatedForm); 
+    }
+    return formList;
+   }
+
+   public List<ParticipatedForm> compnamesearch(String comp_name){
+    List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
+    List<CompBean> compList = compRepository.findByComp_nameLike(comp_name);
+    for(CompBean compBean: compList) { 
+      ParticipatedForm participatedForm = new ParticipatedForm();
+      BeanUtils.copyProperties(compBean, participatedForm);
+      participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
+      formList.add(participatedForm); 
+    }
+    return formList;
+   }
+}
