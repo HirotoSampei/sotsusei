@@ -11,10 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
+import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
+import jp.te4a.spring.boot.sotsusei.form.ParticipatedForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
+import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 @Service
@@ -28,7 +31,10 @@ public class CompService {
   @Autowired
   GameRepository gameRepository;
 
-  public CompForm create(CompForm compForm, Integer game_id, String user_pass) {
+  @Autowired
+  CompPartRepository compPartRepository;
+
+  public CompForm create(CompForm compForm, Integer game_id, String user_pass, boolean radio_button) {
 	  CompBean compBean = new CompBean();
     GameBean gameBean = new GameBean();
     gameBean.setGame_id(game_id);
@@ -37,30 +43,41 @@ public class CompService {
     compBean.setHost_user_id(userBean.getUser_id());
     compBean.setGameBean(gameBean);
 	  compRepository.save(compBean);
+    if(radio_button){
+      CompPartBean compPartBean = new CompPartBean();
+      compPartBean.setComp_id(compBean.getComp_id());
+      compPartBean.setUser_id(userBean.getUser_id());
+      compPartBean.setNickname(compBean.getHost_nickname());
+      compPartRepository.save(compPartBean);
+    }
 	  return compForm;
 	}
 
-  public CompForm update(CompForm compForm, Integer game_id) {
+  public CompForm update(CompForm compForm, Integer game_id, Integer user_id) {
 	  CompBean compBean = new CompBean();
     GameBean gameBean = new GameBean();
     gameBean.setGame_id(game_id);
 	  BeanUtils.copyProperties(compForm, compBean);
+    compBean.setHost_user_id(user_id);
     compBean.setGameBean(gameBean);
 	  compRepository.save(compBean);
 	  return compForm;
 	}
-  public void delete(Integer id) { compRepository.deleteById(id); }
-  public List<CompForm> findAll() {
+  public void delete(Integer id) { 
+    compRepository.deleteById(id); 
+    compPartRepository.deleteBycomp_id(id);
+  }
+  public List<ParticipatedForm> findAll() {
     List<CompBean> beanList = compRepository.findAll();
-    List<CompForm> formList = new ArrayList<CompForm>();
-    for(CompBean compBean: beanList) {
-      CompForm compForm = new CompForm();
-      BeanUtils.copyProperties(compBean, compForm);
-      String strDate = compForm.getStart_date().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss"));
-      DateTimeFormatter dtf =  DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-      compForm.setStart_date(LocalDateTime.parse((strDate), dtf )); 
-      formList.add(compForm);
+    //List<Integer> comp_idList = compRepository.findAllByComp_id();
+    List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
+    for(CompBean compBean: beanList) { 
+      ParticipatedForm participatedForm = new ParticipatedForm();
+      BeanUtils.copyProperties(compBean, participatedForm);
+      participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
+      formList.add(participatedForm); 
     }
+    
     return formList;
     }
   public CompForm findOne(Integer id) {
@@ -69,4 +86,62 @@ public class CompService {
     BeanUtils.copyProperties(compBean, compForm);
     return compForm;
 	  }
-	}
+
+    public List<ParticipatedForm> participated(Integer user_id){
+      List<Integer> list = compPartRepository.findByComp_idToUser_id(user_id);
+      List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
+      for(Integer comp_id: list) { 
+        ParticipatedForm participatedForm = new ParticipatedForm();
+        CompBean participated = compRepository.findByComp_id(comp_id);
+        BeanUtils.copyProperties(participated, participatedForm);
+        participatedForm.setNickname(compPartRepository.findByNickname(comp_id, user_id)); 
+        formList.add(participatedForm);
+      }
+      return formList;
+    }
+
+   public List<ParticipatedForm> hostoverview(Integer user_id){
+    List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
+    ParticipatedForm participatedForm = new ParticipatedForm();
+    CompBean overview = compRepository.findByHost_user_id(user_id);
+    //CompBean ovcomp_id = compRepository.findByComp_idToHost_user_id(user_id);
+    BeanUtils.copyProperties(overview, participatedForm);
+    participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
+    formList.add(participatedForm); 
+    return formList;
+   }
+
+   public ParticipatedForm partoverview(Integer comp_id){
+    ParticipatedForm participatedForm = new ParticipatedForm();
+    CompBean partov =  compRepository.findByComp_id(comp_id);
+    BeanUtils.copyProperties(partov, participatedForm);
+    participatedForm.setCount(compPartRepository.countByComp_id(comp_id));
+
+    return participatedForm;
+
+   }
+
+   public List<ParticipatedForm> compgamesearch(Integer game_id){
+    List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
+    List<CompBean> compList = compRepository.findByGame_idLike(game_id);
+    for(CompBean compBean: compList) { 
+      ParticipatedForm participatedForm = new ParticipatedForm();
+      BeanUtils.copyProperties(compBean, participatedForm);
+      participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
+      formList.add(participatedForm); 
+    }
+    return formList;
+   }
+
+   public List<ParticipatedForm> compnamesearch(String comp_name){
+    List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
+    List<CompBean> compList = compRepository.findByComp_nameLike(comp_name);
+    for(CompBean compBean: compList) { 
+      ParticipatedForm participatedForm = new ParticipatedForm();
+      BeanUtils.copyProperties(compBean, participatedForm);
+      participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
+      formList.add(participatedForm); 
+    }
+    return formList;
+   }
+}
