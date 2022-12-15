@@ -8,6 +8,11 @@
   <body>
 
     <table>
+      <form th:action="@{/admin/searchcomp-un}" method="post">
+        主催者ユーザー名：
+        <input type="text" name="username_ss">
+        <input type="submit" name="form" value="送信">
+      </form>
       <form th:action="@{/admin/searchcomp}" method="post">
         ゲーム名：
         <select class="input-item" name="game_id">
@@ -16,6 +21,7 @@
         </select>
         <input type="submit" name="form" value="送信">
       </form>
+      
         <!--<tr th:each="cm : ${complist}"> 
           <td th:text="${cm.comp_name}"></td>
           <td th:text="${'【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></td>

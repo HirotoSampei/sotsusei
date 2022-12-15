@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ユーザー詳細サンプル</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+  </head>
+  <body>
+<!--ユーザー情報全表示する-->
+    <table>
+      検索結果：
+        <tr th:each="ud : ${userDetail}"> 
+          <td th:text="${ud.user_id}"></td>
+          <td th:text="${ud.user_name}"></td>
+          <td th:text="${ud.mail_address}"></td>
+          <td th:text="${ud.note}"></td>
+          <td th:text="${ud.is_banned}"></td>
+          <td th:text="${ud.is_admin}"></td>
+        </tr>
+    </table>
+  </body>
+</html>

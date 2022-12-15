@@ -22,8 +22,10 @@ import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
+import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
+import jp.te4a.spring.boot.sotsusei.repository.ReportRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserSearchRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
@@ -45,6 +47,12 @@ public class AdminController {
   CompRepository compRepository;
 
   @Autowired
+  CompPartRepository compPartRepository;
+
+  @Autowired
+  ReportRepository reportRepository;
+
+  @Autowired
   CompSearchRepository compSearchRepository;
 
   @Autowired
@@ -58,12 +66,12 @@ public class AdminController {
 
   @GetMapping //大会作成画面
   String admin_home(Model model) {
-    return "admin/admin-home-sample";
+    return "admin/admin_home";
   }
   @GetMapping("/userlist") //ホーム画面
   String user_list(Model model) {
     model.addAttribute("userList", userService.findAll());
-    return "admin/userlist-sample";
+    return "admin/user_search";
   }
   @PostMapping(path="searchuser", params = "form")
   String user_search(@RequestParam String username_searching, Model model){
@@ -79,5 +87,40 @@ public class AdminController {
   String comp_search(@RequestParam Integer game_id, Model model){
     model.addAttribute("compList", compSearchRepository.findByGame_idLike(game_id));
     return "admin/comp-search-sample";
+  }
+  @PostMapping(path="searchcomp-un", params = "form")
+  String comp_search_ss(@RequestParam String username_ss, Model model){
+    int user_id_ss=userRepository.findByUser_name(username_ss);
+    model.addAttribute("compList", compSearchRepository.findByUser_idLike(user_id_ss));
+    return "admin/comp-search-sample";
+  }
+  @PostMapping(path="userdetail")
+  String user_detail(@RequestParam Integer user_id, Model model){
+    model.addAttribute("userDetail", userSearchRepository.findByUser_idLike(user_id));
+    return "admin/userdetail-sample";
+  }
+  @PostMapping(path="compdetail")
+  String comp_detail(@RequestParam Integer comp_id, Model model){
+    model.addAttribute("compDetail", compRepository.findByComp_id(comp_id));
+    return "admin/compdetail-sample";
+  }
+  @GetMapping("/reportlist") //通報一覧
+  String create_reportlist(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+      model.addAttribute("reportList", reportRepository.findAllOrderByReport_id());
+      return "admin/ReportedUsers";
+  }
+  @PostMapping(path="reportdetail")
+  String report_detail(@RequestParam Integer report_id,Integer reporter_user_id,Integer suspicious_user_id, Model model){
+    model.addAttribute("reuserDetail", userSearchRepository.findByUser_idLike(reporter_user_id));
+    model.addAttribute("suuserDetail", userSearchRepository.findByUser_idLike(suspicious_user_id));
+    model.addAttribute("reportDetail", reportRepository.findByReport_id(report_id));
+    return "admin/reportdetail-sample";
+  }
+  @PostMapping(path="compdelete")
+  String comp_delete(@RequestParam Integer comp_id){
+    compService.delete(comp_id);
+    reportRepository.deleteByComp_id(comp_id);
+    compPartRepository.deleteByuser_id(comp_id);
+    return "redirect:/admin/complist";
   }
 }

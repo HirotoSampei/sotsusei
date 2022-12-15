@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>通報詳細サンプル</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+  </head>
+  <body>
+<!--通報情報全表示する-->
+    <table>
+      検索結果：
+        <tr th:each="rd : ${reportDetail}"> 
+          <td th:text="${rd.report_id}"></td>
+          <td th:text="${rd.report_reason}"></td>
+          <td th:text="${rd.compBean.comp_name}"></td>
+          <td th:text="${rd.reported_date}"></td>
+        </tr>
+        <tr th:each="rud : ${reuserDetail}"> 
+          <td th:text="${rud.user_name}"></td>
+        </tr>
+        <tr th:each="sud : ${suuserDetail}"> 
+          <td th:text="${sud.user_name}"></td>
+        </tr>
+    </table>
+  </body>
+</html>
