@@ -38,17 +38,19 @@
           <p>概要　  :</p>
           <textarea class="input-item-ta" name="description" cols="30" rows="5" style="resize: none"></textarea>
         </div>
-        <p>主催者名　：<input type="text" class="input-item" name="host_nickname" th:field="*{host_nickname}"></p>
-        <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" th:field="*{start_date}"></p>
-        <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:field="*{end_date}"></p>
-        <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:field="*{limit_of_participants}"></p>
-        <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:field="*{deadline}"></p>
-      </div>
-      <div id="button-container">
-        <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
-        <input type="submit" class="button-item" value="作成">
-      </div>
-    </table>
+          <p>主催者名　：<input type="text" class="input-item" name="host_nickname" th:field="*{host_nickname}"></p>
+          <p>主催者も大会に参加しますか？　<input type="radio" id="yes"name="radio_button" value="True"><label for="yes">はい</label>
+                                        <input type="radio" id="no"name="radio_button" value="False"><label for="no">いいえ</label></p>
+          <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" th:field="*{start_date}"></p>
+          <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:field="*{end_date}"></p>
+          <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:field="*{limit_of_participants}"></p>
+          <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:field="*{deadline}"></p>
+        </div>
+    <div id="button-container">
+      <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
+      <input type="submit" class="button-item" value="作成">
+    </div>
+    <table>
   </main>
 </form>
 <footer>
