@@ -1,8 +1,12 @@
 package jp.te4a.spring.boot.sotsusei.repository;
 
 import java.util.List;
+
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
@@ -15,5 +19,5 @@ public interface CompSearchRepository extends JpaRepository<CompsearchBean, Inte
 
 	@Query(value="SELECT X.comp_id,X.comp_name,X.host_user_id FROM competitions X WHERE X.host_user_id = ?1",nativeQuery=true)
 	  List<CompsearchBean> findByUser_idLike(Integer host_user_id);
-
-	}
+}
+	

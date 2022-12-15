@@ -22,6 +22,7 @@ import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
+import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.repository.ReportRepository;
@@ -46,6 +47,9 @@ public class AdminController {
   CompRepository compRepository;
 
   @Autowired
+  CompPartRepository compPartRepository;
+
+  @Autowired
   ReportRepository reportRepository;
 
   @Autowired
@@ -67,7 +71,7 @@ public class AdminController {
   @GetMapping("/userlist") //ホーム画面
   String user_list(Model model) {
     model.addAttribute("userList", userService.findAll());
-    return "admin/userlist-sample";
+    return "admin/user_search";
   }
   @PostMapping(path="searchuser", params = "form")
   String user_search(@RequestParam String username_searching, Model model){
@@ -100,10 +104,10 @@ public class AdminController {
     model.addAttribute("compDetail", compRepository.findByComp_id(comp_id));
     return "admin/compdetail-sample";
   }
-  @GetMapping("/reportlist") //大会作成画面
+  @GetMapping("/reportlist") //通報一覧
   String create_reportlist(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
       model.addAttribute("reportList", reportRepository.findAllOrderByReport_id());
-      return "admin/reportlist-sample";
+      return "admin/ReportedUsers";
   }
   @PostMapping(path="reportdetail")
   String report_detail(@RequestParam Integer report_id,Integer reporter_user_id,Integer suspicious_user_id, Model model){
@@ -111,5 +115,12 @@ public class AdminController {
     model.addAttribute("suuserDetail", userSearchRepository.findByUser_idLike(suspicious_user_id));
     model.addAttribute("reportDetail", reportRepository.findByReport_id(report_id));
     return "admin/reportdetail-sample";
+  }
+  @PostMapping(path="compdelete")
+  String comp_delete(@RequestParam Integer comp_id){
+    compService.delete(comp_id);
+    reportRepository.deleteByComp_id(comp_id);
+    compPartRepository.deleteByuser_id(comp_id);
+    return "redirect:/admin/complist";
   }
 }

@@ -8,6 +8,7 @@
   <body>
 <!--大会情報全表示する-->
     <table>
+      <form th:action="@{/admin/compdelete}" name="form" method="post">
       検索結果：
         <tr th:each="cd : ${compDetail}"> 
           <td th:text="${cd.comp_id}"></td>
@@ -20,7 +21,10 @@
           <td th:text="${cd.end_date}"></td>
           <td th:text="${cd.limit_of_participants}"></td>
           <td th:text="${cd.deadline}"></td>
+          <input type="hidden" name="comp_id" th:value="${cd.comp_id}"/>
+          <input type="submit" name="form" class="search_button" value="削除する">
         </tr>
+      </form>
     </table>
   </body>
 </html>
