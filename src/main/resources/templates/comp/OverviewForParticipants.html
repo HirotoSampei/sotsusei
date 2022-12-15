@@ -34,7 +34,7 @@
             <div class="title-people-container">
               <div class="title" th:text="${cp.comp_name}">初心者歓迎！ほげほげ大会</div>
               <img src="..\..\images\people.png" class="people-logo">
-              <div class="people" th:text="${'2/' + cp.limit_of_participants}">20/50</div>
+              <div class="people" th:text="${cp.count + '/' + cp.limit_of_participants}">20/50</div>
             </div>
             <div class="game-title" th:text="${'🎮【' + cp.gameBean.hard + '】' + cp.gameBean.game_name}">🎮【PC】Tom
               Clansy's Reinbow Six Siege</div>
@@ -92,9 +92,14 @@
         </div>
       </div>
     </div>
-    <div class="button-container">
+    <div class="button-container" th:each="cp : ${comp}">
       <input type="button" class="button-item" onclick="location.href='/comp'" value="ホーム画面へ">
-      <input type="button" class="button-item" onclick="location.href='/comp/cancel'"  value="参加キャンセル">
+      <th:block th:if="${message}">
+        <form th:action="@{/comp/cancel}" method="post">
+          <input type="submit" class="button-item" value="参加キャンセル">
+          <input type="hidden" name="comp_id" th:value="${cp.comp_id}"/>
+      </th:block>    
+      </form>
     </div>
   </main>
 
