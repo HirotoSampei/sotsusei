@@ -88,6 +88,7 @@
           <input type="text" class="comment-box">
           <input type="button" value="投稿">
         </div>
+        <div th:if="${errorMessage}" th:text="${errorMessage}" class="error"> </div>
       </div>
     </div>
     <div class="bottom-container">
@@ -98,11 +99,10 @@
         <div class="bottom-container2">
           <input type="button" class="button-item" onclick="location.href='/comp'" value="戻る">
           <div class="agree-container">
-            <div class="date">ルールを確認し、同意します。</div>
+            <div class="check">ルールを確認し、同意します。</div>
             <input type="checkbox" style="transform:scale(3);">
           </div>
           <input type="text" class="input-nickname" name="nickname" placeholder="ここにニックネームを入力">
-          <div th:if="${errorMessage}" th:text="${errorMessage}"> </div>
           <input type="submit" class="button-item" name="form" value="参加する" /> 
           <input type="hidden" name="comp_id" th:value="${po.comp_id}"/>
         </div>
