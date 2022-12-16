@@ -182,6 +182,16 @@ body{
     width: 500px;
     font-size: 27px;
   }
+  .check{
+    font-size: 20px;
+    color: white;
+    white-space: nowrap;
+  }
+  .error{
+    font-size: 25px;
+    color: red;
+    white-space: nowrap;
+  }
   .button-container{
     display: flex;
     padding: 30px;
