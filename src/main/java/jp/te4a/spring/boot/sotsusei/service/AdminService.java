@@ -2,31 +2,20 @@ package jp.te4a.spring.boot.sotsusei.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
-import jp.te4a.spring.boot.sotsusei.bean.GameplayPrimaryKey;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
-import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompsearchBean;
-import jp.te4a.spring.boot.sotsusei.bean.GameBean;
-import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.form.CompsearchForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserSearchRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
-import lombok.ToString;
+
 @Service
 public class AdminService { //現在は直接AdminControllerからRepositoryを参照しているため、使用していない。
     @Autowired
