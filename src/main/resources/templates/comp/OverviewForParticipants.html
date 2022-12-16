@@ -5,6 +5,12 @@
   <meta charset="utf-8">
   <title>大会概要 - 参加者</title>
   <link rel="stylesheet" href="..\..\static\css\OverviewForParticipantsStyle.css" th:href="@{/css/OverviewForParticipantsStyle.css}">
+  <script type="text/javascript">
+    function func(nickname,note) {
+      document.getElementById('nickname').innerHTML = nickname;
+      document.getElementById('note').innerHTML = note;
+    }
+  </script>
 </head>
 
 <body>
@@ -19,7 +25,7 @@
         </div>
       </div>
       <div class="right-container">
-        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px"></div>
+        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
         <div class="header-item">user name</div>
       </div>
     </div>
@@ -56,15 +62,14 @@
                 <div class="people">参加者一覧</div>
                 <div class="participants">
 
-                  <div th:each="cpart : ${comppart}">
-                    
-                    <label for="hoge_user-pop-up" th:text="${cpart.nickname}">hoge_user</label>
+                  <div th:each="user: ${user}">
+                    <label for="hoge_user-pop-up" th:onclick="|func('__${user.nickname}__','__${user.note}__')|" th:text="${user.nickname}">hoge_user</label>
                     <input type="checkbox" id="hoge_user-pop-up">
                     <div class="overlay">
                       <div class="window">
-                        <div class="user-name"><label th:text="${cpart.nickname}">hoge_user</label></div>
+                        <div class="user-name"><span id="nickname"></span></div>
                         <div class="note">
-                          <div>hoge_userの自己紹介</div>
+                          <div><span id="note"></span></div>
                         </div>
                         <div class="button-container">
                           <label class="button-item" for="hoge_user-pop-up">戻る</label>
