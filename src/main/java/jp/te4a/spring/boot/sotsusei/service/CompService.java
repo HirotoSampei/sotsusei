@@ -1,7 +1,6 @@
 package jp.te4a.spring.boot.sotsusei.service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +15,7 @@ import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.form.ParticipatedForm;
+import jp.te4a.spring.boot.sotsusei.form.PopuserForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
@@ -143,5 +143,20 @@ public class CompService {
       formList.add(participatedForm); 
     }
     return formList;
-   }
+  }
+
+  public List<PopuserForm> popuser(Integer comp_id){
+      List<PopuserForm> formList = new ArrayList<PopuserForm>();
+      List<Integer> userList = compPartRepository.findByUser_id(comp_id);
+    for(Integer uid:userList){
+      PopuserForm popuserForm = new PopuserForm();
+      UserBean popuser = userRepository.findByUser(uid);
+      BeanUtils.copyProperties(popuser, popuserForm);
+      popuserForm.setNickname(compPartRepository.findByNickname(comp_id, uid));
+      formList.add(popuserForm);
+    }
+      return formList;
+      
+    }
+   
 }

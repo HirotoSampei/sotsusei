@@ -1,10 +1,8 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
+
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-
-import ch.qos.logback.core.joran.conditional.ElseAction;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
@@ -110,9 +105,9 @@ public class CompController {
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
       imageService.getlogoImage(model);
       imageService.geticonImage(model);
-      model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
       model.addAttribute("comp", compService.partoverview(comp_id));
       model.addAttribute("message", "True");
+      model.addAttribute("user", compService.popuser(comp_id));
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     else{
@@ -156,10 +151,9 @@ public class CompController {
     compPartRepository.save(compPartBean);
     imageService.getlogoImage(model);
     imageService.geticonImage(model);
-    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
     model.addAttribute("comp", compService.partoverview(comp_id));
     model.addAttribute("message", "True");
-    //model.addAttribute("user", userRepository.findByUser_id(compPartRepository.findByComp_id(comp_id).getUser_id()));
+    model.addAttribute("user", compService.popuser(comp_id));
     return "comp/OverviewForParticipants";
   }
 
