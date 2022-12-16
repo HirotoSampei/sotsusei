@@ -2,6 +2,9 @@ package jp.te4a.spring.boot.sotsusei.controller;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
@@ -17,13 +20,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import antlr.collections.List;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.bean.GameBean;
+import jp.te4a.spring.boot.sotsusei.bean.CompBean;
+import jp.te4a.spring.boot.sotsusei.bean.CompsearchBean;
+import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
+import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.repository.ReportRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserSearchRepository;
@@ -59,6 +66,9 @@ public class AdminController {
   UserRepository userRepository;
 
   @Autowired
+  GameplayRepository gameplayRepository;
+
+  @Autowired
   UserSearchRepository userSearchRepository;
 
   @Autowired
@@ -76,7 +86,7 @@ public class AdminController {
   @PostMapping(path="searchuser", params = "form")
   String user_search(@RequestParam String username_searching, Model model){
     model.addAttribute("userList", userSearchRepository.findByUser_nameLike(username_searching));
-    return "admin/UsernameSearch-sample";
+    return "admin/Users";
   }
   @GetMapping("/complist") //大会作成画面
   String create_complist(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
@@ -90,19 +100,31 @@ public class AdminController {
   }
   @PostMapping(path="searchcomp-un", params = "form")
   String comp_search_ss(@RequestParam String username_ss, Model model){
-    int user_id_ss=userRepository.findByUser_name(username_ss);
-    model.addAttribute("compList", compSearchRepository.findByUser_idLike(user_id_ss));
+    List<Integer> user_id_ss = new ArrayList<Integer>();
+    user_id_ss = userSearchRepository.findIdByUser_nameLike(username_ss);
+    List<CompBean> comp_s = new ArrayList<CompBean>();
+    for(int i = 0; i < user_id_ss.size(); i++){
+      comp_s.add(compRepository.findByHost_user_id(user_id_ss.get(i)));
+      
+    }
+    model.addAttribute("compList", comp_s);
     return "admin/CompSearch-sample";
-  }
+  }//検索した要素を含むユーザーのuser_idを所得、それがhost_user_idに含まれる大会をとってきたい
   @PostMapping(path="userdetail")
-  String user_detail(@RequestParam Integer user_id, Model model){
+  String user_detail(@RequestParam Integer user_id, Model model, ModelMap modelMap){
+    List<GameBean> game_List = new ArrayList<GameBean>();
+    List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(user_id);
+      for (int i = 0; i < gameplay_idList.size(); i++){
+          game_List.add(gameRepository.getById(gameplay_idList.get(i).getGame_id()));
+      }
+    model.addAttribute("game_List",game_List);
     model.addAttribute("userDetail", userSearchRepository.findByUser_idLike(user_id));
-    return "admin/userdetail-sample";
+    return "admin/UserProfileForAdmin";
   }
   @PostMapping(path="compdetail")
   String comp_detail(@RequestParam Integer comp_id, Model model){
     model.addAttribute("compDetail", compRepository.findByComp_id(comp_id));
-    return "admin/compdetail-sample";
+    return "admin/OverviewForAdmin";
   }
   @GetMapping("/reportlist") //通報一覧
   String create_reportlist(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
@@ -114,7 +136,7 @@ public class AdminController {
     model.addAttribute("reuserDetail", userSearchRepository.findByUser_idLike(reporter_user_id));
     model.addAttribute("suuserDetail", userSearchRepository.findByUser_idLike(suspicious_user_id));
     model.addAttribute("reportDetail", reportRepository.findByReport_id(report_id));
-    return "admin/reportdetail-sample";
+    return "admin/Reporting_Details";
   }
   @PostMapping(path="compdelete")
   String comp_delete(@RequestParam Integer comp_id){
