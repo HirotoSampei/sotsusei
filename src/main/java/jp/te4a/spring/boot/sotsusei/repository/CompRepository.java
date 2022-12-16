@@ -18,9 +18,6 @@ public interface CompRepository extends JpaRepository<CompBean, Integer>{
 
 	@Query("SELECT X.comp_id FROM CompBean X WHERE X.host_user_id = ?1")
 	  CompBean findByComp_idToHost_user_id(Integer host_user_id);
-
-	@Query("SELECT X FROM CompBean X WHERE X.host_user_id = ?1 ORDER BY X.comp_id")
-	  CompBean findBeanByHost_user_id(Integer host_user_id);
 	 
 	@Query("SELECT X FROM CompBean X WHERE X.comp_id = ?1") 
 	  CompBean findByComp_id(Integer comp_id);

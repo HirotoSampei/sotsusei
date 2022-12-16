@@ -104,11 +104,11 @@ public class AdminController {
     user_id_ss = userSearchRepository.findIdByUser_nameLike(username_ss);
     List<CompBean> comp_s = new ArrayList<CompBean>();
     for(int i = 0; i < user_id_ss.size(); i++){
-      comp_s.add(compRepository.findBeanByHost_user_id(user_id_ss.get(i)));
+      comp_s.add(compRepository.findByHost_user_id(user_id_ss.get(i)));
       
     }
     model.addAttribute("compList", comp_s);
-    return "admin/comp-search-sample";
+    return "admin/CompSearch-sample";
   }//検索した要素を含むユーザーのuser_idを所得、それがhost_user_idに含まれる大会をとってきたい
   @PostMapping(path="userdetail")
   String user_detail(@RequestParam Integer user_id, Model model, ModelMap modelMap){
@@ -136,7 +136,7 @@ public class AdminController {
     model.addAttribute("reuserDetail", userSearchRepository.findByUser_idLike(reporter_user_id));
     model.addAttribute("suuserDetail", userSearchRepository.findByUser_idLike(suspicious_user_id));
     model.addAttribute("reportDetail", reportRepository.findByReport_id(report_id));
-    return "admin/reporting_details";
+    return "admin/Reporting_Details";
   }
   @PostMapping(path="compdelete")
   String comp_delete(@RequestParam Integer comp_id){
