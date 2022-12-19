@@ -67,10 +67,14 @@
       <div class="heading">
         <p>■参加している大会</p>
       </div>
-      <div class="right-main-item" th:each="part : ${participated}">
-        <div class="title" th:text="${part.comp_name}"></div>
-        <div class="game-title"th:text="${'🎮【' + part.gameBean.hard + '】' + part.gameBean.game_name}"></div>
-        <div class="nickname"th:text="${'ニックネーム：' + part.nickname}"></div>
+      <div class="right-main-item linkbox" th:each="part : ${participated}">
+        <form th:action="@{/comp/Overview}" name="form "method="post">
+          <div class="title" th:text="${part.comp_name}"></div>
+          <div class="game-title"th:text="${'🎮【' + part.gameBean.hard + '】' + part.gameBean.game_name}"></div>
+          <div class="nickname"th:text="${'ニックネーム：' + part.nickname}"></div>
+          <input type="hidden" name="comp_id" th:value="${part.comp_id}"/>
+          <button type="submit" title="comp_button"></button>
+        </form>
       </div>
     </div>
   </main>
