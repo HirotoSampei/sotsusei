@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang=ja dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>通報</title>
+  <link rel="stylesheet" type="text/css" href="../../static/css/ReportStyle.css" th:href="@{/css/ReportStyle.css}">
+</head>
+<body>
+<header>
+  <div class="header-container">
+    <div class="left-container">
+      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <div class="header-item">
+        <input type="search" name="search" placeholder="大会を検索">
+        <input type="submit" name="submit" id="search_button" value="検索">
+      </div>
+    </div>
+    <div class="right-container">
+      <div class="header-item">user icon</div>
+      <div class="header-item">user name</div>
+      </div>
+  </div>
+</header>
+
+<main>
+  <table>
+    <div class="text">通報理由：</div>
+    <textarea class="input-item-ta" name="remarks" cols="30" rows="5" style="resize: none"></textarea>
+    
+    <div style="margin: 30px;"></div>
+    <div class="button-container">
+      <input type="submit" class="button-item" onclick="history.back(-1)" value="戻る">
+      <input type="button" class="button-item" onclick="alert('通報')" value="通報">
+    </div>
+  </table>
+</main>
+
+<footer>
+ <div id="temp-footer">©Competition Assistance Tool</div>
+</footer>
+</body>
+</html>

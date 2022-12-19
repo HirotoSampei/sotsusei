@@ -1,8 +1,8 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
-import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.BeanUtils;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,14 +14,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import antlr.collections.List;
-import ch.qos.logback.core.joran.conditional.ElseAction;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
+import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
@@ -43,6 +41,10 @@ public class CompController {
 
   @Autowired
   CompPartRepository compPartRepository;
+
+  @Autowired
+  CompSearchRepository compSearchRepository;
+
   @Autowired
   ImageService imageService;
 
@@ -51,10 +53,14 @@ public class CompController {
     return new CompForm();
   }
   @GetMapping //ホーム画面
-  String display_list(Model model) {
+  String display_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     imageService.getlogoImage(model);
     imageService.geticonImage(model);
+    model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
     model.addAttribute("comp", compService.findAll());
+    model.addAttribute("participated", compService.participated(userBean.getUser_id()));
     return "home/Home";
   }
 
@@ -69,7 +75,7 @@ public class CompController {
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "comp/CreateComp";
     }
-    else if(compRepository.findByHost_user_id(login_user_id).size() != 0){
+    else if(compRepository.findByHost_user_id(login_user_id) != null){
       imageService.getlogoImage(model);
       imageService.geticonImage(model);
       return "redirect:/comp/OverViewForHost";
@@ -89,52 +95,65 @@ public class CompController {
     UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getlogoImage(model);
     imageService.geticonImage(model);
-    model.addAttribute("overview", compRepository.findByHost_user_id(userBean.getUser_id()));
+    model.addAttribute("overview", compService.hostoverview(userBean.getUser_id()));
     return "comp/OverViewForHost";
   }
-  @PostMapping(path="Overview")//参加前大会概要画面
+  @PostMapping(path="Overview")
   String overview(Model model, @RequestParam Integer comp_id, ModelMap modelMap, HttpServletRequest httpServletRequest){
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
       imageService.getlogoImage(model);
       imageService.geticonImage(model);
-      model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
-      model.addAttribute("comp", compRepository.findByComp_id(comp_id));
-      return "comp/OverviewForParticipants";
+      model.addAttribute("comp", compService.partoverview(comp_id));
+      model.addAttribute("message", "True");
+      model.addAttribute("user", compService.popuser(comp_id));
+      return "comp/OverviewForParticipants";//参加者専用画面
     }
     else{
       imageService.getlogoImage(model);
       imageService.geticonImage(model);
-      model.addAttribute("participant_overview", compRepository.findByComp_id(comp_id));
-    return "comp/Overview";
+      model.addAttribute("participant_overview", compService.partoverview(comp_id));
+      return "comp/Overview";//参加前大会概要画面
     } 
   }
 
   @PostMapping(path="create") //大会作成処理
-  String create(@Validated CompForm form, BindingResult result , Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+  String create(@Validated CompForm form, @RequestParam boolean radio_button, BindingResult result , Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     if(result.hasErrors()) {
       return create_list(model, modelMap, httpServletRequest);
     }
     String user_pass = httpServletRequest.getRemoteUser();
-    compService.create(form, game_id, user_pass);
+    compService.create(form, game_id, user_pass, radio_button);
     return "redirect:/comp/OverViewForHost";
   }
 
-  @PostMapping(path="entry")
+  @PostMapping(path="entry")//大会参加処理
   String entry(@RequestParam Integer comp_id, Model model, String nickname, ModelMap modelMap, HttpServletRequest httpServletRequest){
-    CompPartBean compPartBean = new CompPartBean();
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
+    List<Integer> list = compPartRepository.findByComp_idToUser_id(userBean.getUser_id());
+    for(Integer id: list) { 
+      if(compRepository.findByComp_id(id).getStart_date().isAfter(compRepository.findByComp_id(comp_id).getEnd_date()) || compRepository.findByComp_id(id).getEnd_date().isBefore(compRepository.findByComp_id(comp_id).getStart_date())){
+      }
+      else{
+        imageService.getlogoImage(model);
+        imageService.geticonImage(model);
+        model.addAttribute("participant_overview", compService.partoverview(comp_id));
+        model.addAttribute("errorMessage", "既に参加している大会と日程が被っています。");
+        return "comp/Overview";
+      }
+    }
+    CompPartBean compPartBean = new CompPartBean();
     compPartBean.setComp_id(comp_id);
     compPartBean.setUser_id(userBean.getUser_id());
     compPartBean.setNickname(nickname);
     compPartRepository.save(compPartBean);
     imageService.getlogoImage(model);
     imageService.geticonImage(model);
-    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
-    model.addAttribute("comp", compRepository.findByComp_id(comp_id));
-    //model.addAttribute("user", userRepository.findByUser_id(compPartRepository.findByComp_id(comp_id).getUser_id()));
+    model.addAttribute("comp", compService.partoverview(comp_id));
+    model.addAttribute("message", "True");
+    model.addAttribute("user", compService.popuser(comp_id));
     return "comp/OverviewForParticipants";
   }
 
@@ -149,11 +168,13 @@ public class CompController {
     return "comp/EditComp";
   }
   @PostMapping(path = "edit") //編集した内容を登録する時の動き
-  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id) {
+  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
   if(result.hasErrors()) {
   return editForm(comp_id, form, null);
   }
-  compService.update(form,game_id);
+  String user_pass = httpServletRequest.getRemoteUser();
+  UserBean userBean = userRepository.findByMail_address(user_pass);
+  compService.update(form,game_id,userBean.getUser_id());
   return "redirect:/comp/OverViewForHost";
   }
 
@@ -164,13 +185,50 @@ public class CompController {
     return "redirect:/comp";
   }
 
-  @GetMapping("/cancel")
-  String cancel(ModelMap modelMap, HttpServletRequest httpServletRequest){
+  @PostMapping("/cancel")
+  String cancel(@RequestParam Integer comp_id,ModelMap modelMap, HttpServletRequest httpServletRequest){
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
-    compPartRepository.deleteByuser_id(userBean.getUser_id());
+    compPartRepository.deleteByuser(userBean.getUser_id(), comp_id);
 
     return "redirect:/comp";
   }
-  
+
+  @PostMapping(path="searchgamecomp", params = "form") //大会ゲーム名検索
+  String comp_gamesearch(@RequestParam Integer game_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
+    model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+    model.addAttribute("participated", compService.participated(userBean.getUser_id()));
+    model.addAttribute("comp", compService.compgamesearch(game_id));
+    return "home/Home";
+
+  }
+
+  @PostMapping(path="searchcomp", params = "form") //大会検索
+  String comp_namesearch(@RequestParam String comp_name, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
+    model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+    model.addAttribute("participated", compService.participated(userBean.getUser_id()));
+    model.addAttribute("comp", compService.compnamesearch(comp_name));
+    return "home/Home";
+
+  }
+
+  @PostMapping("/OverviewForParticipants")
+  String overviewForParticipants(@RequestParam Integer comp_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
+      model.addAttribute("message", "True");
+    }
+    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
+    model.addAttribute("comp", compService.partoverview(comp_id));
+    return "comp/OverviewForParticipants";
+  }
 }

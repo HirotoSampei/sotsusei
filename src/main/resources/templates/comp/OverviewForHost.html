@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="right-container">
-      <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px"></div>
+      <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
       <div class="header-item">user name</div>
       </div>
   </div>
@@ -32,7 +32,7 @@
           <div class="title-people-container">
             <div class="title"th:text="${ov.comp_name}">初心者歓迎！ほげほげ大会</div>
             <img src="..\..\images\people.png" class="people-logo">
-            <div class="people"th:text="${'2/' + ov.limit_of_participants}">20/50</div> 
+            <div class="people"th:text="${ ov.count + '/' + ov.limit_of_participants}">20/50</div> 
           </div>  
           <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom Clansy's Reinbow Six Siege</div>
           <div class="host_name">主催者 　:</div>
@@ -40,12 +40,13 @@
             <div class="date">開催日時：</div>
             <div class="date"th:text="${ov.start_date + '~' + ov.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
           </div>
-          <div class="date">概要　　：</div>
-          <div class="overview"th:text="${ov.description}">ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される</div>
           <div class="deadline-container">
-            <div class="deadline">締め切り：</div>
-            <div class="deadline"th:text="${ov.deadline}">2023/3/5 23:59</div>
+            <div class="date">締め切り：</div>
+            <div class="date"th:text="${ov.deadline + ''}">2023/3/5 23:59</div>
           </div>
+          <div class="date">概要</div>
+          <div class="overview"th:text="${ov.description}">ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される</div>
+          
         </tr>
       </table>
     </div>
@@ -95,7 +96,10 @@
         <input type="submit" class="button-item" name="form" value="削除" />
         <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
       </form>
-      <input type="button" class="button-item" onclick="location.href=''" value="参加者用ページ">
+      <form th:action="@{/comp/OverviewForParticipants}" method="post">
+        <input type="submit" class="button-item" value="参加者用ページ">
+        <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
+      </form>
     </div>
     </tr>
   </table>

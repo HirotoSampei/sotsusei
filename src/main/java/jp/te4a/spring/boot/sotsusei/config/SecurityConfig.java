@@ -38,6 +38,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/comp/edit").permitAll()
                 .antMatchers("/comp/delete").permitAll()
                 .antMatchers("/comp/cancel").permitAll()
+
+                .antMatchers("/admin").permitAll()
+                .antMatchers("/admin/userlist").permitAll()
+                .antMatchers("/admin/userlist/search").permitAll()
+                .antMatchers("/admin/search").permitAll()
+                .antMatchers("/admin/username-search-sample").permitAll()
                 .anyRequest().authenticated()     
             .and()
                 .formLogin()
