@@ -191,6 +191,7 @@ body{
     font-size: 25px;
     color: red;
     white-space: nowrap;
+    text-align: center;
   }
   .button-container{
     display: flex;
