@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="right-container">
-      <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px"></div>
+      <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
       <div class="header-item">user name</div>
       </div>
   </div>
@@ -46,11 +46,11 @@
           <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:field="*{limit_of_participants}"></p>
           <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:field="*{deadline}"></p>
         </div>
-    <div id="button-container">
-      <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
-      <input type="submit" class="button-item" value="作成">
-    </div>
-    <table>
+      <div id="button-container">
+        <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
+        <input type="submit" class="button-item" value="作成">
+      </div>
+    </table>
   </main>
 </form>
 <footer>

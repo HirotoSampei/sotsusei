@@ -20,4 +20,10 @@ public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpe
 
 	@Query("SELECT X.user_id FROM UserBean X WHERE X.user_name = ?1")
 	Integer findByUser_name(String user_name);
+
+	@Query("SELECT X FROM UserBean X WHERE X.user_id = ?1")
+	List<UserBean> findByUser_id(Integer user_id);
+
+	@Query("SELECT X FROM UserBean X WHERE X.user_id = ?1")
+	UserBean findByUser(Integer user_id);
 }

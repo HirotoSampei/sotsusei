@@ -15,7 +15,7 @@ body {
 .left-container {
   display: flex;
   /*background-color: greenyellow;*/
-  margin: 0px;
+  margin: auto 0 0 0 ;//////////////////////////////////////////////////////////////////////
   justify-content: flex-start;
 }
 
@@ -81,7 +81,7 @@ body {
   font-weight: bolder;
   padding: 40px;
   position: fixed;
-  bottom: 0;
+  bottom: 2%;  /*ここ変更しました（ボタン位置変更）*/
   right: 1;
   border-radius: 50px 50px 50px 50px;
   cursor: pointer;
@@ -192,8 +192,15 @@ main p {
 
 
 #temp-footer {
-  display: flex;
+  width: 100%;
   background: linear-gradient(black, 20%, red);
-  justify-content: center;
+  text-align: center;
+  position: absolute;/*←絶対位置*/
+  bottom: 0; /*下に固定*/
+  /*ここ変更しました（フッターの固定*/
+}
 
+.day-text{
+  color: white;
+  font-size:25px ;
 }
