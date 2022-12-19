@@ -143,4 +143,14 @@ public class AdminController {
     compPartRepository.deleteByuser_id(comp_id);
     return "redirect:/admin/complist";
   }
+  @PostMapping(path="ban_from_report")
+  String ban_r(@RequestParam Integer suspicious_user_id, Model model){
+    userRepository.updateByUser_id(suspicious_user_id);
+    return "redirect:/admin/reportlist";
+  }
+  @PostMapping(path="ban_from_user")
+  String ban_u(@RequestParam Integer user_id, Model model){
+    userRepository.updateByUser_id(user_id);
+    return "redirect:/admin/userlist";
+  }
 }
