@@ -1,34 +1,37 @@
 <!DOCTYPE html>
-<html lang=ja dir="ltr">
+<html lang=ja dir="ltr" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
     <title>通報情報</title>
-    <link rel="stylesheet" href="../../static/css/ReportedUsersStyle.css" th:href="@{/css/HomeStyle.css}">
+    <link rel="stylesheet" type="text/css" href="../../static/css/ReportedUsersStyle.css" th:href="@{/css/ReportedUsersStyle.css}">
 </head>
 
 <body>
-
-   
-
     <main class="main-container">
         <div class="left-main-container">
-            <input class="left-main-item" type="button" onclick="location.href=''" value="戻る">
+            <input class="left-main-item" type="button" onclick="history.back(-1)" value="戻る">
         </div>
-        <div class="center-main-container">
-            <div class="heading">
-                <p>通報情報</p>
-            </div>
-            <!--ここから自動生成-->
-            <div class="center-main-item">
-                <div class="text">大会名：hogehoge大会</div>
-                <div class="text">時刻　：2022/03/23 23:40</div>
-            </div>
-            <!--ここまで自動生成-->
+    <div class="center-main-container">
+        <div class="heading">
+            <p>通報情報</p>
         </div>
+    <table>
+        <tr th:each="rp : ${reportList}">
+            <form th:action="@{/admin/reportdetail}" name="form" method="post">
+                <div class="center-main-item linkbox">
+                    <div th:text="${rp.compBean.comp_name}"></div>
+                    <div th:text="${rp.reported_date}"></div>
+                    <input type="hidden" name="report_id" th:value="${rp.report_id}"/>
+                    <input type="hidden" name="reporter_user_id" th:value="${rp.reporter_user_id}"/>
+                    <input type="hidden" name="suspicious_user_id" th:value="${rp.suspicious_user_id}"/>
+                    <button type="submit" title="reportdetail_button"></button>
+                </div>
+            </form>
+        </tr>
+    </table>
+    </div>
     </main>
-
-
 </body>
 
 </html>

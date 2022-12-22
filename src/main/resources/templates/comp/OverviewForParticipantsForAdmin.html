@@ -5,12 +5,6 @@
   <meta charset="utf-8">
   <title>大会概要 - 参加者</title>
   <link rel="stylesheet" href="..\..\static\css\OverviewForParticipantsStyle.css" th:href="@{/css/OverviewForParticipantsStyle.css}">
-  <script type="text/javascript">
-    function func(nickname,note) {
-      document.getElementById('nickname').innerHTML = nickname;
-      document.getElementById('note').innerHTML = note;
-    }
-  </script>
 </head>
 
 <body>
@@ -40,7 +34,7 @@
             <div class="title-people-container">
               <div class="title" th:text="${cp.comp_name}">初心者歓迎！ほげほげ大会</div>
               <img src="..\..\images\people.png" class="people-logo">
-              <div class="people" th:text="${cp.count + '/' + cp.limit_of_participants}">20/50</div>
+              <div class="people" th:text="${'2/' + cp.limit_of_participants}">20/50</div>
             </div>
             <div class="game-title" th:text="${'🎮【' + cp.gameBean.hard + '】' + cp.gameBean.game_name}">🎮【PC】Tom
               Clansy's Reinbow Six Siege</div>
@@ -62,14 +56,15 @@
                 <div class="people">参加者一覧</div>
                 <div class="participants">
 
-                  <div th:each="user: ${user}">
-                    <label for="hoge_user-pop-up" th:onclick="|func('__${user.nickname}__','__${user.note}__')|" th:text="${user.nickname}">hoge_user</label>
+                  <div th:each="cpart : ${comppart}">
+                    
+                    <label for="hoge_user-pop-up" th:text="${cpart.nickname}">hoge_user</label>
                     <input type="checkbox" id="hoge_user-pop-up">
                     <div class="overlay">
                       <div class="window">
-                        <div class="user-name"><span id="nickname"></span></div>
+                        <div class="user-name">hoge_user</div>
                         <div class="note">
-                          <div><span id="note"></span></div>
+                          <div>hoge_userの自己紹介</div>
                         </div>
                         <div class="button-container">
                           <label class="button-item" for="hoge_user-pop-up">戻る</label>
@@ -97,14 +92,9 @@
         </div>
       </div>
     </div>
-    <div class="button-container" th:each="cp : ${comp}">
+    <div class="button-container">
       <input type="button" class="button-item" onclick="location.href='/comp'" value="ホーム画面へ">
-      <th:block th:if="${message}">
-        <form th:action="@{/comp/cancel}" method="post">
-          <input type="submit" class="button-item" value="参加キャンセル">
-          <input type="hidden" name="comp_id" th:value="${cp.comp_id}"/>
-      </th:block>    
-      </form>
+      
     </div>
   </main>
 

@@ -1,6 +1,7 @@
 body{
     margin: 0px;
     background-color: black;
+    min-width: 1200px;
   }
   .header-container{
     background: linear-gradient(red,70%, black);
@@ -97,20 +98,17 @@ body{
   .button-item:active{
     background-color: gray;
   }
-
   input[type=checkbox]{
     width: 30px;
     height: 30px;
     vertical-align: middle;
   }
-
   #temp-footer{
     display: flex;
     background: linear-gradient(black,20%, red);
     justify-content: center;
 
   }
-
   #description-container{
     display: flex;
     align-items: baseline;

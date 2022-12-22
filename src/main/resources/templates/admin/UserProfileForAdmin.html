@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang=ja dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>ユーザープロフィール</title>
+  <link rel="stylesheet" type="text/css" href="../../static/css/UserProfileForAdminStyle.css" th:href="@{/css/UserProfileStyle.css}">
+</head>
+
+<body>
+
+  <header>
+    <div class="header-container">
+      <div class="left-container">
+        <div class="header-item">
+        </div>
+      </div>
+      <div class="right-container">
+      </div>
+      </div>
+    </div>
+
+  </header>
+
+  <main>
+    <tr th:each="ud : ${userDetail}">
+      <p>
+      <div class="display-item" th:text="${'ユーザー名    : ' + ud.user_name}"></div>
+      </p>
+      <p>
+      <div class="display-item" th:text="${'メールアドレス    : ' + ud.mail_address}"></div>
+      </p>
+
+      <div class="play-game-container">
+        <div class="child left-play-game-container">
+          <div class="play-game-item">プレイするゲーム :</div>
+        </div>
+        <div class="child right-play-game-container">
+          <div th:each="gm : ${game_List}" class="play-game-item" th:text="${gm.game_name + '(' + gm.hard + ')'}"></div>
+        </div>
+      </div>
+      <p></p>
+
+      <div id="description-container">
+        <div class="display-item-ta" th:text="${'自己紹介    : ' + ud.note}" cols="30" rows="5" style="resize: none"></div>
+      </div>
+      <div style="margin: 30px;"></div>
+
+      <div id="button-container">
+        <input type="button" class="button-item" onclick="location.href='/admin/userlist'" value="戻る">
+        <form th:action="@{/users/edit}" method="post">
+          <label for="ban-button" class="button-item">BAN</label>
+          <input type="checkbox" id="ban-button">
+          <div class="overlay">
+            <div class="window">
+              <div class="really">本当にBANしますか？</div>
+              <div id="button-container2">
+                <label for="ban-button" class="button-item">いいえ</label>
+                <input type="button" class="button-item" value="はい">
+              </div>
+            </div>
+          </div>
+          <!--<input type="hidden" name="password" th:value="${game_List}"/>-->
+        </form>
+      </div>
+    </tr>
+  </main>
+  <footer>
+    <div id="temp-footer">©Competition Assistance Tool</div>
+  </footer>
+
+</body>
+
+</html>

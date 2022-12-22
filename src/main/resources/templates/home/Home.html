@@ -12,16 +12,25 @@
   <header>
     <div class="header-container">
       <div class="left-container">
-        <a href="users/profile">
           <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
-        </a>
         <div class="header-item">
-          <input type="search" name="search" placeholder="大会を検索">
-          <input type="submit" name="submit" id="search_button" value="検索">
+          <form th:action="@{/comp/searchcomp}" method="post">
+            <input type="search" name="comp_name" placeholder="大会を検索">
+            <input type="submit" name="form" value="検索">
+          </form>
+          <form th:action="@{/comp/searchgamecomp}" method="post">
+            <select class="input-item" name="game_id">
+              <option value="0" selected>ゲーム名検索</option>
+              <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
+            </select>
+            <input type="submit" name="form" value="検索">
+          </form>
         </div>
       </div>
       <div class="right-container">
-        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+        <a href="/users/profile">
+          <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+        </a>
         <div class="header-item">user name</div>
       </div>
     </div>
@@ -30,24 +39,23 @@
 
   <main class="main-container">
     <div class="left-main-container">
-      <input class="left-main-item" type="button" onclick="location.href='comp/CreateComp'" value="大会を開く">
+      <input class="left-main-item" type="button" onclick="location.href='/comp/CreateComp'" value="大会を開く">
     </div>
     <div class="center-main-container">
       <div class="heading">
         <p>■受付中の大会</p>
       </div>
       <table>
-          <tr th:each="cm : ${comp}">
+          <tr th:each="cm : ${comp}" >
             <form th:action="@{/comp/Overview}" name="form "method="post">  
               <div class="center-main-item linkbox">
                 <div class="title-people-container">
                   <div class="title" th:text="${cm.comp_name}"></div>
                   <img src="..\..\images\people.png" class="people-logo">
-                  <div class="people" th:text="${'2/' + cm.limit_of_participants}"></div>
+                  <div class="people" th:text="${cm.count + '/' + cm.limit_of_participants}"></div>
                 </div>
                 <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
-                <div class="day-text">日程：</div>
-                <div class="schedule" th:text="${cm.start_date + '~' + cm.end_date}"></div>
+                <div class="schedule" th:text="${'日程：' + cm.start_date + '~' + cm.end_date}"></div>
                 <input type="hidden" name="comp_id" th:value="${cm.comp_id}"/>
                 <button type="submit" title="comp_button"></button>
               </div>
@@ -59,15 +67,11 @@
       <div class="heading">
         <p>■参加している大会</p>
       </div>
-      <div class="right-main-item">
-        <div class="title">初心者歓迎！ほげほげ大会</div>
-        <div class="game-title">🎮【PC】Tom Clansy's Reinbow Six Siege</div>
-        <div class="nickname">ニックネーム：hogehogenick</div>
+      <div class="right-main-item" th:each="part : ${participated}">
+        <div class="title" th:text="${part.comp_name}"></div>
+        <div class="game-title"th:text="${'🎮【' + part.gameBean.hard + '】' + part.gameBean.game_name}"></div>
+        <div class="nickname"th:text="${'ニックネーム：' + part.nickname}"></div>
       </div>
-      <div class="right-main-item">参加済み大会2</div>
-      <div class="right-main-item">参加済み大会3</div>
-      <div class="right-main-item">参加済み大会4</div>
-      <div class="right-main-item">参加済み大会5</div>
     </div>
   </main>
 

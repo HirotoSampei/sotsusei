@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8">
+  <title>ユーザー検索</title>
+  <meta name="description" content="ディスクリプションを入力">
+  <link rel="stylesheet" type="text/css" href="../../static/css/UserSearchStyle.css" th:href="@{/css/UserSearchStyle.css}">
+
+<body>
+  <table>
+    <form th:action="@{/admin/searchuser}" method="post">
+  <div class="containaer">
+    <p class="user" style="margin-left: 45%;margin-top: 15%;">ユーザーを検索</p>
+    <div class="search_container">
+      <input type="text" name="username_searching">
+      <input type="submit" name="form" class="search_button " value="検索する">
+    </div>
+  </div>
+  <input type="button" class="buck_button" onclick="location.href='/admin'" value="戻る" />
+</form>
+</table>
+</body>
+
+</html>
