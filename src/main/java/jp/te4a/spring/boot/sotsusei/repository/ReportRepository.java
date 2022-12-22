@@ -18,8 +18,19 @@ public interface ReportRepository extends JpaRepository<ReportBean, Integer>, Jp
 	@Query("SELECT X FROM ReportBean X WHERE X.report_id = ?1") 
 	  List<ReportBean> findByReport_id(Integer report_id);
 
+	@Query("SELECT X.suspicious_user_id FROM ReportBean X WHERE X.reporter_user_id = ?1") 
+	  List<Integer> findByreporter_user_id(Integer reporter_user_id);
+
+	@Query("SELECT X FROM ReportBean X WHERE X.reporter_user_id = ?1 and X.suspicious_user_id = ?2")
+	  ReportBean findBeanByuser_id(Integer reporter_user_id, Integer suspicious_user_id);
+
 	@Transactional
     @Modifying
     @Query("DELETE FROM ReportBean X WHERE X.compBean.comp_id = ?1")
     void deleteByComp_id(Integer comp_id);
+
+	@Transactional
+    @Modifying
+    @Query("DELETE FROM ReportBean X WHERE X.reporter_user_id = ?1 and X.suspicious_user_id = ?2")
+    void deleteByuser_id(Integer reporter_user_id, Integer suspicious_user_id);
 }

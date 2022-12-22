@@ -145,13 +145,14 @@ public class CompService {
     return formList;
   }
 
-  public List<PopuserForm> popuser(Integer comp_id){
+  public List<PopuserForm> popuser(Integer comp_id, Integer user_id){
       List<PopuserForm> formList = new ArrayList<PopuserForm>();
       List<Integer> userList = compPartRepository.findByUser_id(comp_id);
     for(Integer uid:userList){
       PopuserForm popuserForm = new PopuserForm();
       UserBean popuser = userRepository.findByUser(uid);
       BeanUtils.copyProperties(popuser, popuserForm);
+      popuserForm.setLogin_id(user_id);
       popuserForm.setNickname(compPartRepository.findByNickname(comp_id, uid));
       formList.add(popuserForm);
     }

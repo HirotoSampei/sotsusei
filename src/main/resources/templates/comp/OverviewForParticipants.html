@@ -6,9 +6,19 @@
   <title>大会概要 - 参加者</title>
   <link rel="stylesheet" href="..\..\static\css\OverviewForParticipantsStyle.css" th:href="@{/css/OverviewForParticipantsStyle.css}">
   <script type="text/javascript">
-    function func(nickname,note) {
+    function func(nickname,note,user_id,login_id,comp_id) {
       document.getElementById('nickname').innerHTML = nickname;
       document.getElementById('note').innerHTML = note;
+      const hiddenField = document.getElementById('user_id');
+      const hiddenField2 = document.getElementById('comp_id');
+      hiddenField.value = user_id;
+      hiddenField2.value = comp_id;
+      if(user_id == login_id){
+        document.getElementById('button1').style.visibility = 'hidden'
+      }
+      else{
+        document.getElementById('button1').style.visibility = 'visible'
+      }
     }
   </script>
 </head>
@@ -25,7 +35,9 @@
         </div>
       </div>
       <div class="right-container">
-        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+        <a href="/users/profile">
+          <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+        </a>
         <div class="header-item">user name</div>
       </div>
     </div>
@@ -61,9 +73,8 @@
               <div class="participants-container">
                 <div class="people">参加者一覧</div>
                 <div class="participants">
-
                   <div th:each="user: ${user}">
-                    <label for="hoge_user-pop-up" th:onclick="|func('__${user.nickname}__','__${user.note}__')|" th:text="${user.nickname}">hoge_user</label>
+                    <label for="hoge_user-pop-up" th:onclick="|func('__${user.nickname}__','__${user.note}__','__${user.user_id}__','__${user.login_id}__','__${cp.comp_id}__')|" th:text="${user.nickname}">hoge_user</label>
                     <input type="checkbox" id="hoge_user-pop-up">
                     <div class="overlay">
                       <div class="window">
@@ -73,11 +84,14 @@
                         </div>
                         <div class="button-container">
                           <label class="button-item" for="hoge_user-pop-up">戻る</label>
-                          <input type="button" class="button-item" value="報告">
+                          <form th:action="@{/comp/report}" method="post">
+                            <input type="submit" class="button-item" id="button1" value="報告">
+                            <input type="hidden" name="user_id" id="user_id">
+                            <input type="hidden" name="comp_id" id="comp_id">
+                          </form>
                         </div>
                       </div>
                     </div>
-                  
                   </div>
                 </div>
               </div>
