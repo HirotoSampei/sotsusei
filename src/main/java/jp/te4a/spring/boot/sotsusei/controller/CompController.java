@@ -21,15 +21,24 @@ import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
+import jp.te4a.spring.boot.sotsusei.repository.ReportRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
 import jp.te4a.spring.boot.sotsusei.service.ImageService;
+import jp.te4a.spring.boot.sotsusei.service.ReportService;
 
 @Controller
 @RequestMapping("comp")
 public class CompController {
   @Autowired
   CompService compService;
+
+  @Autowired
+  ImageService imageService;
+
+  @Autowired
+  ReportService reportService;
+
   @Autowired
   CompRepository compRepository;
 
@@ -46,7 +55,7 @@ public class CompController {
   CompSearchRepository compSearchRepository;
 
   @Autowired
-  ImageService imageService;
+  ReportRepository reportRepository;
 
   @ModelAttribute 
   CompForm setUpForm() {
@@ -102,20 +111,20 @@ public class CompController {
   String overview(Model model, @RequestParam Integer comp_id, ModelMap modelMap, HttpServletRequest httpServletRequest){
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
-      if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
-        imageService.getlogoImage(model);
-        imageService.geticonImage(model);
-        model.addAttribute("comp", compService.partoverview(comp_id));
-        model.addAttribute("message", "True");
-        model.addAttribute("user", compService.popuser(comp_id));
-        return "comp/OverviewForParticipants";//参加者専用画面
-      }
-      else{
-        imageService.getlogoImage(model);
-        imageService.geticonImage(model);
-        model.addAttribute("participant_overview", compService.partoverview(comp_id));
-        return "comp/Overview";//参加前大会概要画面
-      }  
+    if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
+      model.addAttribute("comp", compService.partoverview(comp_id));
+      model.addAttribute("message", "True");
+      model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
+      return "comp/OverviewForParticipants";//参加者専用画面
+    }
+    else{
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
+      model.addAttribute("participant_overview", compService.partoverview(comp_id));
+      return "comp/Overview";//参加前大会概要画面
+    } 
   }
 
   @PostMapping(path="create") //大会作成処理
@@ -161,7 +170,7 @@ public class CompController {
     imageService.geticonImage(model);
     model.addAttribute("comp", compService.partoverview(comp_id));
     model.addAttribute("message", "True");
-    model.addAttribute("user", compService.popuser(comp_id));
+    model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
     return "comp/OverviewForParticipants";
     }
   }
@@ -236,8 +245,53 @@ public class CompController {
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
       model.addAttribute("message", "True");
     }
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
     model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
     model.addAttribute("comp", compService.partoverview(comp_id));
+    model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
     return "comp/OverviewForParticipants";
   }
+
+  @PostMapping(path = "report") //通報画面遷移
+  String report(@RequestParam Integer user_id, Integer comp_id, Model model) {
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
+    model.addAttribute("user", user_id);
+    model.addAttribute("comp", comp_id);
+    return "comp/Report";
+  }
+
+  @PostMapping(path = "Reporting") //通報機能
+  String Reporting(@RequestParam Integer rpuser_id, Integer comp_id, String remarks, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    List<Integer> list = reportRepository.findByreporter_user_id(userBean.getUser_id());
+    Integer user_id = userBean.getUser_id();
+    if(list.contains(rpuser_id)){
+      String report = reportRepository.findBeanByuser_id(user_id, rpuser_id).getReport_reason();
+      String point = "・";
+      report = report.concat(point);
+      remarks = report.concat(remarks);
+      reportRepository.deleteByuser_id(user_id, rpuser_id);
+
+    }
+    reportService.report(user_id, rpuser_id, comp_id, remarks);
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
+    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
+    model.addAttribute("comp", compService.partoverview(comp_id));
+    model.addAttribute("user", compService.popuser(comp_id, user_id));
+    return "comp/OverviewForParticipants";
+  }
+
+  @PostMapping(path = "comp_report") //通報画面遷移
+  String comp_report(@RequestParam Integer host_user_id, Integer comp_id, Model model) {
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
+    model.addAttribute("user", host_user_id);
+    model.addAttribute("comp", comp_id);
+    return "comp/Report";
+  }
+
 }
