@@ -102,20 +102,20 @@ public class CompController {
   String overview(Model model, @RequestParam Integer comp_id, ModelMap modelMap, HttpServletRequest httpServletRequest){
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
-    if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
-      imageService.getlogoImage(model);
-      imageService.geticonImage(model);
-      model.addAttribute("comp", compService.partoverview(comp_id));
-      model.addAttribute("message", "True");
-      model.addAttribute("user", compService.popuser(comp_id));
-      return "comp/OverviewForParticipants";//参加者専用画面
-    }
-    else{
-      imageService.getlogoImage(model);
-      imageService.geticonImage(model);
-      model.addAttribute("participant_overview", compService.partoverview(comp_id));
-      return "comp/Overview";//参加前大会概要画面
-    } 
+      if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
+        imageService.getlogoImage(model);
+        imageService.geticonImage(model);
+        model.addAttribute("comp", compService.partoverview(comp_id));
+        model.addAttribute("message", "True");
+        model.addAttribute("user", compService.popuser(comp_id));
+        return "comp/OverviewForParticipants";//参加者専用画面
+      }
+      else{
+        imageService.getlogoImage(model);
+        imageService.geticonImage(model);
+        model.addAttribute("participant_overview", compService.partoverview(comp_id));
+        return "comp/Overview";//参加前大会概要画面
+      }  
   }
 
   @PostMapping(path="create") //大会作成処理
@@ -144,6 +144,14 @@ public class CompController {
         return "comp/Overview";
       }
     }
+    if(compRepository.findByComp_id(comp_id).getLimit_of_participants() == compPartRepository.countByComp_id(comp_id)){
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
+      model.addAttribute("participant_overview", compService.partoverview(comp_id));
+      model.addAttribute("limitMessage", "参加人数が上限に達しています。");
+      return "comp/Overview";//参加前大会概要画面
+    }
+    else{
     CompPartBean compPartBean = new CompPartBean();
     compPartBean.setComp_id(comp_id);
     compPartBean.setUser_id(userBean.getUser_id());
@@ -155,6 +163,7 @@ public class CompController {
     model.addAttribute("message", "True");
     model.addAttribute("user", compService.popuser(comp_id));
     return "comp/OverviewForParticipants";
+    }
   }
 
   @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
