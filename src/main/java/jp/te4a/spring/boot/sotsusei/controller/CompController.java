@@ -257,6 +257,8 @@ public class CompController {
   String report(@RequestParam Integer user_id, Integer comp_id, Model model) {
     imageService.getlogoImage(model);
     imageService.geticonImage(model);
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
     model.addAttribute("user", user_id);
     model.addAttribute("comp", comp_id);
     return "comp/Report";
@@ -287,6 +289,8 @@ public class CompController {
 
   @PostMapping(path = "comp_report") //通報画面遷移
   String comp_report(@RequestParam Integer host_user_id, Integer comp_id, Model model) {
+    imageService.getlogoImage(model);
+    imageService.geticonImage(model);
     imageService.getlogoImage(model);
     imageService.geticonImage(model);
     model.addAttribute("user", host_user_id);
