@@ -14,19 +14,44 @@
 </head>
 
 <body>
-  <header>
-    <div class="header-container">
-      <div class="left-container">
-        <img src=..\..\images\cat_logo.png class="header-item" width="90px" height="60px">
-        <div class="header-item">
-          <input type="search" name="search" placeholder="大会を検索">
-          <input type="submit" name="submit" id="search_button" value="検索">
-        </div>
+<header>
+  <div class="header-container">
+    <div class="left-container">
+      <a href="/comp">
+        <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
+      </a>
+      <div class="header-item">
+        <input type="search" name="search" placeholder="大会を検索">
+        <input type="submit" name="submit" id="search_button" value="検索">
       </div>
-      <div class="right-container">
-        <div class="header-item">user icon</div>
-        <div class="header-item">user name</div>
+    </div>
+    <div class="right-container">
+      <a href="/users/profile">
+        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+      </a>
+      <div class="header-item">user name</div>
       </div>
+  </div>
+</header>
+
+<main>
+  <table>
+    <form name="form1">
+      <div class="text">通報理由：</div>
+      <textarea class="input-item-ta" name="remarks" cols="30" rows="5" style="resize: none"></textarea>
+    </form>
+    <div style="margin: 30px;"></div>
+    <div class="button-container">
+      <form th:action="@{/comp/Overview}" method="post">
+        <input type="submit" class="button-item" value="戻る">
+        <input type="hidden" name="comp_id" th:value="${comp}"/>
+      </form>
+      <form th:action="@{/comp/Reporting}" method="post">
+        <input type="submit" class="button-item" th:onclick="|func()|" value="通報">
+        <input type="hidden" name="rpuser_id" th:value="${user}"/>
+        <input type="hidden" name="comp_id" th:value="${comp}"/>
+        <input type="hidden" name="remarks" id="remarks" />
+      </form>
     </div>
   </header>
 
