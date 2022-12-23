@@ -17,11 +17,11 @@
         </a>
         <div class="header-item">
           <form th:action="@{/comp/searchcomp}" method="post">
-            <input type="search" class="comp_name" placeholder="大会を検索">
-            <input type="submit" class="form" value="検索">
+            <input type="search" class="comp_name" name="comp_name" placeholder="大会を検索">
+            <input type="submit" class="form" name="form" value="検索">
           </form>
           <form th:action="@{/comp/searchgamecomp}" method="post">
-            <select class="input-item" class="game_id">
+            <select class="input-item game_id" name="game_id">
               <option value="0" selected>ゲーム名検索</option>
               <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
             </select>
