@@ -280,12 +280,18 @@ public class CompController {
 
     }
     reportService.report(user_id, rpuser_id, comp_id, remarks);
-    imageService.getlogoImage(model);
-    imageService.geticonImage(model);
-    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
-    model.addAttribute("comp", compService.partoverview(comp_id));
-    model.addAttribute("user", compService.popuser(comp_id, user_id));
-    return "comp/OverviewForParticipants";
+    if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
+      model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
+      model.addAttribute("comp", compService.partoverview(comp_id));
+      model.addAttribute("user", compService.popuser(comp_id, user_id));
+      return "comp/OverviewForParticipants";//参加者専用画面
+    }
+      imageService.getlogoImage(model);
+      imageService.geticonImage(model);
+      model.addAttribute("participant_overview", compService.partoverview(comp_id));
+      return "comp/Overview";//参加前大会概要画面
   }
 
   @PostMapping(path = "comp_report") //通報画面遷移
