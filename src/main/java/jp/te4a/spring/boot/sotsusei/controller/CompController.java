@@ -70,6 +70,7 @@ public class CompController {
     UserBean userBean = userRepository.findByMail_address(user_pass);
     model.addAttribute("comp", compService.findAll());
     model.addAttribute("participated", compService.participated(userBean.getUser_id()));
+    model.addAttribute("user_name", userBean.getUser_name());
     return "home/Home";
   }
 
