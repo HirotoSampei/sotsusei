@@ -103,7 +103,7 @@ public class CompService {
    public List<ParticipatedForm> hostoverview(Integer user_id){
     List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
     ParticipatedForm participatedForm = new ParticipatedForm();
-    CompBean overview = compRepository.findByHost_user_id(user_id);
+    CompBean overview = compRepository.findBeanByHost_user_id(user_id);
     //CompBean ovcomp_id = compRepository.findByComp_idToHost_user_id(user_id);
     BeanUtils.copyProperties(overview, participatedForm);
     participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));

@@ -84,7 +84,7 @@ public class CompController {
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "comp/CreateComp";
     }
-    else if(compRepository.findByHost_user_id(login_user_id) != null){
+    else if(compRepository.findBeanByHost_user_id(login_user_id) != null){
       imageService.getlogoImage(model);
       imageService.geticonImage(model);
       return "redirect:/comp/OverViewForHost";
