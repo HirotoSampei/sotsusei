@@ -12,7 +12,9 @@
   <header>
     <div class="header-container">
       <div class="left-container">
+        <a href="/comp">
           <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
+        </a>
         <div class="header-item">
           <form th:action="@{/comp/searchcomp}" method="post">
             <input type="search" class="comp_name" placeholder="大会を検索">
