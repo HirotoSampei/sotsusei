@@ -134,7 +134,7 @@ public class AdminController {
     model.addAttribute("reuserDetail", userSearchRepository.findByUser_idLike(reporter_user_id));
     model.addAttribute("suuserDetail", userSearchRepository.findByUser_idLike(suspicious_user_id));
     model.addAttribute("reportDetail", reportRepository.findByReport_id(report_id));
-    return "admin/reporting_details";
+    return "admin/ReportingDetails";
   }
   @PostMapping(path="compdelete")
   String comp_delete(@RequestParam Integer comp_id){
