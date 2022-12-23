@@ -259,6 +259,7 @@ main {
   border-radius: 30px 30px 30px 30px;
   overflow-wrap: break-word;
   overflow-y: auto;
+  font-size: 30px;
 }
 
 /*ここから自動生成*/
