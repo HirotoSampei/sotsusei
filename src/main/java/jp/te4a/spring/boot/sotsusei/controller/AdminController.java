@@ -14,6 +14,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.bean.GameBean;
+import jp.te4a.spring.boot.sotsusei.bean.CompBean;
+import jp.te4a.spring.boot.sotsusei.bean.CompsearchBean;
+import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
+import jp.te4a.spring.boot.sotsusei.form.CompForm;
+import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
@@ -94,11 +102,11 @@ public class AdminController {
     user_id_ss = userSearchRepository.findIdByUser_nameLike(username_ss);
     List<CompBean> comp_s = new ArrayList<CompBean>();
     for(int i = 0; i < user_id_ss.size(); i++){
-      comp_s.add(compRepository.findByHost_user_id(user_id_ss.get(i)));
+      comp_s.add(compRepository.findBeanByHost_user_id(user_id_ss.get(i)));
       
     }
     model.addAttribute("compList", comp_s);
-    return "admin/CompSearch-sample";
+    return "admin/comp-search-sample";
   }//検索した要素を含むユーザーのuser_idを所得、それがhost_user_idに含まれる大会をとってきたい
   @PostMapping(path="userdetail")
   String user_detail(@RequestParam Integer user_id, Model model, ModelMap modelMap){
@@ -126,7 +134,7 @@ public class AdminController {
     model.addAttribute("reuserDetail", userSearchRepository.findByUser_idLike(reporter_user_id));
     model.addAttribute("suuserDetail", userSearchRepository.findByUser_idLike(suspicious_user_id));
     model.addAttribute("reportDetail", reportRepository.findByReport_id(report_id));
-    return "admin/ReportingDetails";
+    return "admin/reporting_details";
   }
   @PostMapping(path="compdelete")
   String comp_delete(@RequestParam Integer comp_id){
@@ -134,5 +142,15 @@ public class AdminController {
     reportRepository.deleteByComp_id(comp_id);
     compPartRepository.deleteByuser_id(comp_id);
     return "redirect:/admin/complist";
+  }
+  @PostMapping(path="ban_from_report")
+  String ban_r(@RequestParam Integer suspicious_user_id, Model model){
+    userRepository.updateByUser_id(suspicious_user_id);
+    return "redirect:/admin/reportlist";
+  }
+  @PostMapping(path="ban_from_user")
+  String ban_u(@RequestParam Integer user_id, Model model){
+    userRepository.updateByUser_id(user_id);
+    return "redirect:/admin/userlist";
   }
 }

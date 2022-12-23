@@ -21,7 +21,7 @@
     </div>
 
   </header>
-
+<form th:action="@{/admin/ban_from_user}" name="form" method="post">
   <main>
     <tr th:each="ud : ${userDetail}">
       <p>
@@ -56,7 +56,8 @@
               <div class="really">本当にBANしますか？</div>
               <div id="button-container2">
                 <label for="ban-button" class="button-item">いいえ</label>
-                <input type="button" class="button-item" value="はい">
+                <input type="hidden" name="user_id" th:value="${ud.user_id}"/>
+                <input type="submit" class="button-item" value="はい">
               </div>
             </div>
           </div>
@@ -65,6 +66,7 @@
       </div>
     </tr>
   </main>
+</form>
   <footer>
     <div id="temp-footer">©Competition Assistance Tool</div>
   </footer>
