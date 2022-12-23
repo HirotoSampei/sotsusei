@@ -2,9 +2,7 @@ package jp.te4a.spring.boot.sotsusei.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
@@ -53,7 +50,7 @@ public class UserController {
         return new UserForm();
     }
     @GetMapping
-    String list(Model model) { //新規登録画面に飛ぶ際の動き
+    String list(Model model) { //新規登録画面遷移
       imageService.getlogoImage(model);
       imageService.geticonImage(model);
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
@@ -67,7 +64,7 @@ public class UserController {
         userService.create(form, game_id);
         return "redirect:/login";
     }
-    @GetMapping(path = "profile") //プロフィール画面に飛ぶ際の動き
+    @GetMapping(path = "profile") //プロフィール画面遷移
     String profile_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
       String user_pass = httpServletRequest.getRemoteUser();
       UserBean userBean = userRepository.findByMail_address(user_pass);
@@ -82,7 +79,7 @@ public class UserController {
       model.addAttribute("profile",userBean);
       return "users/Userprofile";
     }
-    @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
+    @PostMapping(path = "edit", params = "form") //編集画面遷移
     String editForm(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ UserForm form, Model model) {
       UserForm userForm = userService.findOne(user_id);
       UserBean userBean = userRepository.getById(user_id);
@@ -93,7 +90,7 @@ public class UserController {
       model.addAttribute("edit",userBean);
       return "users/Edituser2";
     }
-    @PostMapping(path = "edit") //編集した内容を登録する時の動き
+    @PostMapping(path = "edit") //編集内容登録機能
     String edit(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ @Validated UserForm form, BindingResult result, String[] game_id) {
       if(result.hasErrors()) {
       return editForm(user_id,/*game_List,*/ form, Model);

@@ -1,42 +1,68 @@
 <!DOCTYPE html>
 <html lang=ja dir="ltr">
+
 <head>
   <meta charset="utf-8">
   <title>通報</title>
   <link rel="stylesheet" type="text/css" href="../../static/css/ReportStyle.css" th:href="@{/css/ReportStyle.css}">
+  <script type="text/javascript">
+    function func() {
+      const hiddenField = document.getElementById('remarks');
+      hiddenField.value = document.form1.remarks.value;
+    }
+  </script>
 </head>
+
 <body>
 <header>
   <div class="header-container">
     <div class="left-container">
-      <img src=..\..\images\cat_logo.png  class="header-item" width="90px" height="60px">
+      <a href="/comp">
+        <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
+      </a>
       <div class="header-item">
         <input type="search" name="search" placeholder="大会を検索">
         <input type="submit" name="submit" id="search_button" value="検索">
       </div>
     </div>
     <div class="right-container">
-      <div class="header-item">user icon</div>
+      <a href="/users/profile">
+        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+      </a>
       <div class="header-item">user name</div>
       </div>
   </div>
 </header>
 
-<main>
-  <table>
-    <div class="text">通報理由：</div>
-    <textarea class="input-item-ta" name="remarks" cols="30" rows="5" style="resize: none"></textarea>
-    
-    <div style="margin: 30px;"></div>
-    <div class="button-container">
-      <input type="submit" class="button-item" onclick="history.back(-1)" value="戻る">
-      <input type="button" class="button-item" onclick="alert('通報')" value="通報">
-    </div>
-  </table>
-</main>
+  <main>
+    <table>
+      <form name="form1">
+        <div class="text">通報理由：</div>
+        <textarea class="input-item-ta" name="remarks" cols="30" rows="5" style="resize: none"></textarea>
+      </form>
+      <div style="margin: 30px;"></div>
+      <div class="button-container">
+        <div>
+          <form th:action="@{/comp/Overview}" method="post">
+            <input type="submit" class="button-item" value="戻る">
+            <input type="hidden" name="comp_id" th:value="${comp}" />
+          </form>
+        </div>
+        <div>
+          <form th:action="@{/comp/Reporting}" method="post">
+            <input type="submit" class="button-item" th:onclick="|func()|" value="通報">
+            <input type="hidden" name="rpuser_id" th:value="${user}" />
+            <input type="hidden" name="comp_id" th:value="${comp}" />
+            <input type="hidden" name="remarks" id="remarks" />
+          </form>
+        </div>
+      </div>
+    </table>
+  </main>
 
-<footer>
- <div id="temp-footer">©Competition Assistance Tool</div>
-</footer>
+  <footer>
+    <div id="temp-footer">©Competition Assistance Tool</div>
+  </footer>
 </body>
+
 </html>

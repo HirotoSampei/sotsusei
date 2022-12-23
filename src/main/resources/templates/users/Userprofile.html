@@ -10,14 +10,18 @@
 <header>
   <div class="header-container">
     <div class="left-container">
-      <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
+      <a href="/comp">
+        <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
+      </a>
       <div class="header-item">
         <input type="search" name="search" placeholder="大会を検索">
         <input type="submit" name="submit" id="search_button" value="検索">
       </div>
     </div>
     <div class="right-container">
-      <img th:src="${cat_icon_image}" class="header-icon-item" width="60px" height="60px">
+      <a href="/users/profile">
+        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+      </a>
       <div class="header-item">user name</div>
       </div>
   </div>

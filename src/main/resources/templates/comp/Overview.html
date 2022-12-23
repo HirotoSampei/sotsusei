@@ -12,14 +12,18 @@
   <header>
     <div class="header-container">
       <div class="left-container">
-        <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
+        <a href="/comp">
+          <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
+        </a>
         <div class="header-item">
           <input type="search" name="search" placeholder="大会を検索">
           <input type="submit" name="submit" id="search_button" value="検索">
         </div>
       </div>
       <div class="right-container">
-        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+        <a href="/users/profile">
+          <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+        </a>
         <div class="header-item">user name</div>
       </div>
     </div>
@@ -52,7 +56,11 @@
             </div>
             <div class="deadline-report-container">
               <div></div>
-              <input type="button" class="report-button" onclick="" value="大会を通報">
+              <form th:action="@{/comp/comp_report}" method="post">
+                <input type="submit" class="report-button" value="大会を通報">
+                <input type="hidden" name="host_user_id" th:value="${po.host_user_id}">
+                <input type="hidden" name="comp_id" th:value="${po.comp_id}">
+              </form>
             </div>
           </tr>
         </table>
@@ -89,6 +97,7 @@
           <input type="button" value="投稿">
         </div>
         <div th:if="${errorMessage}" th:text="${errorMessage}" class="error"> </div>
+        <div th:if="${limitMessage}" th:text="${limitMessage}" class="error"></div>
       </div>
     </div>
     <div class="bottom-container">

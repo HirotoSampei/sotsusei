@@ -195,6 +195,7 @@ main {
   background-color: rgb(255, 255, 255);
   font-size: 30px;
   color: rgb(10, 108, 255);
+  border: solid 3px black;
   padding-top: 15px;
   padding-left: 30px;
   padding-right: 30px;
@@ -258,6 +259,7 @@ main {
   border-radius: 30px 30px 30px 30px;
   overflow-wrap: break-word;
   overflow-y: auto;
+  font-size: 30px;
 }
 
 /*ここから自動生成*/

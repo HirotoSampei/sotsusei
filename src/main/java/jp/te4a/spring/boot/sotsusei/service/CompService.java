@@ -103,7 +103,7 @@ public class CompService {
    public List<ParticipatedForm> hostoverview(Integer user_id){
     List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
     ParticipatedForm participatedForm = new ParticipatedForm();
-    CompBean overview = compRepository.findByHost_user_id(user_id);
+    CompBean overview = compRepository.findBeanByHost_user_id(user_id);
     //CompBean ovcomp_id = compRepository.findByComp_idToHost_user_id(user_id);
     BeanUtils.copyProperties(overview, participatedForm);
     participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
@@ -145,13 +145,14 @@ public class CompService {
     return formList;
   }
 
-  public List<PopuserForm> popuser(Integer comp_id){
+  public List<PopuserForm> popuser(Integer comp_id, Integer user_id){
       List<PopuserForm> formList = new ArrayList<PopuserForm>();
       List<Integer> userList = compPartRepository.findByUser_id(comp_id);
     for(Integer uid:userList){
       PopuserForm popuserForm = new PopuserForm();
       UserBean popuser = userRepository.findByUser(uid);
       BeanUtils.copyProperties(popuser, popuserForm);
+      popuserForm.setLogin_id(user_id);
       popuserForm.setNickname(compPartRepository.findByNickname(comp_id, uid));
       formList.add(popuserForm);
     }
