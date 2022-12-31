@@ -68,7 +68,7 @@ public class CompController {
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
-    model.addAttribute("comp", compService.findAll());
+    model.addAttribute("comp", compService.compAllgamesearch(userBean.getUser_id()));
     model.addAttribute("participated", compService.participated(userBean.getUser_id()));
     model.addAttribute("user_name", userBean.getUser_name());
     return "home/Home";

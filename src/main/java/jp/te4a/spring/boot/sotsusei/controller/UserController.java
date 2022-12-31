@@ -30,7 +30,6 @@ import jp.te4a.spring.boot.sotsusei.service.UserService;
 @Controller
 @RequestMapping("users")
 public class UserController {
-    private static final Model Model = null;
     @Autowired
     UserService userService;
     @Autowired
@@ -91,10 +90,10 @@ public class UserController {
       return "users/Edituser2";
     }
     @PostMapping(path = "edit") //編集内容登録機能
-    String edit(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ @Validated UserForm form, BindingResult result, String[] game_id) {
-      if(result.hasErrors()) {
-      return editForm(user_id,/*game_List,*/ form, Model);
-      }
+    String edit(@RequestParam Integer user_id, @Validated UserForm form, BindingResult result, String[] game_id) {
+      /*if(result.hasErrors()) {
+      return editForm(user_id, form, Model);
+      }*/
       UserBean userBean = userRepository.getById(user_id);
       form.setPassword(userBean.getPassword());
       form.setMail_address(userBean.getMail_address());
