@@ -275,4 +275,12 @@ public class CompController {
       return "comp/Overview";//参加前大会概要画面
   }
 
+  @PostMapping(path = "comp_report") //通報画面遷移
+  String comp_report(@RequestParam Integer host_user_id, Integer comp_id, Model model) {
+    imageService.getImage(model);
+    model.addAttribute("user", host_user_id);
+    model.addAttribute("comp", comp_id);
+    return "comp/Report";
+  }
+
 }

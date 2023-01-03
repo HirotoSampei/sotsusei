@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.form.UserEditForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
@@ -77,7 +79,7 @@ public class UserController {
       return "users/Userprofile";
     }
     @PostMapping(path = "edit", params = "form") //編集画面遷移
-    String editForm(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ UserForm form, Model model) {
+    String editForm(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ UserEditForm form, Model model) {
       UserForm userForm = userService.findOne(user_id);
       UserBean userBean = userRepository.getById(user_id);
       BeanUtils.copyProperties(userForm,  form);
@@ -87,10 +89,18 @@ public class UserController {
       return "users/Edituser2";
     }
     @PostMapping(path = "edit") //編集内容登録機能
-    String edit(@RequestParam Integer user_id, @Validated UserForm form, BindingResult result, String[] game_id) {
-      /*if(result.hasErrors()) {
-      return editForm(user_id, form, Model);
-      }*/
+    String edit(@RequestParam Integer user_id, @Validated UserEditForm form, BindingResult result, String[] game_id ,Model model) {
+      if(result.hasErrors() || game_id == null) {
+        List<String> errorList = new ArrayList<String>();
+        for (ObjectError error : result.getAllErrors()) {
+          errorList.add(error.getDefaultMessage());
+        }
+      if(game_id == null){
+        errorList.add("プレイ中のゲームを選択してください");
+      }
+      model.addAttribute("validationError", errorList);
+      return editForm(user_id, form, model);
+      }
       UserBean userBean = userRepository.getById(user_id);
       form.setPassword(userBean.getPassword());
       form.setMail_address(userBean.getMail_address());
