@@ -58,7 +58,15 @@ public class UserController {
     }
     @PostMapping(path="create")
       String create(@Validated UserForm form, BindingResult result, Model model, String[] game_id) {
-        if(result.hasErrors()) {
+        if(result.hasErrors() || game_id == null) {
+          List<String> errorList = new ArrayList<String>();
+          for (ObjectError error : result.getAllErrors()) {
+            errorList.add(error.getDefaultMessage());
+          }
+        if(game_id == null){
+          errorList.add("プレイ中のゲームを選択してください");
+        }
+          model.addAttribute("validationError", errorList);
           return list(model);
         }
         userService.create(form, game_id);
@@ -98,8 +106,8 @@ public class UserController {
       if(game_id == null){
         errorList.add("プレイ中のゲームを選択してください");
       }
-      model.addAttribute("validationError", errorList);
-      return editForm(user_id, form, model);
+        model.addAttribute("validationError", errorList);
+        return editForm(user_id, form, model);
       }
       UserBean userBean = userRepository.getById(user_id);
       form.setPassword(userBean.getPassword());
