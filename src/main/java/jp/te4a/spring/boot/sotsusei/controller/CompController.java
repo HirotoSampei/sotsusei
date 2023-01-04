@@ -1,6 +1,7 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -122,8 +124,13 @@ public class CompController {
   }
 
   @PostMapping(path="create") //大会作成処理
-  String create(@Validated CompForm form, @RequestParam boolean radio_button, BindingResult result , Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+  String create(@RequestParam boolean radio_button, @Validated CompForm form, BindingResult result , Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     if(result.hasErrors()) {
+      List<String> errorList = new ArrayList<String>();
+        for (ObjectError error : result.getAllErrors()) {
+          errorList.add(error.getDefaultMessage());
+        }
+      model.addAttribute("validationError", errorList);
       return create_list(model, modelMap, httpServletRequest);
     }
     String user_pass = httpServletRequest.getRemoteUser();
