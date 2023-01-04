@@ -183,9 +183,14 @@ public class CompController {
     return "comp/EditComp";
   }
   @PostMapping(path = "edit") //編集した内容を登録する時の動き
-  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, Model model, HttpServletRequest httpServletRequest) {
   if(result.hasErrors()) {
-  return editForm(comp_id, form, null);
+    List<String> errorList = new ArrayList<String>();
+      for (ObjectError error : result.getAllErrors()) {
+        errorList.add(error.getDefaultMessage());
+      }
+    model.addAttribute("validationError", errorList);
+    return editForm(comp_id, form, model);
   }
   String user_pass = httpServletRequest.getRemoteUser();
   UserBean userBean = userRepository.findByMail_address(user_pass);
