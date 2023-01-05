@@ -29,9 +29,11 @@
 </header>
 <form th:action="@{/comp/create}" th:object="${compForm}" method="post">
   <main>
-    <tr th:if="${validationError}" th:each="error : ${validationError}">
-      <td th:text="${error}"></td><br>
-    </tr>
+    <div class="validationError">
+      <tr th:if="${validationError}" th:each="error : ${validationError}">
+        <td th:text="${error}"></td><br>
+      </tr>
+    </div>
     <table>
       <div id="input-container">
         <p>大会名　  :<input type="text" class="input-item" name="comp_name" th:field="*{comp_name}"></p> 
