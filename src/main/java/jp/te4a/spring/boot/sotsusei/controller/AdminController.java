@@ -89,7 +89,7 @@ public class AdminController {
   @GetMapping("/complist") //大会作成画面
   String create_complist(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
-      return "admin/complist-sample";
+      return "admin/admin-search-comp";
   }
   @PostMapping(path="searchcomp", params = "form")
   String comp_search(@RequestParam Integer game_id, Model model){
