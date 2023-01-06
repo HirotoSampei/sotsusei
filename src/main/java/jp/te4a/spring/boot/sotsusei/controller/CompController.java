@@ -34,28 +34,20 @@ import jp.te4a.spring.boot.sotsusei.service.ReportService;
 public class CompController {
   @Autowired
   CompService compService;
-
   @Autowired
   ImageService imageService;
-
   @Autowired
   ReportService reportService;
-
   @Autowired
   CompRepository compRepository;
-
   @Autowired
   UserRepository userRepository;
-
   @Autowired
   GameRepository gameRepository;
-
   @Autowired
   CompPartRepository compPartRepository;
-
   @Autowired
   CompSearchRepository compSearchRepository;
-
   @Autowired
   ReportRepository reportRepository;
 

@@ -1,10 +1,7 @@
 package jp.te4a.spring.boot.sotsusei.form;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-
 import org.hibernate.validator.constraints.Length;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
