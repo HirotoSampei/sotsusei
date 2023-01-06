@@ -264,6 +264,14 @@ public class CompController {
   String Reporting(@RequestParam Integer rpuser_id, Integer comp_id, String remarks, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
+    if(remarks == ""){
+      String errormessage = "通報理由を入力してください";
+      model.addAttribute("errormessage", errormessage);
+      if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
+        return report(rpuser_id, comp_id, model);
+      }
+      return comp_report(rpuser_id, comp_id, model);
+    }
     List<Integer> list = reportRepository.findByreporter_user_id(userBean.getUser_id());
     Integer user_id = userBean.getUser_id();
     if(list.contains(rpuser_id)){
