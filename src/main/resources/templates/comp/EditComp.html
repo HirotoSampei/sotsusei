@@ -29,6 +29,11 @@
 </header>
 <form th:action="@{/comp/edit}" th:object="${compForm}" method="post">
   <main>
+    <div class="validationError">
+      <tr th:if="${validationError}" th:each="error : ${validationError}">
+        <td th:text="${error}"></td><br>
+      </tr>
+    </div>
     <table>
       <div id="input-container">
           <tr th:each="el : ${editlist}">

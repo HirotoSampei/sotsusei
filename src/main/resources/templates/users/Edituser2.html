@@ -29,6 +29,11 @@
 </header>
   
 <main>
+  <div class="validationError">
+    <tr th:if="${validationError}" th:each="error : ${validationError}">
+      <td th:text="${error}"></td><br>
+    </tr>
+  </div>
   <form th:action="@{/users/edit}" th:object="${userForm}" method="post">
     <th th:each="us : ${edit}">
       <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:value="${us.user_name}"></p>

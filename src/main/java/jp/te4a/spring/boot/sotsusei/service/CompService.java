@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
+import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.form.ParticipatedForm;
 import jp.te4a.spring.boot.sotsusei.form.PopuserForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
+import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
@@ -33,6 +35,9 @@ public class CompService {
 
   @Autowired
   CompPartRepository compPartRepository;
+
+  @Autowired
+  GameplayRepository gameplayRepository;
 
   public CompForm create(CompForm compForm, Integer game_id, String user_pass, boolean radio_button) {
 	  CompBean compBean = new CompBean();
@@ -129,6 +134,21 @@ public class CompService {
       BeanUtils.copyProperties(compBean, participatedForm);
       participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
       formList.add(participatedForm); 
+    }
+    return formList;
+   }
+
+   public List<ParticipatedForm> compAllgamesearch(Integer user_id){
+    List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
+    List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(user_id);
+    for (int i = 0; i < gameplay_idList.size(); i++){
+      List<CompBean> compList = compRepository.findByGame_idLike(gameplay_idList.get(i).getGame_id());
+      for(CompBean compBean: compList) { 
+        ParticipatedForm participatedForm = new ParticipatedForm();
+        BeanUtils.copyProperties(compBean, participatedForm);
+        participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
+        formList.add(participatedForm); 
+      }
     }
     return formList;
    }

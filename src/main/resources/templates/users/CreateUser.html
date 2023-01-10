@@ -25,8 +25,13 @@
 </header>
 <form th:action="@{/users/create}" th:object="${userForm}" method="post">
   <main>
+    <div class="validationError">
+      <tr th:if="${validationError}" th:each="error : ${validationError}">
+        <td th:text="${error}"></td><br>
+      </tr>
+    </div>
     <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:field="*{user_name}"></p>
-    <p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>
+    <p>パスワード　　　：<input type="password" class="input-item" name="password" th:field="*{password}"></p>
     <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:field="*{mail_address}"></p>
     <details>
       <summary>プレイするゲーム(複数選択)</summary>

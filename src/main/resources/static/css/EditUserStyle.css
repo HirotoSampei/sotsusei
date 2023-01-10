@@ -206,6 +206,6 @@ body{
   color: #ffffff;
 }
 
-
-
-
+.validationError {
+  color: red;
+}
