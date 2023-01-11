@@ -94,7 +94,7 @@ public class AdminController {
   @PostMapping(path="searchcomp", params = "form")
   String comp_search(@RequestParam Integer game_id, Model model){
     model.addAttribute("compList", compSearchRepository.findByGame_idLike(game_id));
-    return "admin/CompSearch-sample";
+    return "admin/compsearch-sample";
   }
   @PostMapping(path="searchcomp-un", params = "form")
   String comp_search_ss(@RequestParam String username_ss, Model model){
@@ -106,7 +106,7 @@ public class AdminController {
       
     }
     model.addAttribute("compList", comp_s);
-    return "admin/comp-search-sample";
+    return "admin/compsearch-sample";
   }//検索した要素を含むユーザーのuser_idを所得、それがhost_user_idに含まれる大会をとってきたい
   @PostMapping(path="userdetail")
   String user_detail(@RequestParam Integer user_id, Model model, ModelMap modelMap){
