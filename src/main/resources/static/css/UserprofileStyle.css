@@ -95,6 +95,11 @@ body{
     display: flex;
     justify-content: space-between;
   }
+  #hidden-button-container{
+    visibility: hidden;
+    display: flex;
+    justify-content: space-between;
+  }
   .button-item{
     background-color: white;
     font-size: 30px;

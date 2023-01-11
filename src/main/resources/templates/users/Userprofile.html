@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>ユーザー作成</title>
-  <link rel="stylesheet" href="..\..\static\css\UserProfileStyle.css" th:href="@{/css/UserProfileStyle.css}">
+  <link rel="stylesheet" href="../../static/css/UserprofileStyle.css" th:href="@{/css/UserProfileStyle.css}">
+  
 </head>
 <body>
 
@@ -29,15 +30,17 @@
 </header>
 
 <main>
+    
   <tr th:each="us : ${profile}">
     <p><div class="display-item" th:text="${'ユーザー名    : ' + us.user_name}"></div></p>
     <p><div class="display-item" th:text="${'メールアドレス    : ' + us.mail_address}"></div></p>
+    <p id="is_admin"><div style="visibility: visible;" th:text="${us.is_admin}" th:value="${us.is_admin}"></div></p>
 
     <div class="play-game-container">
       <div class="child left-play-game-container"><div class="play-game-item">プレイするゲーム   :</div></div>
       <div class="child right-play-game-container"><div th:each="gm : ${game_List}" class="play-game-item" th:text="${gm.game_name + '(' + gm.hard + ')'}"></div></div>
     </div>
-    <p></p>
+    <p id="aaa" value="ddd"></p>
 
     <div id="description-container">
       <div class="display-item-ta" th:text="${'自己紹介    : ' + us.note}" cols="30" rows="5" style="resize: none"></div>
@@ -53,11 +56,26 @@
         <!--<input type="hidden" name="password" th:value="${game_List}"/>-->
       </form>
     </div>
+    <button onclick="start()"></button>
+    <div id="hidden-button-container">
+      <input type="button" class="button-item" onclick="" value="管理者用ページへ">
+    </div>
+    <script type="text/javascript">
+      function start() {
+      var hiddenField = document.getElementById('aaa').value;
+      console.log(hiddenField);
+      if(hiddenField){
+        document.getElementById('hidden-button-container').style.visibility = 'visible'
+      }
+      else{
+        document.getElementById('hidden-button-container').style.visibility = 'hidden'
+      }
+    }
+    </script>
   </tr>
 </main>
 <footer>
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>
-
 </body>
 </html>
