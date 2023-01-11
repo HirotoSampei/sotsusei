@@ -1,17 +1,10 @@
 body {
 
     background: linear-gradient(rgb(0, 0, 0), 45%, rgb(255, 0, 0));
-
     background-size: cover;
-
-    overflow: hidden;
-
     background-attachment: fixed;
-
     height: 100%;
-
     width: 100%;
-
 }
 
 .header-container {
