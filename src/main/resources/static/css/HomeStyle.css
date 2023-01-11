@@ -2,6 +2,8 @@ body {
   margin: 0px;
   background-color: black;
   min-width: 1200px;
+  display: flex;
+  flex-direction: column;
 }
 
 .header-container {
@@ -195,9 +197,7 @@ main p {
   width: 100%;
   background: linear-gradient(black, 20%, red);
   text-align: center;
-  position: absolute;/*←絶対位置*/
-  bottom: 0; /*下に固定*/
-  /*ここ変更しました（フッターの固定*/
+  margin-top: 25%;
 }
 
 .day-text{
