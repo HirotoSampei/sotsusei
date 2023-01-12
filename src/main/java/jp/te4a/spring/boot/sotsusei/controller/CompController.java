@@ -1,6 +1,7 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,18 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.bean.CommentBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
+import jp.te4a.spring.boot.sotsusei.form.CommentForm;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
+import jp.te4a.spring.boot.sotsusei.form.PopuserForm;
+import jp.te4a.spring.boot.sotsusei.repository.CommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
@@ -26,6 +34,9 @@ import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
 import jp.te4a.spring.boot.sotsusei.service.ImageService;
 import jp.te4a.spring.boot.sotsusei.service.ReportService;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("comp")
@@ -56,6 +67,9 @@ public class CompController {
 
   @Autowired
   ReportRepository reportRepository;
+
+  @Autowired
+  CommentRepository commentRepository;
 
   @ModelAttribute 
   CompForm setUpForm() {
@@ -118,6 +132,8 @@ public class CompController {
       model.addAttribute("comp", compService.partoverview(comp_id));
       model.addAttribute("message", "True");
       model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
+      model.addAttribute("commentList",compService.comment(comp_id));
+      model.addAttribute("comp_id", comp_id);
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     else{
@@ -172,6 +188,7 @@ public class CompController {
     model.addAttribute("comp", compService.partoverview(comp_id));
     model.addAttribute("message", "True");
     model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
+    model.addAttribute("commentList",compService.comment(comp_id));
     return "comp/OverviewForParticipants";
     }
   }
@@ -304,5 +321,43 @@ public class CompController {
     model.addAttribute("comp", comp_id);
     return "comp/Report";
   }
+
+  @PostMapping("/check")
+  @ResponseBody
+  String comp_comment(@RequestParam String comp_id, String comment, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    int comp_Id = Integer.parseInt(comp_id);
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    CommentBean commentBean = new CommentBean();
+    commentBean.setComp_id(comp_Id);
+    commentBean.setUser_id(userBean.getUser_id());
+    commentBean.setCommented_date(LocalDateTime.now());
+    commentBean.setComment(comment);
+    commentRepository.save(commentBean);
+
+    return getJson(compService.comment(comp_Id));
+  }
+  
+  @PostMapping("/reload")
+  String reload_comment(@RequestParam String comp_id){
+    int comp_Id = Integer.parseInt(comp_id);
+    return getJson(compService.comment(comp_Id));
+  }
+
+    /* 
+     * 引数のUserDataオブジェクトをJSON文字列に変換する
+     * @param userDataList UserDataオブジェクトのリスト
+     * @return 変換後JSON文字列
+    */ 
+private String getJson(List<CommentForm> list){
+  String retVal = null;
+  ObjectMapper objectMapper = new ObjectMapper();
+    try{
+        retVal = objectMapper.writeValueAsString(list);
+        } catch (JsonProcessingException e) {
+          System.err.println(e);
+        }
+        return retVal;
+    }
 
 }

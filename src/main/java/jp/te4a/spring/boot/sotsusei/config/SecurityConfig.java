@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/comp/edit").permitAll()
                 .antMatchers("/comp/delete").permitAll()
                 .antMatchers("/comp/cancel").permitAll()
+                .antMatchers("/comp/check").permitAll()
 
                 .antMatchers("/admin").permitAll()
                 .antMatchers("/admin/userlist").permitAll()

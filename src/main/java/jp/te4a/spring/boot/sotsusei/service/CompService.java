@@ -9,14 +9,17 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import jp.te4a.spring.boot.sotsusei.bean.CommentBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.form.CommentForm;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.form.ParticipatedForm;
 import jp.te4a.spring.boot.sotsusei.form.PopuserForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
+import jp.te4a.spring.boot.sotsusei.repository.CommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
@@ -33,6 +36,9 @@ public class CompService {
 
   @Autowired
   CompPartRepository compPartRepository;
+
+  @Autowired
+  CommentRepository commentRepository;
 
   public CompForm create(CompForm compForm, Integer game_id, String user_pass, boolean radio_button) {
 	  CompBean compBean = new CompBean();
@@ -158,6 +164,18 @@ public class CompService {
     }
       return formList;
       
+    }
+
+    public  List<CommentForm> comment(Integer comp_id){
+      List<CommentForm> formList = new ArrayList<CommentForm>();
+      List<CommentBean> list = commentRepository.findByComp_id(comp_id);
+      for(CommentBean commentBean: list) { 
+        CommentForm commentForm = new CommentForm();
+        BeanUtils.copyProperties(commentBean, commentForm);
+        commentForm.setNickname(compPartRepository.findByNickname(commentForm.getComp_id(),commentForm.getUser_id()));
+        formList.add(commentForm);
+      }
+      return formList;
     }
    
 }
