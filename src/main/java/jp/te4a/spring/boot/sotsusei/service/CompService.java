@@ -141,15 +141,28 @@ public class CompService {
    public List<ParticipatedForm> compAllgamesearch(Integer user_id){
     List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
     List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(user_id);
+    List<CompBean> compList;
+    Integer count = 0;
     for (int i = 0; i < gameplay_idList.size(); i++){
-      List<CompBean> compList = compRepository.findByGame_idLike(gameplay_idList.get(i).getGame_id());
+      compList = compRepository.findByGame_idLike(gameplay_idList.get(i).getGame_id());
       for(CompBean compBean: compList) { 
+        ParticipatedForm participatedForm = new ParticipatedForm();
+        BeanUtils.copyProperties(compBean, participatedForm);
+        participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
+        formList.add(participatedForm);
+        count++; 
+      }
+    }
+    if(count == 0){
+      List<CompBean> beanList = compRepository.findAll();
+      for(CompBean compBean: beanList) { 
         ParticipatedForm participatedForm = new ParticipatedForm();
         BeanUtils.copyProperties(compBean, participatedForm);
         participatedForm.setCount(compPartRepository.countByComp_id(participatedForm.getComp_id()));
         formList.add(participatedForm); 
       }
     }
+    
     return formList;
    }
 
