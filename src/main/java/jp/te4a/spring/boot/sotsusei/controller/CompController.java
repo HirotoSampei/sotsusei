@@ -2,7 +2,6 @@ package jp.te4a.spring.boot.sotsusei.controller;
 
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +28,7 @@ import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
 import jp.te4a.spring.boot.sotsusei.service.ImageService;
 import jp.te4a.spring.boot.sotsusei.service.ReportService;
+import jp.te4a.spring.boot.sotsusei.validate.CompValidate;
 
 @Controller
 @RequestMapping("comp")
@@ -40,6 +39,8 @@ public class CompController {
   ImageService imageService;
   @Autowired
   ReportService reportService;
+  @Autowired
+  CompValidate compValidate;
   @Autowired
   CompRepository compRepository;
   @Autowired
@@ -138,31 +139,17 @@ public class CompController {
   }
 
   @PostMapping(path="create") //大会作成処理
-  String create(@RequestParam boolean radio_button, @Validated CompForm form, BindingResult result , Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+  String create(@RequestParam boolean radio_button, @Validated CompForm form, BindingResult result, Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     if(result.hasErrors()) {
-      List<String> errorList = new ArrayList<String>();
-      for (ObjectError error : result.getAllErrors()) {
-        errorList.add(error.getDefaultMessage());
-      }
-      if(form.getEnd_date() != null && form.getStart_date() != null && form.getEnd_date().isBefore(form.getStart_date())){
-        errorList.add("終了日時は開始日時以降で入力してください");
-      }
-      if(form.getDeadline() != null && form.getStart_date() != null && form.getDeadline().isAfter(form.getStart_date())){
-        errorList.add("締め切り日時は開始日時前で入力してください");
-      }
-      model.addAttribute("validationError", errorList);
+      compValidate.compval(form, result, model, modelMap, httpServletRequest);
       return create_list(model, modelMap, httpServletRequest);
     }
     else if(form.getEnd_date().isBefore(form.getStart_date())){
-      List<String> errorList = new ArrayList<String>();
-      errorList.add("終了日時は開始日時以降で入力してください");
-      model.addAttribute("validationError", errorList);
+      compValidate.compend_dataval(model);
       return create_list(model, modelMap, httpServletRequest);
     }
     else if(form.getDeadline().isAfter(form.getStart_date())){
-      List<String> errorList = new ArrayList<String>();
-      errorList.add("締め切り日時は開始日時前で入力してください");
-      model.addAttribute("validationError", errorList);
+      compValidate.compdeadlineval(model);
       return create_list(model, modelMap, httpServletRequest);
     }
     String user_pass = httpServletRequest.getRemoteUser();
@@ -217,29 +204,15 @@ public class CompController {
   @PostMapping(path = "edit") //編集した内容を登録する時の動き
   String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, Model model, HttpServletRequest httpServletRequest) {
   if(result.hasErrors()) {
-    List<String> errorList = new ArrayList<String>();
-    for (ObjectError error : result.getAllErrors()) {
-      errorList.add(error.getDefaultMessage());
-    }
-    if(form.getEnd_date() != null && form.getStart_date() != null && form.getEnd_date().isBefore(form.getStart_date())){
-      errorList.add("終了日時は開始日時以降で入力してください");
-    }
-    if(form.getDeadline() != null && form.getStart_date() != null && form.getDeadline().isAfter(form.getStart_date())){
-      errorList.add("締め切り日時は開始日時前で入力してください");
-    }
-    model.addAttribute("validationError", errorList);
+    compValidate.compval(form, result, model, modelMap, httpServletRequest);
     return editForm(comp_id, form, model);
   }
   else if(form.getEnd_date().isBefore(form.getStart_date())){
-    List<String> errorList = new ArrayList<String>();
-    errorList.add("終了日時は開始日時以降で入力してください");
-    model.addAttribute("validationError", errorList);
+    compValidate.compend_dataval(model);
     return editForm(comp_id, form, model);
   }
   else if(form.getDeadline().isAfter(form.getStart_date())){
-    List<String> errorList = new ArrayList<String>();
-    errorList.add("締め切り日時は開始日時前で入力してください");
-    model.addAttribute("validationError", errorList);
+    compValidate.compdeadlineval(model);
     return editForm(comp_id, form, model);
   }
   String user_pass = httpServletRequest.getRemoteUser();
