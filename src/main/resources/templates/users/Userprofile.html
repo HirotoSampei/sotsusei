@@ -58,9 +58,9 @@
     </div>
     <script th:inline="javascript">
       window.onload = function start() {
-      const admin = /*[[${us.is_admin}]]*/"us.is_admin";
-      console.log(admin);
-      if(admin){
+      const role = /*[[${us.role}]]*/"us.role";
+      console.log(role);
+      if(role=='ROLE_ADMIN'){
         document.getElementById('hidden-button-container').style.visibility = 'visible'
       }
       else{

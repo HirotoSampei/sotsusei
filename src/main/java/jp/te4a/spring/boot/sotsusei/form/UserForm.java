@@ -31,4 +31,5 @@ public class UserForm {
 
     private boolean is_banned;
     private boolean is_admin;
+    private String role;
 }
