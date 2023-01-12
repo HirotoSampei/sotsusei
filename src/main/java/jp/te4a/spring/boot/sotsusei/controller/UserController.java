@@ -63,10 +63,18 @@ public class UserController {
           for (ObjectError error : result.getAllErrors()) {
             errorList.add(error.getDefaultMessage());
           }
-        if(game_id == null){
-          errorList.add("プレイ中のゲームを選択してください");
-        }
+          if(form.getPassword() != "" && form.getPassword().length() < 8){
+            errorList.add("パスワードは8文字以上で入力してください。");
+          }
+          if(game_id == null){
+            errorList.add("プレイ中のゲームを選択してください");
+          }
           model.addAttribute("validationError", errorList);
+          return list(model);
+        }
+        else if(form.getPassword().length() < 8){
+          List<String> errorList = new ArrayList<String>();
+          errorList.add("パスワードは8文字以上で入力してください。");
           return list(model);
         }
         userService.create(form, game_id);
@@ -103,9 +111,9 @@ public class UserController {
         for (ObjectError error : result.getAllErrors()) {
           errorList.add(error.getDefaultMessage());
         }
-      if(game_id == null){
-        errorList.add("プレイ中のゲームを選択してください");
-      }
+        if(game_id == null){
+          errorList.add("プレイ中のゲームを選択してください");
+        }
         model.addAttribute("validationError", errorList);
         return editForm(user_id, form, model);
       }
