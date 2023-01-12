@@ -20,6 +20,15 @@
 <form th:action="@{/admin/ban_from_report}" name="form" method="post">
   <main>
     <table>
+        <div id="mask"></div>
+        <div id="dialog">
+          BANします。本当によろしいですか？
+          <div th:each="rd : ${reportDetail}"> 
+            <input type="hidden"  name="suspicious_user_id" th:value="${rd.suspicious_user_id}"/>
+            <input type="submit" class="button-item" value="BAN">
+          </div>
+          <button id="no" class="button-item">いいえ</button>
+        </div>
       <div id="input-container">
         <tr th:each="rd : ${reportDetail}"> 
           <p>大会名　   :<input readonly type="text" class="input-item" name="comp_name" th:value="${rd.compBean.comp_name}"></p>
@@ -40,14 +49,7 @@
       </div>
       <div id="button-container">
         <input type="button" class="button-item" onclick="location.href='/admin/reportlist'" value="戻る">
-        <tr th:each="rd : ${reportDetail}"> 
-        <div class="agree-container">
-          <div class="date">BANします。本当によろしいですか？</div>
-          <input type="checkbox" style="transform:scale(3);">
-        </div>
-        <input type="hidden" name="suspicious_user_id" th:value="${rd.suspicious_user_id}"/>
-        <input type="submit" class="button-item" value="BAN">
-        </tr>
+        <input type="button" id="banbtn" class="button-item" value="BAN">
       </div>
     </table>
   </main>
@@ -56,5 +58,19 @@
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>
 
+<script th:inline="javascript">
+  const banbtn = document.getElementById('banbtn')
+  const dialog = document.getElementById('dialog')
+  const mask = document.getElementById('mask')
+  const no = document.getElementById('no')
+  banbtn.addEventListener('click',function start() {
+    dialog.style.display = 'block'
+    mask.style.display = 'block'
+  })
+  no.addEventListener('click',function back(){
+    dialog.style.display = 'none'
+    mask.style.display = 'none'
+  })
+</script>
 </body>
 </html>
