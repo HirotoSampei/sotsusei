@@ -14,18 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
-import jp.te4a.spring.boot.sotsusei.bean.CompsearchBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
-import jp.te4a.spring.boot.sotsusei.form.CompForm;
-import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
-import jp.te4a.spring.boot.sotsusei.bean.CompBean;
-import jp.te4a.spring.boot.sotsusei.bean.GameBean;
-import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
@@ -94,20 +86,18 @@ public class AdminController {
   @PostMapping(path="searchcomp", params = "form")
   String comp_search(@RequestParam Integer game_id, Model model){
     model.addAttribute("compList", compSearchRepository.findByGame_idLike(game_id));
-    return "admin/compsearch-sample";
+    return "admin/ReportedComp";
   }
   @PostMapping(path="searchcomp-un", params = "form")
   String comp_search_ss(@RequestParam String username_ss, Model model){
-    List<Integer> user_id_ss = new ArrayList<Integer>();
-    user_id_ss = userSearchRepository.findIdByUser_nameLike(username_ss);
+    List<Integer> user_id_ss = userSearchRepository.findIdByUser_nameLike(username_ss);
     List<CompBean> comp_s = new ArrayList<CompBean>();
     for(int i = 0; i < user_id_ss.size(); i++){
       comp_s.add(compRepository.findBeanByHost_user_id(user_id_ss.get(i)));
-      
     }
     model.addAttribute("compList", comp_s);
-    return "admin/compsearch-sample";
-  }//検索した要素を含むユーザーのuser_idを所得、それがhost_user_idに含まれる大会をとってきたい
+    return "admin/ReportedComp";
+  }
   @PostMapping(path="userdetail")
   String user_detail(@RequestParam Integer user_id, Model model, ModelMap modelMap){
     List<GameBean> game_List = new ArrayList<GameBean>();

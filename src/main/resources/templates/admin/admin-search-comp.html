@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <title>サイトタイトル</title>
   <meta name="description" content="ディスクリプションを入力">
-  <link rel="stylesheet" type="text/css" href="../../static/css/UserSearchStyle.css" th:href="@{/css/AdminStyle.css}">
+  <link rel="stylesheet" type="text/css" href="../../static/css/UserSearchStyle.css" th:href="@{/css/UserSearchStyle.css}">
 
 <body>
 
@@ -14,7 +14,7 @@
     <p class="user" style="margin-left: 45%;margin-top: 13%;">大会主催者を検索</p>
     <div class="search_container">
       <input type="text" name="username_ss">
-        <input type="submit" name="form" value="検索">
+        <input type="submit" name="form" class="search_button" value="検索">
     </div>
     </form>
   </div>
@@ -26,7 +26,7 @@
         <option value="0"></option>
         <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
       </select>
-      <input type="submit" name="form" value="検索">
+      <input type="submit" name="form" class="search_button" value="検索">
     </div>
     </form>
   </div>

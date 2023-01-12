@@ -19,7 +19,7 @@
             <tr th:each="us : ${userList}"> 
                 <form th:action="@{/admin/userdetail}" name="form"method="post">
                     <div class="center-main-item linkbox">
-                        <div th:text="${us.user_name}"></div>
+                        <div class="text" th:text="${'ユーザー名：'+us.user_name}"></div>
                         <input type="hidden" name="user_id" th:value="${us.user_id}"/>
                         <button type="submit" title="userdetail_button"></button>
                     </div>

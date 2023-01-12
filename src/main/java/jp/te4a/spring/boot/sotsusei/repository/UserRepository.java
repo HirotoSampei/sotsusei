@@ -31,6 +31,9 @@ public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpe
 	@Query("SELECT X FROM UserBean X WHERE X.user_id = ?1")
 	UserBean findByUser(Integer user_id);
 
+	@Query("SELECT X.user_name FROM UserBean X WHERE X.user_id = ?1")
+	String findUser_nameByUser_id(Integer user_id);
+
 	@Transactional
 	@Modifying
 	@Query("UPDATE UserBean X set X.is_banned = true WHERE X.user_id = ?1")

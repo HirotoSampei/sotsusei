@@ -13,5 +13,9 @@ public interface CompSearchRepository extends JpaRepository<CompsearchBean, Inte
 
 	@Query(value="SELECT X.comp_id,X.comp_name,X.host_user_id FROM competitions X WHERE X.host_user_id = ?1",nativeQuery=true)
 	  List<CompsearchBean> findByUser_idLike(Integer host_user_id);
-}
+
+	@Query("SELECT X.host_user_id FROM CompBean X WHERE X.gameBean.game_id =?1")
+		List<Integer> findHost_user_idByGame_idLike(Integer game_id);
+
+	}
 	

@@ -20,8 +20,8 @@
         <tr th:each="rp : ${reportList}">
             <form th:action="@{/admin/reportdetail}" name="form" method="post">
                 <div class="center-main-item linkbox">
-                    <div th:text="${rp.compBean.comp_name}"></div>
-                    <div th:text="${rp.reported_date}"></div>
+                    <div class="text" th:text="${'大会名：'+rp.compBean.comp_name}"></div>
+                    <div class="text" th:text="${'通報日時：'+rp.reported_date}"></div>
                     <input type="hidden" name="report_id" th:value="${rp.report_id}"/>
                     <input type="hidden" name="reporter_user_id" th:value="${rp.reporter_user_id}"/>
                     <input type="hidden" name="suspicious_user_id" th:value="${rp.suspicious_user_id}"/>
