@@ -141,9 +141,27 @@ public class CompController {
   String create(@RequestParam boolean radio_button, @Validated CompForm form, BindingResult result , Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     if(result.hasErrors()) {
       List<String> errorList = new ArrayList<String>();
-        for (ObjectError error : result.getAllErrors()) {
-          errorList.add(error.getDefaultMessage());
-        }
+      for (ObjectError error : result.getAllErrors()) {
+        errorList.add(error.getDefaultMessage());
+      }
+      if(form.getEnd_date() != null && form.getStart_date() != null && form.getEnd_date().isBefore(form.getStart_date())){
+        errorList.add("終了日時は開始日時以降で入力してください");
+      }
+      if(form.getDeadline() != null && form.getStart_date() != null && form.getDeadline().isAfter(form.getStart_date())){
+        errorList.add("締め切り日時は開始日時前で入力してください");
+      }
+      model.addAttribute("validationError", errorList);
+      return create_list(model, modelMap, httpServletRequest);
+    }
+    else if(form.getEnd_date().isBefore(form.getStart_date())){
+      List<String> errorList = new ArrayList<String>();
+      errorList.add("終了日時は開始日時以降で入力してください");
+      model.addAttribute("validationError", errorList);
+      return create_list(model, modelMap, httpServletRequest);
+    }
+    else if(form.getDeadline().isAfter(form.getStart_date())){
+      List<String> errorList = new ArrayList<String>();
+      errorList.add("締め切り日時は開始日時前で入力してください");
       model.addAttribute("validationError", errorList);
       return create_list(model, modelMap, httpServletRequest);
     }
@@ -200,9 +218,27 @@ public class CompController {
   String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, Model model, HttpServletRequest httpServletRequest) {
   if(result.hasErrors()) {
     List<String> errorList = new ArrayList<String>();
-      for (ObjectError error : result.getAllErrors()) {
-        errorList.add(error.getDefaultMessage());
-      }
+    for (ObjectError error : result.getAllErrors()) {
+      errorList.add(error.getDefaultMessage());
+    }
+    if(form.getEnd_date() != null && form.getStart_date() != null && form.getEnd_date().isBefore(form.getStart_date())){
+      errorList.add("終了日時は開始日時以降で入力してください");
+    }
+    if(form.getDeadline() != null && form.getStart_date() != null && form.getDeadline().isAfter(form.getStart_date())){
+      errorList.add("締め切り日時は開始日時前で入力してください");
+    }
+    model.addAttribute("validationError", errorList);
+    return editForm(comp_id, form, model);
+  }
+  else if(form.getEnd_date().isBefore(form.getStart_date())){
+    List<String> errorList = new ArrayList<String>();
+    errorList.add("終了日時は開始日時以降で入力してください");
+    model.addAttribute("validationError", errorList);
+    return editForm(comp_id, form, model);
+  }
+  else if(form.getDeadline().isAfter(form.getStart_date())){
+    List<String> errorList = new ArrayList<String>();
+    errorList.add("締め切り日時は開始日時前で入力してください");
     model.addAttribute("validationError", errorList);
     return editForm(comp_id, form, model);
   }
