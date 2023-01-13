@@ -14,7 +14,9 @@
         </div>
     <div class="center-main-container">
         <div class="heading">
-            <p>通報情報</p>
+            <p>通報情報
+                <div class="text" th:text="${'通報件数：'+reportList.size()+'件'}"></div>
+            </p>
         </div>
     <table>
         <tr th:each="rp : ${reportList}">

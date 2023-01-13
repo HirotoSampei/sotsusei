@@ -17,7 +17,9 @@
         </div>
         <div class="center-main-container">
             <div class="heading">
-                <p>大会情報</p>
+                <p>大会情報
+                    <div class="text" th:text="${'検索結果：'+compList.size()+'件'}"></div>
+                </p>
             </div>
             <tr th:each="cm : ${compList}"> 
                 <form th:action="@{/admin/compdetail}" name="form"method="post">

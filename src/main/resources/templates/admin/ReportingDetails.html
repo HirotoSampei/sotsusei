@@ -17,16 +17,18 @@
     </div>
   </div>
 </header>
-<form th:action="@{/admin/ban_from_report}" name="form" method="post">
+
   <main>
     <table>
         <div id="mask"></div>
         <div id="dialog">
           BANします。本当によろしいですか？
+          <form th:action="@{/admin/ban_from_report}" name="form" method="post">
           <div th:each="rd : ${reportDetail}"> 
             <input type="hidden"  name="suspicious_user_id" th:value="${rd.suspicious_user_id}"/>
             <input type="submit" class="button-item" value="BAN">
           </div>
+          </form>
           <button id="no" class="button-item">いいえ</button>
         </div>
       <div id="input-container">
@@ -53,7 +55,6 @@
       </div>
     </table>
   </main>
-<!--</form>-->
 <footer>
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>

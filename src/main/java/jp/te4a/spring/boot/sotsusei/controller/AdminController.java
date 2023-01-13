@@ -93,7 +93,10 @@ public class AdminController {
     List<Integer> user_id_ss = userSearchRepository.findIdByUser_nameLike(username_ss);
     List<CompBean> comp_s = new ArrayList<CompBean>();
     for(int i = 0; i < user_id_ss.size(); i++){
-      comp_s.add(compRepository.findBeanByHost_user_id(user_id_ss.get(i)));
+      CompBean check=compRepository.findBeanByHost_user_id(user_id_ss.get(i));
+      if(check!=null){
+        comp_s.add(check);
+      }
     }
     model.addAttribute("compList", comp_s);
     return "admin/ReportedComp";

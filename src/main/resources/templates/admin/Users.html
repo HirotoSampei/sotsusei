@@ -14,17 +14,16 @@
         </div>
         <div class="center-main-container">
             <div class="heading">
-                <p>ユーザー 一覧</p>
+                <p>ユーザー 一覧
+                <div class="text" th:text="${'検索結果：'+userList.size()+'件'}"></div></p>
             </div>
-            <tr th:each="us : ${userList}"> 
-                <form th:action="@{/admin/userdetail}" name="form"method="post">
-                    <div class="center-main-item linkbox">
-                        <div class="text" th:text="${'ユーザー名：'+us.user_name}"></div>
-                        <input type="hidden" name="user_id" th:value="${us.user_id}"/>
-                        <button type="submit" title="userdetail_button"></button>
-                    </div>
-                </form>
-            </tr>
+            <form th:action="@{/admin/userdetail}" name="form"method="post">
+                <div class="center-main-item linkbox" th:each="us : ${userList}">
+                    <div class="text" th:text="${'ユーザー名：'+us.user_name}"></div>
+                    <input type="hidden" name="user_id" th:value="${us.user_id}"/>
+                    <button type="submit" title="userdetail_button"></button>
+                </div>
+            </form>
         </div>
     </main>
 </body>
