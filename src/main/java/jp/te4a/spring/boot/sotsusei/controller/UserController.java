@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -63,10 +64,18 @@ public class UserController {
           for (ObjectError error : result.getAllErrors()) {
             errorList.add(error.getDefaultMessage());
           }
-        if(game_id == null){
-          errorList.add("プレイ中のゲームを選択してください");
-        }
+          if(form.getPassword() != "" && form.getPassword().length() < 8){
+            errorList.add("パスワードは8文字以上で入力してください。");
+          }
+          if(game_id == null){
+            errorList.add("プレイ中のゲームを選択してください");
+          }
           model.addAttribute("validationError", errorList);
+          return list(model);
+        }
+        else if(form.getPassword().length() < 8){
+          List<String> errorList = new ArrayList<String>();
+          errorList.add("パスワードは8文字以上で入力してください。");
           return list(model);
         }
         userService.create(form, game_id);
@@ -103,9 +112,9 @@ public class UserController {
         for (ObjectError error : result.getAllErrors()) {
           errorList.add(error.getDefaultMessage());
         }
-      if(game_id == null){
-        errorList.add("プレイ中のゲームを選択してください");
-      }
+        if(game_id == null){
+          errorList.add("プレイ中のゲームを選択してください");
+        }
         model.addAttribute("validationError", errorList);
         return editForm(user_id, form, model);
       }
@@ -123,4 +132,28 @@ public class UserController {
       compPartRepository.deleteByuser_id(user_id);
       return "redirect:/login";
     }
+    @GetMapping(path = "Password")
+    String password(){
+      return "users/Password";
+    }
+    @PostMapping(path = "new_password")
+    String new_password(@RequestParam String mail_address, Model model){
+      Integer user_id = userRepository.findByIdMail_address(mail_address);
+      if(user_id == null){
+        return password();
+      }
+      model.addAttribute("user_id", user_id);
+      return "users/NewPassword";
+    }
+    @PostMapping(path = "updatepass")
+    String updatepass(@RequestParam String password, Integer user_id, Model model){
+      if(user_id == null || password == null){
+        return password();
+      }
+      password = password.substring(0, password.length()-1);
+      UserForm form = userService.findOne(user_id);
+      userService.updatepass(form, password, user_id);
+      return "login";
+    }
+
 }
