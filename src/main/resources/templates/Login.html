@@ -25,6 +25,12 @@
 </header>
 
   <main>
+    <div id="mask"></div>
+        <div id="dialog">
+          このアカウントはBANされています。
+          ログインすることができません。
+        <button id="close" class="button-item">閉じる</button>
+    </div>
     <form class="form-signin" method="post" th:action="@{/login}" >
     <p>メールアドレス：<input type="email" class="input-item" name="mail_address"></p>
     <p>パスワード　　：<input type="password" class="input-item" name="password"></p>
@@ -47,5 +53,26 @@
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>
 
+<script th:inline="javascript">
+  window.onload = function start() {
+  const banned = /*[[${banned}]]*/"banned"
+  const msg = 'ugoku'
+  console.log(msg)
+  console.log(banned)
+  if(banned=='ban'){
+    document.getElementById('mask').style.display = 'block'
+    document.getElementById('dialog').style.display = 'block'
+  }
+  else{
+    document.getElementById('mask').style.display = 'none'
+    document.getElementById('dialog').style.display = 'none'
+  }
+  }
+  const close = document.getElementById('close')
+  close.addEventListener('click',function back(){
+    dialog.style.display = 'none'
+    mask.style.display = 'none'
+  })
+</script>
 </body>
 </html>

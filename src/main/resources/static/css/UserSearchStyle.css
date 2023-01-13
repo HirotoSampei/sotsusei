@@ -19,6 +19,28 @@ input[type="search"] {
     border-radius: 5px;
 }
 
+input[type="text"] {
+    width: 450px;
+    /*検索バーの横幅*/
+    padding: 25px;
+    /*検索バーの縦幅*/
+    font-size: 30px;
+    /*文字サイズ*/
+    border: solid 2px #cccccc;
+    border-radius: 5px;
+}
+
+input[type="input-item"] {
+    width: 450px;
+    /*検索バーの横幅*/
+    padding: 25px;
+    /*検索バーの縦幅*/
+    font-size: 30px;
+    /*文字サイズ*/
+    border: solid 2px #cccccc;
+    border-radius: 5px;
+}
+
 .search_button {
     padding: 10px;
     font-size: 28px;

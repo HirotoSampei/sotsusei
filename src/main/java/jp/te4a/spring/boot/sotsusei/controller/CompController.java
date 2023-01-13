@@ -1,6 +1,7 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
@@ -57,14 +59,34 @@ public class CompController {
   }
   @GetMapping //ホーム画面
   String display_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+    //開催終了から一か月経った大会を削除
+    LocalDateTime check = (LocalDateTime.now()).minusMonths(1);
+    List<CompBean> comp_c = compRepository.findAllOrderByComp_id();
+    for(int i = 0; i < comp_c.size(); i++){
+      int comp_id_check = comp_c.get(i).getComp_id();
+      if((compRepository.findEnd_dateByComp_id(comp_id_check)).isBefore(check)){
+        compService.delete(comp_id_check);
+        System.out.println("delete comp | comp_id="+comp_id_check);
+      }
+    }
+    System.out.println("competitions_end_date checked.");
+
     imageService.getImage(model);
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
-    model.addAttribute("comp", compService.compAllgamesearch(userBean.getUser_id()));
-    model.addAttribute("participated", compService.participated(userBean.getUser_id()));
-    model.addAttribute("user_name", userBean.getUser_name());
-    return "home/Home";
+
+    //BANの検問
+    Boolean check_ban = userRepository.findIs_bannedByUser_id(userBean.getUser_id());
+    if(check_ban){
+      model.addAttribute("banned", "ban");
+      return "login";
+    }else{
+      model.addAttribute("comp", compService.findAll());
+      model.addAttribute("participated", compService.participated(userBean.getUser_id()));
+      model.addAttribute("user_name", userBean.getUser_name());
+      return "home/Home";
+    }
   }
 
   @GetMapping("/CreateComp") //大会作成画面

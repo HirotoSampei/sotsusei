@@ -28,9 +28,7 @@ public class UserBean {
     private String note;
     @Column(nullable = false)
     private boolean is_banned;
-    @Column(nullable = false)
-    private boolean is_admin;
-
+    private String role;
     //@OneToOne(mappedBy="userBean", fetch = FetchType.EAGER) // 多対1
     //private List<GameplayBean> gameplayBean;
 
