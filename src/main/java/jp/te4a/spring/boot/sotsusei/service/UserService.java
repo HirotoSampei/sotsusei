@@ -71,10 +71,22 @@ public class UserService {
     BeanUtils.copyProperties(userBean, userForm);
     return userForm;
   }
-    public UserForm update(UserForm userForm) {
-      UserBean userBean = new UserBean();
-      BeanUtils.copyProperties(userForm, userBean);
-      userRepository.save(userBean);
-      return userForm;
-    }  
+  public UserForm update(UserForm userForm) {
+    UserBean userBean = new UserBean();
+    BeanUtils.copyProperties(userForm, userBean);
+    userRepository.save(userBean);
+    return userForm;
+  }
+  public UserForm updatepass(UserForm userForm, String password, Integer user_id) {
+    UserBean userBean = new UserBean();
+    UserBean bean = userRepository.findByUser(user_id);
+    userForm.setUser_id(user_id);
+    userForm.setUser_name(bean.getUser_name());
+    userForm.setPassword(new Pbkdf2PasswordEncoder().encode(password));
+    userForm.setMail_address(bean.getMail_address());
+    userForm.setNote(bean.getNote());
+    BeanUtils.copyProperties(userForm, userBean);
+    userRepository.save(userBean);
+    return userForm;
+  }
 }
