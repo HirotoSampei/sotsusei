@@ -136,20 +136,7 @@ body {
 
 .text {
     color: white;
-    font-size: 40px;
-}
-
-.center-main-item {
-
-    background-color: rgb(84, 84, 84);
-    margin: 10px;
-    padding-top: 10px;
-    padding-bottom: 0px;
-    padding-left: 30px;
-    height: 70px;
-    border-radius: 15px 15px 15px 15px;
-    border: 3px ridge white;
-    overflow: auto;
+    font-size: 20px;
 }
 
 .heading {
@@ -202,7 +189,7 @@ main p {
     padding-top: 10px;
     padding-bottom: 0px;
     padding-left: 30px;
-    height: 150px;
+    height: 80px;
     border-radius: 15px 15px 15px 15px;
     border: 3px ridge white;
     overflow: auto;
