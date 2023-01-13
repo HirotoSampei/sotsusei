@@ -5,7 +5,10 @@
   <meta charset="utf-8">
   <title>大会概要 - 参加者</title>
   <link rel="stylesheet" href="..\..\static\css\OverviewForParticipantsStyle.css" th:href="@{/css/OverviewForParticipantsStyle.css}">
-  <script type="text/javascript">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../../js/privatecomment.js"></script>
+  <script src="../../js/privatereload.js"></script>
+  <script type="text/javascript" >
     function func(nickname,note,user_id,login_id,comp_id) {
       document.getElementById('nickname').innerHTML = nickname;
       document.getElementById('note').innerHTML = note;
@@ -19,8 +22,7 @@
       else{
         document.getElementById('button1').style.visibility = 'visible'
       }
-    }
-  </script>
+    }</script>
 </head>
 
 <body>
@@ -46,11 +48,11 @@
 
   </header>
 
-  <main>
+  <main th:each="cp : ${comp}">
     <div class="main-container">
       <div class="left-main-container">
         <table>
-          <tr th:each="cp : ${comp}">
+          <tr >
             <div class="title-people-container">
               <div class="title" th:text="${cp.comp_name}">初心者歓迎！ほげほげ大会</div>
               <img src="..\..\images\people.png" class="people-logo">
@@ -69,7 +71,7 @@
               <div class="overview-container">
                 <div class="people">概要</div>
                 <div class="overview" th:text="${cp.description}">
-                  ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される
+                  ここに概要が表示される
                 </div>
               </div>
               <div class="participants-container">
@@ -103,17 +105,22 @@
       </div>
       <div class="right-main-container">
         <div id="only-participants">■参加者限定チャット</div>
-        <div class="chat">
-          <div class="comment-log">hoge_user : ここは限定チャット</div>
-          <div class="comment-log">hoge_user2 : ここは限定チャットここは限定チャットここは限定チャットここは限定チャットここは限定チャット</div>
-        </div>
-        <div class="comment">
-          <input type="text" class="comment-box">
-          <input type="button" value="投稿">
-        </div>
+          <div class="chat" id="commentBox">
+            <div  th:each="data : ${commentList}">
+                <label class="comment-log" th:text="${data.nickname + ':' + data.comment}">hoge_user : ここは限定チャット</label>
+            </div>
+          </div>
+          <!--th:fragment="fragmentComment" th:insert="comp/fragment :: hogehoge" th:fragment="fragmentComment"-->
+          <div class="comment">
+            <form th:action="@{/comp/privatecheck}" method="post" id="comment_form">
+              <input type="text" id="comment" name="comment" class="comment-box" required>
+              <button type="submit">投稿</button>
+              <input type="hidden" id="comp_id_for_comment" th:value="${comp_id}">
+            </form>
+          </div>
       </div>
     </div>
-    <div class="button-container" th:each="cp : ${comp}">
+    <div class="button-container">
       <input type="button" class="button-item" onclick="location.href='/comp'" value="ホーム画面へ">
       <th:block th:if="${message}">
         <form th:action="@{/comp/cancel}" method="post">

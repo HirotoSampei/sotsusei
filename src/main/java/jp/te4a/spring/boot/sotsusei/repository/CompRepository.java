@@ -32,5 +32,8 @@ public interface CompRepository extends JpaRepository<CompBean, Integer>{
 	@Query("SELECT X.end_date FROM CompBean X WHERE X.comp_id = ?1")
 	  LocalDateTime findEnd_dateByComp_id(Integer comp_id);
 	  
+
+	@Query("SELECT X.comp_id FROM CompBean X WHERE X.host_user_id = ?1")
+	 Integer findComp_id(Integer host_user_id);
 }
 

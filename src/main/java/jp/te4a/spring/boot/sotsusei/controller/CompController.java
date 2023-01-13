@@ -13,12 +13,22 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.bean.PrivateCommentBean;
+import jp.te4a.spring.boot.sotsusei.bean.PublicCommentBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
+import jp.te4a.spring.boot.sotsusei.form.PrivateCommentForm;
+import jp.te4a.spring.boot.sotsusei.form.PublicCommentForm;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
+import jp.te4a.spring.boot.sotsusei.form.PopuserForm;
+import jp.te4a.spring.boot.sotsusei.repository.PrivateCommentRepository;
+import jp.te4a.spring.boot.sotsusei.repository.PublicCommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
@@ -29,6 +39,9 @@ import jp.te4a.spring.boot.sotsusei.service.CompService;
 import jp.te4a.spring.boot.sotsusei.service.ImageService;
 import jp.te4a.spring.boot.sotsusei.service.ReportService;
 import jp.te4a.spring.boot.sotsusei.validate.CompValidate;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 @RequestMapping("comp")
@@ -53,6 +66,12 @@ public class CompController {
   CompSearchRepository compSearchRepository;
   @Autowired
   ReportRepository reportRepository;
+
+  @Autowired
+  PrivateCommentRepository privateCommentRepository;
+
+  @Autowired
+  PublicCommentRepository publicCommentRepository;
 
   @ModelAttribute 
   CompForm setUpForm() {
@@ -118,6 +137,8 @@ public class CompController {
     UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getImage(model);
     model.addAttribute("overview", compService.hostoverview(userBean.getUser_id()));
+    model.addAttribute("commentList",compService.publiccomment(compRepository.findComp_id(userBean.getUser_id())));
+    model.addAttribute("comp_id", compRepository.findComp_id(userBean.getUser_id()));
     return "comp/OverViewForHost";
   }
   @PostMapping(path="Overview")
@@ -129,11 +150,15 @@ public class CompController {
       model.addAttribute("comp", compService.partoverview(comp_id));
       model.addAttribute("message", "True");
       model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
+      model.addAttribute("commentList",compService.privatecomment(comp_id));
+      model.addAttribute("comp_id", comp_id);
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     else{
       imageService.getImage(model);
       model.addAttribute("participant_overview", compService.partoverview(comp_id));
+      model.addAttribute("commentList",compService.publiccomment(comp_id));
+      model.addAttribute("comp_id", comp_id);
       return "comp/Overview";//参加前大会概要画面
     } 
   }
@@ -169,13 +194,17 @@ public class CompController {
         imageService.getImage(model);
         model.addAttribute("participant_overview", compService.partoverview(comp_id));
         model.addAttribute("errorMessage", "既に参加している大会と日程が被っています。");
-        return "comp/Overview";
+        model.addAttribute("commentList",compService.publiccomment(comp_id));
+        model.addAttribute("comp_id", comp_id);
+        return "comp/Overview";//参加前大会概要画面
       }
     }
     if(compRepository.findByComp_id(comp_id).getLimit_of_participants() == compPartRepository.countByComp_id(comp_id)){
       imageService.getImage(model);
       model.addAttribute("participant_overview", compService.partoverview(comp_id));
       model.addAttribute("limitMessage", "参加人数が上限に達しています。");
+      model.addAttribute("commentList",compService.publiccomment(comp_id));
+      model.addAttribute("comp_id", comp_id);
       return "comp/Overview";//参加前大会概要画面
     }
     else{
@@ -188,7 +217,9 @@ public class CompController {
     model.addAttribute("comp", compService.partoverview(comp_id));
     model.addAttribute("message", "True");
     model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
-    return "comp/OverviewForParticipants";
+    model.addAttribute("commentList",compService.privatecomment(comp_id));
+    model.addAttribute("comp_id", comp_id);
+    return "comp/OverviewForParticipants";//参加者専用画面
     }
   }
 
@@ -202,7 +233,7 @@ public class CompController {
     return "comp/EditComp";
   }
   @PostMapping(path = "edit") //編集した内容を登録する時の動き
-  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, Model model, HttpServletRequest httpServletRequest) {
+  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest,Model model) {
   if(result.hasErrors()) {
     compValidate.compval(form, result, model, modelMap, httpServletRequest);
     return editForm(comp_id, form, model);
@@ -261,7 +292,7 @@ public class CompController {
 
   }
 
-  @PostMapping("/OverviewForParticipants")
+  @PostMapping("/OverviewForParticipants") //主催者ページから参加者専用画面に遷移
   String overviewForParticipants(@RequestParam Integer comp_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
@@ -272,6 +303,8 @@ public class CompController {
     model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
     model.addAttribute("comp", compService.partoverview(comp_id));
     model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
+    model.addAttribute("commentList",compService.privatecomment(comp_id));
+    model.addAttribute("comp_id", comp_id);
     return "comp/OverviewForParticipants";
   }
 
@@ -311,10 +344,14 @@ public class CompController {
       model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
       model.addAttribute("comp", compService.partoverview(comp_id));
       model.addAttribute("user", compService.popuser(comp_id, user_id));
+      model.addAttribute("commentList",compService.privatecomment(comp_id));
+      model.addAttribute("comp_id", comp_id);
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     imageService.getImage(model);
       model.addAttribute("participant_overview", compService.partoverview(comp_id));
+      model.addAttribute("commentList",compService.publiccomment(comp_id));
+      model.addAttribute("comp_id", comp_id);
       return "comp/Overview";//参加前大会概要画面
   }
 
@@ -325,5 +362,83 @@ public class CompController {
     model.addAttribute("comp", comp_id);
     return "comp/Report";
   }
+
+  @PostMapping("/privatecheck")
+  @ResponseBody
+  String private_comp_comment(@RequestParam String comp_id, String comment, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    int comp_Id = Integer.parseInt(comp_id);
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    PrivateCommentBean commentBean = new PrivateCommentBean();
+    commentBean.setComp_id(comp_Id);
+    commentBean.setUser_id(userBean.getUser_id());
+    commentBean.setCommented_date(LocalDateTime.now());
+    commentBean.setComment(comment);
+    privateCommentRepository.save(commentBean);
+
+    return privategetJson(compService.privatecomment(comp_Id));
+  }
+  
+  @PostMapping("/privatereload")
+  @ResponseBody
+  String private_reload_comment(@RequestParam String comp_id){
+    int comp_Id = Integer.parseInt(comp_id);
+    return privategetJson(compService.privatecomment(comp_Id));
+  }
+
+    /* 
+     * 引数のUserDataオブジェクトをJSON文字列に変換する
+     * @param userDataList UserDataオブジェクトのリスト
+     * @return 変換後JSON文字列
+    */ 
+private String privategetJson(List<PrivateCommentForm> list){
+  String retVal = null;
+  ObjectMapper objectMapper = new ObjectMapper();
+    try{
+        retVal = objectMapper.writeValueAsString(list);
+        } catch (JsonProcessingException e) {
+          System.err.println(e);
+        }
+        return retVal;
+    }
+
+    @PostMapping("/publiccheck")
+  @ResponseBody
+  String public_comp_comment(@RequestParam String comp_id, String comment, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    int comp_Id = Integer.parseInt(comp_id);
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    PublicCommentBean commentBean = new PublicCommentBean();
+    commentBean.setComp_id(comp_Id);
+    commentBean.setUser_id(userBean.getUser_id());
+    commentBean.setCommented_date(LocalDateTime.now());
+    commentBean.setComment(comment);
+    publicCommentRepository.save(commentBean);
+
+    return publicgetJson(compService.publiccomment(comp_Id));
+  }
+  
+  @PostMapping("/publicreload")
+  @ResponseBody
+  String public_reload_comment(@RequestParam String comp_id){
+    int comp_Id = Integer.parseInt(comp_id);
+    return publicgetJson(compService.publiccomment(comp_Id));
+  }
+
+    /* 
+     * 引数のUserDataオブジェクトをJSON文字列に変換する
+     * @param userDataList UserDataオブジェクトのリスト
+     * @return 変換後JSON文字列
+    */ 
+private String publicgetJson(List<PublicCommentForm> list){
+  String retVal = null;
+  ObjectMapper objectMapper = new ObjectMapper();
+    try{
+        retVal = objectMapper.writeValueAsString(list);
+        } catch (JsonProcessingException e) {
+          System.err.println(e);
+        }
+        return retVal;
+    }
 
 }
