@@ -27,6 +27,8 @@ body{
     color: #fff;
     margin: 10px;
     padding: 10px;
+    display: table-cell;
+    vertical-align: middle;
   }
   #search_button{
     cursor: pointer;
