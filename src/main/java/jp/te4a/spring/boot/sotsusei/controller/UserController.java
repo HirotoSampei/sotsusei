@@ -52,13 +52,16 @@ public class UserController {
         return new UserForm();
     }
     @GetMapping
-    String list(Model model) { //新規登録画面遷移
+    String list(Model model, HttpServletRequest httpServletRequest) { //新規登録画面遷移
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "users/CreateUser";
     }
     @PostMapping(path="create")
-      String create(@Validated UserForm form, BindingResult result, Model model, String[] game_id) {
+      String create(@Validated UserForm form, BindingResult result, Model model, String[] game_id, HttpServletRequest httpServletRequest) {
         if(result.hasErrors() || game_id == null) {
           List<String> errorList = new ArrayList<String>();
           for (ObjectError error : result.getAllErrors()) {
@@ -71,12 +74,12 @@ public class UserController {
             errorList.add("プレイ中のゲームを選択してください");
           }
           model.addAttribute("validationError", errorList);
-          return list(model);
+          return list(model, httpServletRequest);
         }
         else if(form.getPassword().length() < 8){
           List<String> errorList = new ArrayList<String>();
           errorList.add("パスワードは8文字以上で入力してください。");
-          return list(model);
+          return list(model, httpServletRequest);
         }
         userService.create(form, game_id);
         return "redirect:/login";
@@ -90,7 +93,8 @@ public class UserController {
         for (int i = 0; i < gameplay_idList.size(); i++){
             game_List.add(gameRepository.getById(gameplay_idList.get(i).getGame_id()));
         }
-        imageService.getImage(model);
+      imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("game_List",game_List);
       model.addAttribute("profile",userBean);
       return "users/Userprofile";
@@ -101,6 +105,7 @@ public class UserController {
       UserBean userBean = userRepository.getById(user_id);
       BeanUtils.copyProperties(userForm,  form);
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       model.addAttribute("edit",userBean);
       return "users/Edituser2";
