@@ -53,10 +53,7 @@ public class UserController {
     }
     @GetMapping
     String list(Model model, HttpServletRequest httpServletRequest) { //新規登録画面遷移
-      String user_pass = httpServletRequest.getRemoteUser();
-      UserBean userBean = userRepository.findByMail_address(user_pass);
       imageService.getImage(model);
-      model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "users/CreateUser";
     }
@@ -76,9 +73,10 @@ public class UserController {
           model.addAttribute("validationError", errorList);
           return list(model, httpServletRequest);
         }
-        else if(form.getPassword().length() < 8){
+        if(form.getPassword().length() < 8){
           List<String> errorList = new ArrayList<String>();
           errorList.add("パスワードは8文字以上で入力してください。");
+          model.addAttribute("validationError", errorList);
           return list(model, httpServletRequest);
         }
         userService.create(form, game_id);
@@ -145,6 +143,9 @@ public class UserController {
     String new_password(@RequestParam String mail_address, Model model){
       Integer user_id = userRepository.findByIdMail_address(mail_address);
       if(user_id == null){
+        List<String> errorList = new ArrayList<String>();
+        errorList.add("一致するメールアドレスがありません");
+        model.addAttribute("validationError", errorList);
         return password();
       }
       model.addAttribute("user_id", user_id);
