@@ -19,20 +19,29 @@ public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpe
     UserBean findByMail_address(String mail_address);
 	//Integer findByUser_id(Integer user_id);
 
-	@Query("SELECT X.is_admin FROM UserBean X WHERE X.mail_address = ?1")
-    Boolean findIs_adminByMail_address(String mail_address);
-
 	@Query("SELECT X FROM UserBean X WHERE X.user_name = ?1")
 	List<UserBean> findByUser_nameLike(String user_name);
 
 	@Query("SELECT X.user_id FROM UserBean X WHERE X.user_name = ?1")
 	Integer findByUser_name(String user_name);
 
+	@Query("SELECT X.user_name FROM UserBean X WHERE X.user_id = ?1")
+	String findUser_name(Integer user_id);
+
 	@Query("SELECT X FROM UserBean X WHERE X.user_id = ?1")
 	List<UserBean> findByUser_id(Integer user_id);
 
 	@Query("SELECT X FROM UserBean X WHERE X.user_id = ?1")
 	UserBean findByUser(Integer user_id);
+
+	@Query("SELECT X.user_name FROM UserBean X WHERE X.user_id = ?1")
+	String findUser_nameByUser_id(Integer user_id);
+
+	@Query("SELECT X.is_banned FROM UserBean X WHERE X.user_id = ?1")
+	Boolean findIs_bannedByUser_id(Integer user_id);
+
+	@Query("SELECT X.user_id FROM UserBean X WHERE X.mail_address = ?1")
+    Integer findByIdMail_address(String mail_address);
 
 	@Transactional
 	@Modifying

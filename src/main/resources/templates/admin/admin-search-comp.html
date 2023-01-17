@@ -5,39 +5,33 @@
   <meta charset="utf-8">
   <title>サイトタイトル</title>
   <meta name="description" content="ディスクリプションを入力">
-  <link rel="stylesheet" href="..\..\static\css\User_searchStyle.css">
+  <link rel="stylesheet" type="text/css" href="../../static/css/UserSearchStyle.css" th:href="@{/css/UserSearchStyle.css}">
 
 <body>
 
   <div class="containaer">
+    <form th:action="@{/admin/searchcomp-un}" method="post">
     <p class="user" style="margin-left: 45%;margin-top: 13%;">大会主催者を検索</p>
     <div class="search_container">
-      <input type="search" name="s" placeholder="">
-      <input type="button" class="search_button " value="検索する">
+      <input type="text" name="username_ss">
+        <input type="submit" name="form" class="search_button" value="検索">
     </div>
+    </form>
   </div>
   <div class="containaer">
+    <form th:action="@{/admin/searchcomp}" method="post">
     <p class="user" style="margin-left: 45%;margin-top: 1%;">ゲームを検索</p>
     <div class="search_container">
-      <input type="search" name="s" placeholder="">
-      <select name=”item”>
-        <option value="">ゲームの種類</option>
-        <option value=”item1”>項目1</option>
-        <option value=”item2”>項目2</option>
-        <option value=”item3”>項目3</option>
-        <option value=”item4”>項目4</option>
-        <option value=”item5”>項目5</option>
-        <option value=”item6”>項目6</option>
-        <option value=”item7”>項目7</option>
-        <option value=”item8”>項目8</option>
-        <option value=”item9”>項目9</option>
-        <option value=”item10”>項目10</option>
+      <select class="input-item" name="game_id">
+        <option value="0"></option>
+        <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
       </select>
-      <input type="button" class="search_button " value="検索する">
+      <input type="submit" name="form" class="search_button" value="検索">
     </div>
+    </form>
   </div>
   
-  <input type="button" class="buck_button " value="戻る" />
+  <input type="button" class="buck_button" onclick="location.href='/admin'" value="戻る" />
 
 </body>
 

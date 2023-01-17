@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.form.UserEditForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
@@ -49,19 +50,19 @@ public class UserService {
     return formList;
   }
 
-  public UserForm update(UserForm userForm, String[] game_id) {
+  public UserEditForm update(UserEditForm userEditForm, String[] game_id) {
     UserBean userBean = new UserBean();
     GameplayBean gameplayBean = new GameplayBean();
-    BeanUtils.copyProperties(userForm, userBean);
+    BeanUtils.copyProperties(userEditForm, userBean);
     userRepository.save(userBean);
       
-    UserBean user = userRepository.findByMail_address(userForm.getMail_address());
+    UserBean user = userRepository.findByMail_address(userEditForm.getMail_address());
       for (int i = 0; i < game_id.length; i++){
         gameplayBean.setUser_id(user.getUser_id());
         gameplayBean.setGame_id(Integer.parseInt(game_id[i]));
         gameplayRepository.save(gameplayBean);
       }
-    return userForm;
+    return userEditForm;
   }
   public void delete(Integer id) { userRepository.deleteById(id); }
   public UserForm findOne(Integer id) {
@@ -70,10 +71,22 @@ public class UserService {
     BeanUtils.copyProperties(userBean, userForm);
     return userForm;
   }
-    public UserForm update(UserForm userForm) {
-      UserBean userBean = new UserBean();
-      BeanUtils.copyProperties(userForm, userBean);
-      userRepository.save(userBean);
-      return userForm;
-    }  
+  public UserForm update(UserForm userForm) {
+    UserBean userBean = new UserBean();
+    BeanUtils.copyProperties(userForm, userBean);
+    userRepository.save(userBean);
+    return userForm;
+  }
+  public UserForm updatepass(UserForm userForm, String password, Integer user_id) {
+    UserBean userBean = new UserBean();
+    UserBean bean = userRepository.findByUser(user_id);
+    userForm.setUser_id(user_id);
+    userForm.setUser_name(bean.getUser_name());
+    userForm.setPassword(new Pbkdf2PasswordEncoder().encode(password));
+    userForm.setMail_address(bean.getMail_address());
+    userForm.setNote(bean.getNote());
+    BeanUtils.copyProperties(userForm, userBean);
+    userRepository.save(userBean);
+    return userForm;
+  }
 }

@@ -5,10 +5,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
+import jp.te4a.spring.boot.sotsusei.form.UserEditForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
@@ -30,7 +33,6 @@ import jp.te4a.spring.boot.sotsusei.service.UserService;
 @Controller
 @RequestMapping("users")
 public class UserController {
-    private static final Model Model = null;
     @Autowired
     UserService userService;
     @Autowired
@@ -51,14 +53,29 @@ public class UserController {
     }
     @GetMapping
     String list(Model model) { //新規登録画面遷移
-      imageService.getlogoImage(model);
-      imageService.geticonImage(model);
+      imageService.getImage(model);
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "users/CreateUser";
     }
     @PostMapping(path="create")
       String create(@Validated UserForm form, BindingResult result, Model model, String[] game_id) {
-        if(result.hasErrors()) {
+        if(result.hasErrors() || game_id == null) {
+          List<String> errorList = new ArrayList<String>();
+          for (ObjectError error : result.getAllErrors()) {
+            errorList.add(error.getDefaultMessage());
+          }
+          if(form.getPassword() != "" && form.getPassword().length() < 8){
+            errorList.add("パスワードは8文字以上で入力してください。");
+          }
+          if(game_id == null){
+            errorList.add("プレイ中のゲームを選択してください");
+          }
+          model.addAttribute("validationError", errorList);
+          return list(model);
+        }
+        else if(form.getPassword().length() < 8){
+          List<String> errorList = new ArrayList<String>();
+          errorList.add("パスワードは8文字以上で入力してください。");
           return list(model);
         }
         userService.create(form, game_id);
@@ -73,27 +90,33 @@ public class UserController {
         for (int i = 0; i < gameplay_idList.size(); i++){
             game_List.add(gameRepository.getById(gameplay_idList.get(i).getGame_id()));
         }
-        imageService.getlogoImage(model);
-        imageService.geticonImage(model);
+        imageService.getImage(model);
       model.addAttribute("game_List",game_List);
       model.addAttribute("profile",userBean);
       return "users/Userprofile";
     }
     @PostMapping(path = "edit", params = "form") //編集画面遷移
-    String editForm(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ UserForm form, Model model) {
+    String editForm(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ UserEditForm form, Model model) {
       UserForm userForm = userService.findOne(user_id);
       UserBean userBean = userRepository.getById(user_id);
       BeanUtils.copyProperties(userForm,  form);
-      imageService.getlogoImage(model);
-      imageService.geticonImage(model);
+      imageService.getImage(model);
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       model.addAttribute("edit",userBean);
       return "users/Edituser2";
     }
     @PostMapping(path = "edit") //編集内容登録機能
-    String edit(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ @Validated UserForm form, BindingResult result, String[] game_id) {
-      if(result.hasErrors()) {
-      return editForm(user_id,/*game_List,*/ form, Model);
+    String edit(@RequestParam Integer user_id, @Validated UserEditForm form, BindingResult result, String[] game_id ,Model model) {
+      if(result.hasErrors() || game_id == null) {
+        List<String> errorList = new ArrayList<String>();
+        for (ObjectError error : result.getAllErrors()) {
+          errorList.add(error.getDefaultMessage());
+        }
+        if(game_id == null){
+          errorList.add("プレイ中のゲームを選択してください");
+        }
+        model.addAttribute("validationError", errorList);
+        return editForm(user_id, form, model);
       }
       UserBean userBean = userRepository.getById(user_id);
       form.setPassword(userBean.getPassword());
@@ -109,4 +132,28 @@ public class UserController {
       compPartRepository.deleteByuser_id(user_id);
       return "redirect:/login";
     }
+    @GetMapping(path = "Password")
+    String password(){
+      return "users/Password";
+    }
+    @PostMapping(path = "new_password")
+    String new_password(@RequestParam String mail_address, Model model){
+      Integer user_id = userRepository.findByIdMail_address(mail_address);
+      if(user_id == null){
+        return password();
+      }
+      model.addAttribute("user_id", user_id);
+      return "users/NewPassword";
+    }
+    @PostMapping(path = "updatepass")
+    String updatepass(@RequestParam String password, Integer user_id, Model model){
+      if(user_id == null || password == null){
+        return password();
+      }
+      password = password.substring(0, password.length()-1);
+      UserForm form = userService.findOne(user_id);
+      userService.updatepass(form, password, user_id);
+      return "login";
+    }
+
 }

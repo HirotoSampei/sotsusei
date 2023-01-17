@@ -5,6 +5,30 @@
   <meta charset="utf-8">
   <title>大会概要</title>
   <link rel="stylesheet" href="..\..\static\css\OverviewStyle.css" th:href="@{/css/OverviewStyle.css}">
+  <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function(event) {
+      const targetButton = document.getElementById('submitButton');
+      const triggerCheckbox = document.querySelector('input[name="agree"]');
+
+      targetButton.disabled = true;
+      targetButton.classList.add('is-inactive');
+
+      triggerCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+          targetButton.disabled = false;
+          targetButton.classList.remove('is-inactive');
+          targetButton.classList.add('is-active');
+        } else {
+          targetButton.disabled = true;
+          targetButton.classList.remove('is-active');
+          targetButton.classList.add('is-inactive');
+        }
+      }, false);
+    }, false);
+</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../../js/publiccomment.js"></script>
+  <script src="../../js/publicreload.js"></script>
 </head>
 
 <body>
@@ -52,7 +76,7 @@
             </div>
             <div class="date">概要</div>
             <div class="overview" th:text="${po.description}">
-              ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される
+              ここに概要が表示される
             </div>
             <div class="deadline-report-container">
               <div></div>
@@ -66,35 +90,17 @@
         </table>
       </div>
       <div class="right-main-container">
-        <div class="chat">
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。あああああああああああああああああああああああああああああああああああああああああああああ</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
-          <div class="comment-log">hoge_user : こんにちは。</div>
+        <div class="chat" id="commentBox">
+          <div  th:each="data : ${commentList}">
+              <label class="comment-log" th:text="${data.user_name + ':' + data.comment}">hoge_user : コメント</label>
+          </div>
         </div>
         <div class="comment">
-          <input type="text" class="comment-box">
-          <input type="button" value="投稿">
+          <form th:action="@{/comp/publiccheck}" method="post" id="comment_form">
+            <input type="text" id="comment" name="comment" class="comment-box" required>
+            <button type="submit">投稿</button>
+            <input type="hidden" id="comp_id_for_comment" th:value="${comp_id}">
+          </form>
         </div>
         <div th:if="${errorMessage}" th:text="${errorMessage}" class="error"> </div>
         <div th:if="${limitMessage}" th:text="${limitMessage}" class="error"></div>
@@ -109,10 +115,10 @@
           <input type="button" class="button-item" onclick="location.href='/comp'" value="戻る">
           <div class="agree-container">
             <div class="check">ルールを確認し、同意します。</div>
-            <input type="checkbox" style="transform:scale(3);">
+            <input type="checkbox" name="agree" value="agreement" style="transform:scale(3);">
           </div>
-          <input type="text" class="input-nickname" name="nickname" placeholder="ここにニックネームを入力">
-          <input type="submit" class="button-item" name="form" value="参加する" /> 
+          <input type="text" class="input-nickname" name="nickname" placeholder="ここにニックネームを入力" required>
+          <input type="submit" class="button-item" name="form" id="submitButton" value="参加する" disabled="disabled"/> 
           <input type="hidden" name="comp_id" th:value="${po.comp_id}"/>
         </div>
       </form>

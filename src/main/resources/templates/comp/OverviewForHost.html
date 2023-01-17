@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <title>大会概要 - 主催者</title>
   <link rel="stylesheet" href="..\..\static\css\OverviewStyle.css" th:href="@{/css/OverviewStyle.css}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="../../js/publiccomment.js"></script>
+  <script src="../../js/publicreload.js"></script>
 </head>
 <body>
 
@@ -55,35 +58,17 @@
       </table>
     </div>
     <div class="right-main-container">
-      <div class="chat">
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。あああああああああああああああああああああああああああああああああああああああああああああ</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
+      <div class="chat" id="commentBox">
+        <div  th:each="data : ${commentList}">
+            <label class="comment-log" th:text="${data.user_name + ':' + data.comment}">hoge_user : コメント</label>
+        </div>
       </div>
       <div class="comment">
-        <input type="text" class="comment-box">
-        <input type="button" value="投稿">
+        <form th:action="@{/comp/publiccheck}" method="post" id="comment_form">
+          <input type="text" id="comment" name="comment" class="comment-box" required>
+          <button type="submit">投稿</button>
+          <input type="hidden" id="comp_id_for_comment" th:value="${comp_id}">
+        </form>
       </div>
     </div>
   </div>

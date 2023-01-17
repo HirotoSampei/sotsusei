@@ -29,6 +29,11 @@
 </header>
 <form th:action="@{/comp/edit}" th:object="${compForm}" method="post">
   <main>
+    <div class="validationError">
+      <tr th:if="${validationError}" th:each="error : ${validationError}">
+        <td th:text="${error}"></td><br>
+      </tr>
+    </div>
     <table>
       <div id="input-container">
           <tr th:each="el : ${editlist}">
@@ -51,7 +56,7 @@
         </tr>
       </div>
       <div id="button-container">
-        <input type="button" class="button-item" onclick="history.back(-1)" value="戻る">
+        <input type="button" class="button-item" onclick="location.href='OverViewForHost'" value="戻る">
         <input type="hidden" name="comp_id" th:value="${param.comp_id[0]}" />
         <input type="submit" class="button-item" value="更新" />
       </div>

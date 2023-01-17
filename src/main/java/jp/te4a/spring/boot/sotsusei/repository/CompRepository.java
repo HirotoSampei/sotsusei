@@ -1,5 +1,6 @@
 package jp.te4a.spring.boot.sotsusei.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +28,12 @@ public interface CompRepository extends JpaRepository<CompBean, Integer>{
 
 	@Query("SELECT X FROM CompBean X WHERE X.comp_name LIKE %:comp_name% ORDER BY X.comp_id")
 	  List<CompBean> findByComp_nameLike(String comp_name);
+
+	@Query("SELECT X.end_date FROM CompBean X WHERE X.comp_id = ?1")
+	  LocalDateTime findEnd_dateByComp_id(Integer comp_id);
+	  
+
+	@Query("SELECT X.comp_id FROM CompBean X WHERE X.host_user_id = ?1")
+	 Integer findComp_id(Integer host_user_id);
 }
+

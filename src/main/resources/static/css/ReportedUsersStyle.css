@@ -1,17 +1,10 @@
 body {
 
     background: linear-gradient(rgb(0, 0, 0), 45%, rgb(255, 0, 0));
-
     background-size: cover;
-
-    overflow: hidden;
-
     background-attachment: fixed;
-
     height: 100%;
-
     width: 100%;
-
     min-width: 1200px;
 }
 
@@ -147,7 +140,7 @@ body {
     padding-top: 10px;
     padding-bottom: 0px;
     padding-left: 30px;
-    height: 150px;
+    height: 100px;
     border-radius: 15px 15px 15px 15px;
     border: 3px ridge white;
     overflow: auto;
