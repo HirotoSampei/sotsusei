@@ -61,7 +61,7 @@
           <tr th:each="po : ${participant_overview}">
             <div class="title-people-container">
               <div class="title" th:text="${po.comp_name}">初心者歓迎！ほげほげ大会</div>
-              <img src="..\..\images\people.png" class="people-logo">
+              <img th:src="${people_image}" class="people-logo">
               <div class="people" th:text="${po.count + '/' + po.limit_of_participants}">20/50</div>
             </div>
             <div class="game-title" th:text="${'🎮【' + po.gameBean.hard + '】' + po.gameBean.game_name}">🎮【PC】Tom

@@ -55,7 +55,7 @@
               <div class="center-main-item linkbox">
                 <div class="title-people-container">
                   <div class="title" th:text="${cm.comp_name}"></div>
-                  <img src="..\..\images\people.png" class="people-logo">
+                  <img th:src="${people_image}" class="people-logo">
                   <div class="people" th:text="${cm.count + '/' + cm.limit_of_participants}"></div>
                 </div>
                 <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
