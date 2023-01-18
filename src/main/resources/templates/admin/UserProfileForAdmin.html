@@ -82,6 +82,15 @@
       mask.style.display = 'none'
     })
   </script>
+  <script type="text/javascript">
+    window.addEventListener('DOMContentLoaded', function(){
+  // 戻るボタンを制御
+      window.history.pushState(null, null, null)
+      window.addEventListener('popstate', function(e){
+        window.history.pushState(null, null, null)
+      })
+    })
+  </script>
 
 </body>
 
