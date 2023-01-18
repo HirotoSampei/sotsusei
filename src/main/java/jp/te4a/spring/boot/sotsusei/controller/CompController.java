@@ -116,15 +116,18 @@ public class CompController {
     int login_user_id = userBean.getUser_id();
     if(compRepository.findAllOrderByComp_id().size() == 0){
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "comp/CreateComp";
     }
     else if(compRepository.findBeanByHost_user_id(login_user_id) != null){
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       return "redirect:/comp/OverViewForHost";
     }
     else{
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "comp/CreateComp";
     }
@@ -136,6 +139,7 @@ public class CompController {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getImage(model);
+    model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("overview", compService.hostoverview(userBean.getUser_id()));
     model.addAttribute("commentList",compService.publiccomment(compRepository.findComp_id(userBean.getUser_id())));
     model.addAttribute("comp_id", compRepository.findComp_id(userBean.getUser_id()));
@@ -147,6 +151,7 @@ public class CompController {
     UserBean userBean = userRepository.findByMail_address(user_pass);
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("comp", compService.partoverview(comp_id));
       model.addAttribute("message", "True");
       model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
@@ -156,6 +161,7 @@ public class CompController {
     }
     else{
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("participant_overview", compService.partoverview(comp_id));
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
@@ -192,6 +198,7 @@ public class CompController {
       }
       else{
         imageService.getImage(model);
+        model.addAttribute("user_name", userBean.getUser_name());
         model.addAttribute("participant_overview", compService.partoverview(comp_id));
         model.addAttribute("errorMessage", "既に参加している大会と日程が被っています。");
         model.addAttribute("commentList",compService.publiccomment(comp_id));
@@ -201,6 +208,7 @@ public class CompController {
     }
     if(compRepository.findByComp_id(comp_id).getLimit_of_participants() == compPartRepository.countByComp_id(comp_id)){
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("participant_overview", compService.partoverview(comp_id));
       model.addAttribute("limitMessage", "参加人数が上限に達しています。");
       model.addAttribute("commentList",compService.publiccomment(comp_id));
@@ -214,6 +222,7 @@ public class CompController {
     compPartBean.setNickname(nickname);
     compPartRepository.save(compPartBean);
     imageService.getImage(model);
+    model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("comp", compService.partoverview(comp_id));
     model.addAttribute("message", "True");
     model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
@@ -224,10 +233,13 @@ public class CompController {
   }
 
   @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
-  String editForm(@RequestParam Integer comp_id, CompForm form, Model model) {
+  String editForm(@RequestParam Integer comp_id, CompForm form, Model model, HttpServletRequest httpServletRequest) {
     //CompForm compForm = compService.findOne(comp_id);
     //BeanUtils.copyProperties(compForm,  form);
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getImage(model);
+    model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("editlist",compRepository.findByComp_id(comp_id));
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     return "comp/EditComp";
@@ -236,15 +248,15 @@ public class CompController {
   String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest,Model model) {
   if(result.hasErrors()) {
     compValidate.compval(form, result, model, modelMap, httpServletRequest);
-    return editForm(comp_id, form, model);
+    return editForm(comp_id, form, model, httpServletRequest);
   }
   else if(form.getEnd_date().isBefore(form.getStart_date())){
     compValidate.compend_dataval(model);
-    return editForm(comp_id, form, model);
+    return editForm(comp_id, form, model, httpServletRequest);
   }
   else if(form.getDeadline().isAfter(form.getStart_date())){
     compValidate.compdeadlineval(model);
-    return editForm(comp_id, form, model);
+    return editForm(comp_id, form, model, httpServletRequest);
   }
   String user_pass = httpServletRequest.getRemoteUser();
   UserBean userBean = userRepository.findByMail_address(user_pass);
@@ -273,6 +285,7 @@ public class CompController {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getImage(model);
+    model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     model.addAttribute("participated", compService.participated(userBean.getUser_id()));
     model.addAttribute("comp", compService.compgamesearch(game_id));
@@ -285,6 +298,7 @@ public class CompController {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getImage(model);
+    model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     model.addAttribute("participated", compService.participated(userBean.getUser_id()));
     model.addAttribute("comp", compService.compnamesearch(comp_name));
@@ -300,6 +314,7 @@ public class CompController {
       model.addAttribute("message", "True");
     }
     imageService.getImage(model);
+    model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
     model.addAttribute("comp", compService.partoverview(comp_id));
     model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
@@ -309,8 +324,11 @@ public class CompController {
   }
 
   @PostMapping(path = "report") //通報画面遷移
-  String report(@RequestParam Integer user_id, Integer comp_id, Model model) {
+  String report(@RequestParam Integer user_id, Integer comp_id, Model model, HttpServletRequest httpServletRequest) {
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getImage(model);
+    model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("user", user_id);
     model.addAttribute("comp", comp_id);
     return "comp/Report";
@@ -324,7 +342,7 @@ public class CompController {
       String errormessage = "通報理由を入力してください";
       model.addAttribute("errormessage", errormessage);
       if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
-        return report(rpuser_id, comp_id, model);
+        return report(rpuser_id, comp_id, model, httpServletRequest);
       }
       return comp_report(rpuser_id, comp_id, model);
     }
