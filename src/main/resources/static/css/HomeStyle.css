@@ -56,12 +56,13 @@ body {
 }
 
 .center-main-container {
-  width: 60%
+  width: 60%;
+  margin-left: 10%;
 }
 
 .right-main-container {
   width: 30%;
-
+  margin-right: 10%;
 }
 
 

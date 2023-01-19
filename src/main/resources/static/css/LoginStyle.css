@@ -66,8 +66,9 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-
+    
     margin-left: 65%;
+    margin-right: 10%;;
   }
   .button-item{
     background-color: white;
