@@ -27,8 +27,13 @@ body{
     color: #fff;
     margin: 10px;
     padding: 10px;
-    display: table-cell;
-    vertical-align: middle;
+  }
+  .header-item-name{
+    /*background: #0bd;*/
+    color: #fff;
+    margin: 10px;
+    padding: 10px;
+    line-height: 60px;
   }
   #search_button{
     cursor: pointer;

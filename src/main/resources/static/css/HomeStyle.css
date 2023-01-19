@@ -39,6 +39,14 @@ body {
   padding: 10px;
 }
 
+.header-item-name{
+  /*background: #0bd;*/
+  color: #fff;
+  margin: 10px;
+  padding: 10px;
+  line-height: 60px;
+}
+
 #search_button {
   cursor: pointer;
 }
