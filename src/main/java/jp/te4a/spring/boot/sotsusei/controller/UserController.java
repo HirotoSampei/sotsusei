@@ -5,6 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,6 +50,11 @@ public class UserController {
     CompPartRepository compPartRepository;
     @Autowired
 	  ImageService imageService;
+    private final MailSender mailSender;
+
+    public UserController(MailSender mailSender) { 
+        this.mailSender = mailSender;
+    }
     @ModelAttribute 
     UserForm setUpForm() {
         return new UserForm();
@@ -147,6 +155,19 @@ public class UserController {
         errorList.add("一致するメールアドレスがありません");
         model.addAttribute("validationError", errorList);
         return password();
+      }
+      SimpleMailMessage msg = new SimpleMailMessage();
+      msg.setFrom("13koji25@gmail.com"); // 送信元メールアドレス
+      msg.setTo("190088@jc-21.jp"); // 送信先メールアドレス
+      //        msg.setCc(); //Cc用
+      //        msg.setBcc(); //Bcc用
+      msg.setSubject("パスワード変更"); // タイトル               
+      msg.setText("パスワード変更要請がありました。\r\n新しいパスワードを入力してください。"); //本文
+
+      try {
+          mailSender.send(msg);
+      } catch (MailException e) {
+          e.printStackTrace();
       }
       model.addAttribute("user_id", user_id);
       return "users/NewPassword";
