@@ -157,6 +157,7 @@ public class CompController {
       model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
       model.addAttribute("commentList",compService.privatecomment(comp_id));
       model.addAttribute("comp_id", comp_id);
+      model.addAttribute("user_id",userBean.getUser_id());
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     else{
@@ -165,6 +166,7 @@ public class CompController {
       model.addAttribute("participant_overview", compService.partoverview(comp_id));
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
+      model.addAttribute("user_id",userBean.getUser_id());
       return "comp/Overview";//参加前大会概要画面
     } 
   }
@@ -203,6 +205,7 @@ public class CompController {
         model.addAttribute("errorMessage", "既に参加している大会と日程が被っています。");
         model.addAttribute("commentList",compService.publiccomment(comp_id));
         model.addAttribute("comp_id", comp_id);
+        model.addAttribute("user_id",userBean.getUser_id());
         return "comp/Overview";//参加前大会概要画面
       }
     }
@@ -213,6 +216,7 @@ public class CompController {
       model.addAttribute("limitMessage", "参加人数が上限に達しています。");
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
+      model.addAttribute("user_id",userBean.getUser_id());
       return "comp/Overview";//参加前大会概要画面
     }
     else{
@@ -228,6 +232,7 @@ public class CompController {
     model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
     model.addAttribute("commentList",compService.privatecomment(comp_id));
     model.addAttribute("comp_id", comp_id);
+    model.addAttribute("user_id",userBean.getUser_id());
     return "comp/OverviewForParticipants";//参加者専用画面
     }
   }
@@ -320,6 +325,7 @@ public class CompController {
     model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
     model.addAttribute("commentList",compService.privatecomment(comp_id));
     model.addAttribute("comp_id", comp_id);
+    model.addAttribute("user_id",userBean.getUser_id());
     return "comp/OverviewForParticipants";
   }
 
@@ -364,12 +370,14 @@ public class CompController {
       model.addAttribute("user", compService.popuser(comp_id, user_id));
       model.addAttribute("commentList",compService.privatecomment(comp_id));
       model.addAttribute("comp_id", comp_id);
+      model.addAttribute("user_id",userBean.getUser_id());
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     imageService.getImage(model);
       model.addAttribute("participant_overview", compService.partoverview(comp_id));
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
+      model.addAttribute("user_id",userBean.getUser_id());
       return "comp/Overview";//参加前大会概要画面
   }
 
@@ -459,4 +467,21 @@ private String publicgetJson(List<PublicCommentForm> list){
         return retVal;
     }
 
+  @PostMapping("/deleteprivatecomment")
+  @ResponseBody
+  String delete_private_comment(@RequestParam String comp_id,String comment_date){
+    int comp_Id = Integer.parseInt(comp_id);
+    LocalDateTime date = LocalDateTime.parse(comment_date);
+    compService.delete_private_comment(comp_Id,date);
+    return privategetJson(compService.privatecomment(comp_Id));
+  }
+
+  @PostMapping("/deletepubliccomment")
+  @ResponseBody
+  String delete_public_comment(@RequestParam String comp_id,String comment_date){
+    int comp_Id = Integer.parseInt(comp_id);
+    LocalDateTime date = LocalDateTime.parse(comment_date);
+    compService.delete_public_comment(comp_Id,date);
+    return publicgetJson(compService.publiccomment(comp_Id));
+  }
 }

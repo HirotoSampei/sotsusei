@@ -1,6 +1,8 @@
 package jp.te4a.spring.boot.sotsusei.service;
 
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -210,8 +212,13 @@ public class CompService {
       List<PrivateCommentBean> list = privateCommentRepository.findByComp_id(comp_id);
       for(PrivateCommentBean commentBean: list) { 
         PrivateCommentForm commentForm = new PrivateCommentForm();
+        String comment_date = commentBean.getCommented_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         BeanUtils.copyProperties(commentBean, commentForm);
         commentForm.setNickname(compPartRepository.findByNickname(commentForm.getComp_id(),commentForm.getUser_id()));
+        commentForm.setComment_date(comment_date);
+        if(commentForm.getNickname() == null){
+          commentForm.setNickname("大会から抜けたユーザー");
+        }
         formList.add(commentForm);
       }
       return formList;
@@ -222,11 +229,21 @@ public class CompService {
       List<PublicCommentBean> list = publicCommentRepository.findByComp_id(comp_id);
       for(PublicCommentBean commentBean: list) { 
         PublicCommentForm commentForm = new PublicCommentForm();
+        String comment_date = commentBean.getCommented_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
         BeanUtils.copyProperties(commentBean, commentForm);
         commentForm.setUser_name(userRepository.findUser_name(commentForm.getUser_id()));
+        commentForm.setComment_date(comment_date);
         formList.add(commentForm);
       }
       return formList;
+    }
+
+    public void delete_private_comment(Integer comp_id,LocalDateTime comment_date){
+      privateCommentRepository.deleteComment(comp_id, comment_date);
+    }
+
+    public void delete_public_comment(Integer comp_id,LocalDateTime comment_date){
+      publicCommentRepository.deleteComment(comp_id, comment_date);
     }
    
 }

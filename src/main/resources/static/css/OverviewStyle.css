@@ -341,3 +341,12 @@ body{
     left: 0;
     z-index: 1;
   }
+
+  .hide {
+    display: none;
+  }
+  
+  #c2 {
+    display: none;
+  }
+  

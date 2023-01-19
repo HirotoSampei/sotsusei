@@ -8,5 +8,5 @@ public class PublicCommentForm {
     private Integer user_id;
     private String user_name;
     private String comment;
-    
+    private String comment_date;
 }
