@@ -5,10 +5,12 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,6 +35,7 @@ import jp.te4a.spring.boot.sotsusei.service.GameplayService;
 import jp.te4a.spring.boot.sotsusei.service.ImageService;
 import jp.te4a.spring.boot.sotsusei.service.UserService;
 
+@Component
 @Controller
 @RequestMapping("users")
 public class UserController {
@@ -132,6 +135,8 @@ public class UserController {
       UserBean userBean = userRepository.getById(user_id);
       form.setPassword(userBean.getPassword());
       form.setMail_address(userBean.getMail_address());
+      form.setRole(userBean.getRole());
+      form.set_banned(userBean.is_banned());
       gameplayRepository.deleteByuser_id(user_id);
       userService.update(form, game_id);
       return "redirect:/users/profile";
@@ -147,16 +152,21 @@ public class UserController {
     String password(){
       return "users/Password";
     }
-    @PostMapping(path = "new_password")
+    @PostMapping(path = "new_password")//新しいパスワード
     String new_password(@RequestParam String mail_address, Model model){
-      Integer user_id = userRepository.findByIdMail_address(mail_address);
-      if(user_id == null){
-        List<String> errorList = new ArrayList<String>();
+      List<String> errorList = new ArrayList<String>();
+      UserBean userBean = userRepository.findByMail_address(mail_address);
+      if(userBean.getUser_id() == null){
         errorList.add("一致するメールアドレスがありません");
         model.addAttribute("validationError", errorList);
         return password();
       }
-      SimpleMailMessage msg = new SimpleMailMessage();
+      if(userBean.is_banned()){
+        errorList.add("そのメールアドレスは現在使用することは出来ません。");
+        model.addAttribute("validationError", errorList);
+        return password();
+      }
+      /*SimpleMailMessage msg = new SimpleMailMessage();
       msg.setFrom("13koji25@gmail.com"); // 送信元メールアドレス
       msg.setTo("190088@jc-21.jp"); // 送信先メールアドレス
       //        msg.setCc(); //Cc用
@@ -168,11 +178,11 @@ public class UserController {
           mailSender.send(msg);
       } catch (MailException e) {
           e.printStackTrace();
-      }
-      model.addAttribute("user_id", user_id);
+      }*/
+      model.addAttribute("user_id", userBean.getUser_id());
       return "users/NewPassword";
     }
-    @PostMapping(path = "updatepass")
+    @PostMapping(path = "updatepass")//パスワード更新処理
     String updatepass(@RequestParam String password, Integer user_id, Model model){
       if(user_id == null || password == null){
         return password();
@@ -181,6 +191,27 @@ public class UserController {
       UserForm form = userService.findOne(user_id);
       userService.updatepass(form, password, user_id);
       return "login";
+    }
+    @GetMapping(path = "User_Password")
+    String User_password(Model model){
+      imageService.getImage(model);
+      return "users/UpdatePassword";
+    }
+    @PostMapping(path = "up_password")
+    String up_password(@RequestParam String mail_address, String password, Model model, HttpServletRequest httpServletRequest, Pbkdf2PasswordEncoder passwordEncoder){
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
+      password = password.substring(0, password.length()-1);
+      String pass_word = userBean.getPassword();
+
+      if(mail_address.equals(user_pass) && passwordEncoder.matches(password,pass_word)){
+        model.addAttribute("user_id", userBean.getUser_id());
+        return "users/NewPassword";
+      }
+      List<String> errorList = new ArrayList<String>();
+      errorList.add("メールアドレス又はパスワードが違います。");
+      model.addAttribute("validationError", errorList);
+      return User_password(model);
     }
 
 }
