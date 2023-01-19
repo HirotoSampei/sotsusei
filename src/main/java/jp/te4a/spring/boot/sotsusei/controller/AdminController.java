@@ -65,21 +65,21 @@ public class AdminController {
   @Autowired
   GameRepository gameRepository;
 
-  @GetMapping //大会作成画面
+  @GetMapping //管理者ホーム画面
   String admin_home(Model model) {
     return "admin/AdminHome";
   }
-  @GetMapping("/userlist") //ホーム画面
+  @GetMapping("/userlist") //ユーザー検索画面
   String user_list(Model model) {
     model.addAttribute("userList", userService.findAll());
     return "admin/UserSearch";
   }
 
-  @GetMapping("/searchuser")
+  @GetMapping("/searchuser")//ユーザー検索結果の表示
   String user_search(@RequestParam String username_searching, Model model){
+    if(username_searching!=null){
     List<UserBean> user_l=new ArrayList<UserBean>();
     user_l=userSearchRepository.findByUser_nameLike(username_searching);
-    if(user_l!=null){
       model.addAttribute("userList", user_l);
     }else{
       model.addAttribute("userlist",userRepository.findAllOrderByUser_id());
@@ -87,17 +87,17 @@ public class AdminController {
     return "admin/Users";
   }
   
-  @GetMapping("/complist") //大会作成画面
+  @GetMapping("/complist") //大会検索画面
   String create_complist(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "admin/admin-search-comp";
   }
-  @GetMapping("/searchcomp")
+  @GetMapping("/searchcomp")//ゲームでの大会検索の結果表示
   String comp_search(@RequestParam Integer game_id, Model model){
     model.addAttribute("compList", compSearchRepository.findByGame_idLike(game_id));
     return "admin/ReportedComp";
   }
-  @GetMapping("/searchcomp-un")
+  @GetMapping("/searchcomp-un")//主催者ユーザーでの大会検索の結果表示
   String comp_search_ss(@RequestParam String username_ss, Model model){
     List<Integer> user_id_ss = userSearchRepository.findIdByUser_nameLike(username_ss);
     List<CompBean> comp_s = new ArrayList<CompBean>();
@@ -110,7 +110,7 @@ public class AdminController {
     model.addAttribute("compList", comp_s);
     return "admin/ReportedComp";
   }
-  @PostMapping(path="userdetail")
+  @PostMapping(path="userdetail")//ユーザーの詳細表示
   String user_detail(@RequestParam Integer user_id, Model model){
     List<GameBean> game_List = new ArrayList<GameBean>();
     List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(user_id);
@@ -121,7 +121,12 @@ public class AdminController {
     model.addAttribute("userDetail", userSearchRepository.findByUser_idLike(user_id));
     return "admin/UserProfileForAdmin";
   }
-  @PostMapping(path="compdetail")
+  @GetMapping("/userdetail")//ユーザーの詳細画面での再読み込み時
+  String userdetail_get(){
+    return "redirect:/admin/userlist";
+  }
+
+  @PostMapping(path="compdetail")//大会の詳細の表示
   String comp_detail(@RequestParam Integer comp_id, Model model){
     model.addAttribute("compDetail", compRepository.findByComp_id(comp_id));
     return "admin/OverviewForAdmin";
@@ -131,26 +136,26 @@ public class AdminController {
       model.addAttribute("reportList", reportRepository.findAllOrderByReport_id());
       return "admin/ReportedUsers";
   }
-  @PostMapping(path="reportdetail")
+  @PostMapping(path="reportdetail")//通報の詳細の表示
   String report_detail(@RequestParam Integer report_id,Integer reporter_user_id,Integer suspicious_user_id, Model model){
     model.addAttribute("reuserDetail", userSearchRepository.findByUser_idLike(reporter_user_id));
     model.addAttribute("suuserDetail", userSearchRepository.findByUser_idLike(suspicious_user_id));
     model.addAttribute("reportDetail", reportRepository.findByReport_id(report_id));
     return "admin/ReportingDetails";
   }
-  @PostMapping(path="compdelete")
+  @PostMapping(path="compdelete")//大会削除処理
   String comp_delete(@RequestParam Integer comp_id){
     compService.delete(comp_id);
     reportRepository.deleteByComp_id(comp_id);
     compPartRepository.deleteByuser_id(comp_id);
     return "redirect:/admin/complist";
   }
-  @PostMapping(path="ban_from_report")
+  @PostMapping(path="ban_from_report")//通報詳細からのBAN処理
   String ban_r(@RequestParam Integer suspicious_user_id, Model model){
     userRepository.updateByUser_id(suspicious_user_id);
     return "redirect:/admin/reportlist";
   }
-  @PostMapping(path="ban_from_user")
+  @PostMapping(path="ban_from_user")//ユーザー詳細からのBAN処理
   String ban_u(@RequestParam Integer user_id, Model model){
     userRepository.updateByUser_id(user_id);
     return "redirect:/admin/userlist";
