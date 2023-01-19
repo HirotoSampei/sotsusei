@@ -38,7 +38,7 @@
         <tr th:each="ov : ${overview}"> 
           <div class="title-people-container">
             <div class="title"th:text="${ov.comp_name}">初心者歓迎！ほげほげ大会</div>
-            <img src="..\..\images\people.png" class="people-logo">
+            <img th:src="${people_image}" class="people-logo">
             <div class="people"th:text="${ ov.count + '/' + ov.limit_of_participants}">20/50</div> 
           </div>  
           <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom Clansy's Reinbow Six Siege</div>
