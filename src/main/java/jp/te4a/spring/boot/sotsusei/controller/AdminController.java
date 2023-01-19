@@ -82,7 +82,7 @@ public class AdminController {
     user_l=userSearchRepository.findByUser_nameLike(username_searching);
       model.addAttribute("userList", user_l);
     }else{
-      model.addAttribute("userlist",userRepository.findAllOrderByUser_id());
+      model.addAttribute("userList",userRepository.findAllOrderByUser_id());
     }
     return "admin/Users";
   }
