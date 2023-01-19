@@ -10,7 +10,7 @@
 <body>
 
   <div class="containaer">
-    <form th:action="@{/admin/searchcomp-un}" method="post">
+    <form th:action="@{/admin/searchcomp-un}" method="get">
     <p class="user" style="margin-left: 45%;margin-top: 13%;">大会主催者を検索</p>
     <div class="search_container">
       <input type="text" name="username_ss">
@@ -19,7 +19,7 @@
     </form>
   </div>
   <div class="containaer">
-    <form th:action="@{/admin/searchcomp}" method="post">
+    <form th:action="@{/admin/searchcomp}" method="get">
     <p class="user" style="margin-left: 45%;margin-top: 1%;">ゲームを検索</p>
     <div class="search_container">
       <select class="input-item" name="game_id">

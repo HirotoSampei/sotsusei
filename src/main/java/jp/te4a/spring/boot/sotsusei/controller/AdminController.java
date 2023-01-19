@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
+import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
@@ -73,22 +74,30 @@ public class AdminController {
     model.addAttribute("userList", userService.findAll());
     return "admin/UserSearch";
   }
-  @PostMapping(path="searchuser", params = "form")
+
+  @GetMapping("/searchuser")
   String user_search(@RequestParam String username_searching, Model model){
-    model.addAttribute("userList", userSearchRepository.findByUser_nameLike(username_searching));
+    List<UserBean> user_l=new ArrayList<UserBean>();
+    user_l=userSearchRepository.findByUser_nameLike(username_searching);
+    if(user_l!=null){
+      model.addAttribute("userList", user_l);
+    }else{
+      model.addAttribute("userlist",userRepository.findAllOrderByUser_id());
+    }
     return "admin/Users";
   }
+  
   @GetMapping("/complist") //大会作成画面
   String create_complist(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
       return "admin/admin-search-comp";
   }
-  @PostMapping(path="searchcomp", params = "form")
+  @GetMapping("/searchcomp")
   String comp_search(@RequestParam Integer game_id, Model model){
     model.addAttribute("compList", compSearchRepository.findByGame_idLike(game_id));
     return "admin/ReportedComp";
   }
-  @PostMapping(path="searchcomp-un", params = "form")
+  @GetMapping("/searchcomp-un")
   String comp_search_ss(@RequestParam String username_ss, Model model){
     List<Integer> user_id_ss = userSearchRepository.findIdByUser_nameLike(username_ss);
     List<CompBean> comp_s = new ArrayList<CompBean>();
@@ -102,7 +111,7 @@ public class AdminController {
     return "admin/ReportedComp";
   }
   @PostMapping(path="userdetail")
-  String user_detail(@RequestParam Integer user_id, Model model, ModelMap modelMap){
+  String user_detail(@RequestParam Integer user_id, Model model){
     List<GameBean> game_List = new ArrayList<GameBean>();
     List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(user_id);
       for (int i = 0; i < gameplay_idList.size(); i++){
