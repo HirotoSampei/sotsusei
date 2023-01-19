@@ -85,6 +85,7 @@ public class UserService {
     userForm.setPassword(new Pbkdf2PasswordEncoder().encode(password));
     userForm.setMail_address(bean.getMail_address());
     userForm.setNote(bean.getNote());
+    userForm.setRole(bean.getRole());
     BeanUtils.copyProperties(userForm, userBean);
     userRepository.save(userBean);
     return userForm;
