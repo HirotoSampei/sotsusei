@@ -8,6 +8,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="../../js/privatecomment.js"></script>
   <script src="../../js/privatereload.js"></script>
+  <script src="../../js/deleteprivatecomment.js"></script>
   <script type="text/javascript" >
     function func(nickname,note,user_id,login_id,comp_id) {
       document.getElementById('nickname').innerHTML = nickname;
@@ -23,6 +24,10 @@
         document.getElementById('button1').style.visibility = 'visible'
       }
     }</script>
+    <!--
+    <script>
+      document.body.onclick = clickscreen();
+    </script>-->
 </head>
 
 <body>
@@ -105,16 +110,19 @@
       </div>
       <div class="right-main-container">
         <div id="only-participants">■参加者限定チャット</div>
+          <input type="hidden" id="user_id_for_comment" th:value="${user_id}">
           <div class="chat" id="commentBox">
             <div  th:each="data : ${commentList}">
-                <label class="comment-log" th:text="${data.nickname + ':' + data.comment}">hoge_user : ここは限定チャット</label>
+                <label for="c1" class="comment-log" th:id="${data.user_id}" th:onclick="|selectfunc('__${data.comment_date}__','__${data.user_id}__')|" th:text="${data.nickname + ':' + data.comment}">hoge_user : ここは限定チャット</label>
+                <input type="checkbox" id="c1">
+                <button class="delete hide" th:id="${data.comment_date}" th:onclick="|deletefunc('__${data.comment_date}__')|">削除</button>
             </div>
           </div>
           <!--th:fragment="fragmentComment" th:insert="comp/fragment :: hogehoge" th:fragment="fragmentComment"-->
           <div class="comment">
             <form th:action="@{/comp/privatecheck}" method="post" id="comment_form">
               <input type="text" id="comment" name="comment" class="comment-box" required>
-              <button type="submit">投稿</button>
+              <button type="submit" id="add">投稿</button>
               <input type="hidden" id="comp_id_for_comment" th:value="${comp_id}">
             </form>
           </div>

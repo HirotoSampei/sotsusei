@@ -292,3 +292,11 @@ main {
   top: 0;
   left: 0;
 }
+
+.hide {
+  display: none;
+}
+
+#c1 {
+  display: none;
+}

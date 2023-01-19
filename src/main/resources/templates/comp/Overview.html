@@ -29,6 +29,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="../../js/publiccomment.js"></script>
   <script src="../../js/publicreload.js"></script>
+  <script src="../../js/deletepubliccomment.js"></script>
 </head>
 
 <body>
@@ -90,9 +91,12 @@
         </table>
       </div>
       <div class="right-main-container">
+        <input type="hidden" id="user_id_for_comment" th:value="${user_id}">
         <div class="chat" id="commentBox">
           <div  th:each="data : ${commentList}">
-              <label class="comment-log" th:text="${data.user_name + ':' + data.comment}">hoge_user : コメント</label>
+              <label for="c2" class="comment-log" th:id="${data.user_id}" th:onclick="|selectfunc('__${data.comment_date}__','__${data.user_id}__')|" th:text="${data.user_name + ':' + data.comment}">hoge_user : コメント</label>
+              <input type="checkbox" id="c2">
+              <button class="delete hide" th:id="${data.comment_date}" th:onclick="|deletefunc('__${data.comment_date}__')|">削除</button>
           </div>
         </div>
         <div class="comment">

@@ -10,6 +10,6 @@ public class PrivateCommentForm {
     private Integer user_id;
     private String nickname;
     private String comment;
-    //private LocalDateTime commented_date;
+    private String comment_date;
     
 }

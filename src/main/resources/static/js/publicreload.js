@@ -16,7 +16,9 @@ $(function(){
         $("#commentBox").replaceWith('<div class="chat" id="commentBox"> </div>');
         for(i = 0; i < commentDataList.length; i++){
           let divTag = $("<div />");
-          $("#commentBox").append($('<label class="comment-log"></label>').text(decodeURI(commentDataList[i].user_name) + ":" + decodeURI(commentDataList[i].comment)));
+          $("#commentBox").append($('<label for="c2" class="comment-log" id="'+decodeURI(commentDataList[i].user_id)+'" onclick="selectfunc('+"'"+commentDataList[i].comment_date+"'"+","+"'"+commentDataList[i].user_id+"'"+')"></label>').text(decodeURI(commentDataList[i].user_name) + ":" + decodeURI(commentDataList[i].comment)));
+          $('#commentBox').append($('<input type="checkbox" id="c2">'));
+          $('#commentBox').append($('<button class="delete hide" id="'+decodeURI(commentDataList[i].comment_date)+'" onclick="deletefunc('+"'"+commentDataList[i].comment_date+"'"+')">削除</button>'));
           $('#commentBox').append(divTag);
         }
         
