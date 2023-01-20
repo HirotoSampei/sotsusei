@@ -21,14 +21,20 @@
             <input type="submit" class="form" name="form" value="検索">
           </form>
           <form th:action="@{/comp/searchgamecomp}" method="post">
-            <select class="input-item game_id" name="game_id">
-              <option value="0" selected>ゲーム名検索</option>
+            <select class="input-item game_id" name="game_id" id="genre">
+              <option value="0">ゲーム名検索</option>
               <option th:each="game:${gameList}" th:value="${game.game_id}"
                 th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}">
               </option>
             </select>
             <input type="submit" name="form" value="検索">
-
+          </form>
+          <form>
+            <select class="test-number" id="testnumber">
+              <option id="1" value="one" text="一番">iti</option>
+              <option id="2" value="two" text="二番">ni</option>
+              <option id="3" value="three" text="三番">san</option>
+            </select>
           </form>
         </div>
         <div class="header-item">
@@ -94,6 +100,14 @@
     <div id="temp-footer">©Competition Assistance Tool</div>
   </footer>
 
+  <script type="text/javascript">
+    const genreSelect = document.getElementById('genre');
+    genreSelect.addEventListener('change', (e) =>{
+      console.log("a");
+      console.log(e.target.value);
+      e.target.options.selected=true;//ここから
+    })
+  </script>
 </body>
 
 </html>

@@ -37,6 +37,10 @@ body {
   color: #fff;
   margin: 10px;
   padding: 10px;
+
+}
+
+[value="1"]:selected ~ .targets.target:not([value="one"]){display: none;
 }
 
 .header-item-name{
@@ -298,4 +302,3 @@ main p {
  .shape {
   fill: #0E1822;
  }
- 
