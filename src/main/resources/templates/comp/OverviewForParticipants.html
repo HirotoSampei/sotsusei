@@ -60,7 +60,7 @@
           <tr >
             <div class="title-people-container">
               <div class="title" th:text="${cp.comp_name}">初心者歓迎！ほげほげ大会</div>
-              <img src="..\..\images\people.png" class="people-logo">
+              <img th:src="${people_image}" class="people-logo">
               <div class="people" th:text="${cp.count + '/' + cp.limit_of_participants}">20/50</div>
             </div>
             <div class="game-title" th:text="${'🎮【' + cp.gameBean.hard + '】' + cp.gameBean.game_name}">🎮【PC】Tom
