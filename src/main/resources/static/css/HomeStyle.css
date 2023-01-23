@@ -40,9 +40,6 @@ body {
 
 }
 
-[value="1"]:selected ~ .targets.target:not([value="one"]){display: none;
-}
-
 .header-item-name{
   /*background: #0bd;*/
   color: #fff;

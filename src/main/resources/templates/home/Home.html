@@ -20,21 +20,22 @@
             <input type="search" class="comp_name" name="comp_name" placeholder="大会を検索">
             <input type="submit" class="form" name="form" value="検索">
           </form>
-          <form th:action="@{/comp/searchgamecomp}" method="post">
-            <select class="input-item game_id" name="game_id" id="genre">
+          <form>
+            <select class="test-number" id="testnumber">
+              <option value="0">ゲームジャンル選択</option>
+              <option id="1" value="FPS">FPS</option>
+              <option id="2" value="music">音ゲー</option>
+            </select>
+          </form>
+          <form id=searchgamecomp name="searchgamecomp" th:action="@{/comp/searchgamecomp}" method="post">
+            <select class="input-item game_id" name="game_id" id="game">
               <option value="0">ゲーム名検索</option>
-              <option th:each="game:${gameList}" th:value="${game.game_id}"
+              <option th:each="game:${gameList}" th:value="${game.game_id} + ',' + ${game.genre}"
                 th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}">
               </option>
             </select>
-            <input type="submit" name="form" value="検索">
-          </form>
-          <form>
-            <select class="test-number" id="testnumber">
-              <option id="1" value="one" text="一番">iti</option>
-              <option id="2" value="two" text="二番">ni</option>
-              <option id="3" value="three" text="三番">san</option>
-            </select>
+            <!--<input type="submit" name="form" value="検索">-->
+            <button id="btn">検索</button>
           </form>
         </div>
         <div class="header-item">
@@ -101,11 +102,28 @@
   </footer>
 
   <script type="text/javascript">
-    const genreSelect = document.getElementById('genre');
+    const genreSelect = document.getElementById('testnumber');
+    var gameSelect = document.getElementById('game');
     genreSelect.addEventListener('change', (e) =>{
-      console.log("a");
-      console.log(e.target.value);
-      e.target.options.selected=true;//ここから
+      e.target.options.selected=true;
+      for(let i =0;i<gameSelect.length;i++){
+        var str = gameSelect[i].value.split(',');
+        if(str[1] != e.target.value){
+          gameSelect[i].style.display = "none";
+        }
+        else{
+          gameSelect[i].style.display = "";
+        }
+      }
+    })
+    var btn = document.getElementById('btn');
+    btn.addEventListener('click', function(){
+      var str = document.searchgamecomp.game_id.value.split(',');
+      alert(document.searchgamecomp.game_id.value);
+      document.searchgamecomp.game_id.value=str[0];
+      alert(str[0]);
+      alert(document.searchgamecomp.game_id.value);
+      ('searchgamecomp').submit(); //ここ
     })
   </script>
 </body>
