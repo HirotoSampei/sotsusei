@@ -22,5 +22,5 @@ public class UserEditForm {
     private String note;
 
     private boolean is_banned;
-    private boolean is_admin;
+    private String role;
 }

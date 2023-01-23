@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>ユーザー作成</title>
-  <link rel="stylesheet" href="..\..\static\css\EditUserStyle.css" th:href="@{/css/EditUserStyle.css}">
+  <link rel="stylesheet" href="../../static/css/EditUserStyle.css" th:href="@{/css/EditUserStyle.css}">
 </head>
 <body>
 
@@ -22,13 +22,23 @@
       <a href="/users/profile">
         <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
       </a>
-      <div class="header-item">user name</div>
+      <div class="header-item-name" th:text="${user_name}">user</div>
       </div>
   </div>
 
 </header>
   
 <main>
+  <div id="mask"></div>
+    <div id="dialog">
+      このユーザーを削除します。本当によろしいですか？
+      <form th:action="@{/users/delete}" method="post">
+        <input type="submit" class="button-item" value="はい">
+        <input type="hidden" name="user_id" th:value="${param.user_id[0]}"/>
+      </form>
+      </form>
+      <button id="no" class="button-item">いいえ</button>
+    </div>
   <div class="validationError">
     <tr th:if="${validationError}" th:each="error : ${validationError}">
       <td th:text="${error}"></td><br>
@@ -36,7 +46,7 @@
   </div>
   <form th:action="@{/users/edit}" th:object="${userForm}" method="post">
     <th th:each="us : ${edit}">
-      <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:value="${us.user_name}"></p>
+      <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:value="${us.user_name}" required></p>
       <!--<p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>
       <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:value="${us.mail_address}"></p>-->
     <details>
@@ -54,16 +64,28 @@
       <input type="submit" class="button-item" value="更新">
       <input type="hidden" name="user_id" th:value="${param.user_id[0]}"/>
     </form>
-    <form th:action="@{/users/delete}" method="post">
-      <input type="submit" class="button-item" value="削除">
-      <input type="hidden" name="user_id" th:value="${param.user_id[0]}"/>
-    </form>
+      <input type="button" id="deletebtn" class="button-item" value="削除">
     </div>
   </th>
 </main>
 <footer>
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>
+
+<script th:inline="javascript">
+  const deletebtn = document.getElementById('deletebtn')
+  const dialog = document.getElementById('dialog')
+  const mask = document.getElementById('mask')
+  const no = document.getElementById('no')
+  deletebtn.addEventListener('click',function start() {
+    dialog.style.display = 'block'
+    mask.style.display = 'block'
+  })
+  no.addEventListener('click',function back(){
+    dialog.style.display = 'none'
+    mask.style.display = 'none'
+  })
+</script>
 
 </body>
 </html>

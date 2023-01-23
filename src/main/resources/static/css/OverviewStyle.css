@@ -28,6 +28,13 @@ body{
     margin: 10px;
     padding: 10px;
   }
+  .header-item-name{
+    /*background: #0bd;*/
+    color: #fff;
+    margin: 10px;
+    padding: 10px;
+    line-height: 60px;
+  }
   #search_button{
     cursor: pointer;
   }
@@ -341,3 +348,12 @@ body{
     left: 0;
     z-index: 1;
   }
+
+  .hide {
+    display: none;
+  }
+  
+  #c2 {
+    display: none;
+  }
+  

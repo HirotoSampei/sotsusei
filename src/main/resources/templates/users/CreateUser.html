@@ -18,7 +18,7 @@
     </div>
     <div class="right-container">
       <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
-      <div class="header-item">user name</div>
+      <div class="header-item-name" th:text="${user_name}">user</div>
       </div>
   </div>
 
@@ -30,9 +30,9 @@
         <td th:text="${error}"></td><br>
       </tr>
     </div>
-    <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:field="*{user_name}"></p>
-    <p>パスワード　　　：<input type="password" class="input-item" name="password" th:field="*{password}"></p>
-    <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:field="*{mail_address}"></p>
+    <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:field="*{user_name}" required></p>
+    <p>パスワード　　　：<input type="password" class="input-item" name="password" th:field="*{password}" required></p>
+    <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:field="*{mail_address}"required></p>
     <details>
       <summary>プレイするゲーム(複数選択)</summary>
       <div th:each="game:${gameList}">

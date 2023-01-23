@@ -13,7 +13,7 @@
     <div class="header-container">
       <div class="left-container">
         <a href="/comp">
-          <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
+          <img th:src="${cat_logo_image}" class="header-item" width="90px" height="60px">
         </a>
         <div class="header-item">
           <form th:action="@{/comp/searchcomp}" method="post">
@@ -23,48 +23,55 @@
           <form th:action="@{/comp/searchgamecomp}" method="post">
             <select class="input-item game_id" name="game_id">
               <option value="0" selected>ゲーム名検索</option>
-              <option th:each="game:${gameList}" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}"></option>
+              <option th:each="game:${gameList}" th:value="${game.game_id}"
+                th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}">
+              </option>
             </select>
             <input type="submit" name="form" value="検索">
+
           </form>
         </div>
+        <div class="header-item">
+          <div class="button-borders">
+            <input class="left-main-item" type="button" onclick="location.href='/comp/CreateComp'" value="大会を開く">
+          </div>
+        </div>
+
       </div>
       <div class="right-container">
         <a href="/users/profile">
           <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
         </a>
-        <div class="header-item" th:text="${user_name}"></div>
+        <div class="header-item-name" th:text="${user_name}">user</div>
       </div>
-    </div>
-
   </header>
 
   <main class="main-container">
     <div class="left-main-container">
-      <div class="button-borders">
-      <input class="left-main-item" type="button" onclick="location.href='/comp/CreateComp'" value="大会を開く">
-    </div>
+
+        
+
     </div>
     <div class="center-main-container">
       <div class="heading">
         <p>■受付中の大会</p>
       </div>
       <table>
-          <tr th:each="cm : ${comp}" >
-            <form th:action="@{/comp/Overview}" name="form "method="post">  
-              <div class="center-main-item linkbox">
-                <div class="title-people-container">
-                  <div class="title" th:text="${cm.comp_name}"></div>
-                  <img src="..\..\images\people.png" class="people-logo">
-                  <div class="people" th:text="${cm.count + '/' + cm.limit_of_participants}"></div>
-                </div>
-                <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
-                <div class="schedule" th:text="${'日程：' + cm.start_date + '~' + cm.end_date}"></div>
-                <input type="hidden" name="comp_id" th:value="${cm.comp_id}"/>
-                <button type="submit" title="comp_button"></button>
+        <tr th:each="cm : ${comp}">
+          <form th:action="@{/comp/Overview}" name="form " method="post">
+            <div class="center-main-item linkbox">
+              <div class="title-people-container">
+                <div class="title" th:text="${cm.comp_name}"></div>
+                <img th:src="${people_image}" class="people-logo">
+                <div class="people" th:text="${cm.count + '/' + cm.limit_of_participants}"></div>
               </div>
-            </form>      
-          </tr>
+              <div class="game-title" th:text="${'🎮【' + cm.gameBean.hard + '】' + cm.gameBean.game_name}"></div>
+              <div class="schedule" th:text="${'日程：' + cm.start_date + '~' + cm.end_date}"></div>
+              <input type="hidden" name="comp_id" th:value="${cm.comp_id}" />
+              <button type="submit" title="comp_button"></button>
+            </div>
+          </form>
+        </tr>
       </table>
     </div>
     <div class="right-main-container">
@@ -72,11 +79,11 @@
         <p>■参加している大会</p>
       </div>
       <div class="right-main-item linkbox" th:each="part : ${participated}">
-        <form th:action="@{/comp/Overview}" name="form "method="post">
+        <form th:action="@{/comp/Overview}" name="form " method="post">
           <div class="title" th:text="${part.comp_name}"></div>
-          <div class="game-title"th:text="${'🎮【' + part.gameBean.hard + '】' + part.gameBean.game_name}"></div>
-          <div class="nickname"th:text="${'ニックネーム：' + part.nickname}"></div>
-          <input type="hidden" name="comp_id" th:value="${part.comp_id}"/>
+          <div class="game-title" th:text="${'🎮【' + part.gameBean.hard + '】' + part.gameBean.game_name}"></div>
+          <div class="nickname" th:text="${'ニックネーム：' + part.nickname}"></div>
+          <input type="hidden" name="comp_id" th:value="${part.comp_id}" />
           <button type="submit" title="comp_button"></button>
         </form>
       </div>

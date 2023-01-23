@@ -22,7 +22,7 @@
       <a href="/users/profile">
         <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
       </a>
-      <div class="header-item">user name</div>
+      <div class="header-item-name" th:text="${user_name}">user</div>
       </div>
   </div>
 
@@ -52,6 +52,9 @@
         <input type="hidden" name="user_id" th:value="${us.user_id}"/>
         <!--<input type="hidden" name="password" th:value="${game_List}"/>-->
       </form>
+    </div>
+    <div id="button-container">
+      <input type="button" class="button-item" onclick="location.href='/users/User_Password'" value="パスワード変更">
     </div>
     <div id="hidden-button-container">
       <input type="button" class="button-item" onclick="location.href='/admin'" value="管理者用ページへ">

@@ -28,6 +28,13 @@ body{
     margin: 10px;
     padding: 10px;
   }
+  .header-item-name{
+    /*background: #0bd;*/
+    color: #fff;
+    margin: 10px;
+    padding: 10px;
+    line-height: 60px;
+  }
   #search_button{
     cursor: pointer;
   }
@@ -208,4 +215,31 @@ body{
 
 .validationError {
   color: red;
+}
+
+#dialog {
+  position: fixed;
+  z-index: 2;
+  width: 400px;
+  margin: auto;
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 35px;
+  color:rgb(0, 0, 0);
+  border: 1px solid #aaa;
+  box-shadow: 2px 2px 4px #888;
+  display: none;
+  background: rgba(255, 255, 255, 0.9);
+
+}
+
+#mask {
+  display:none;
+  background: rgba(0, 0, 0, 0.397);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 1;
 }

@@ -39,6 +39,14 @@ body {
   padding: 10px;
 }
 
+.header-item-name{
+  /*background: #0bd;*/
+  color: #fff;
+  margin: 10px;
+  padding: 10px;
+  line-height: 60px;
+}
+
 #search_button {
   cursor: pointer;
 }
@@ -56,12 +64,13 @@ body {
 }
 
 .center-main-container {
-  width: 60%
+  width: 60%;
+  margin-left: 10%;
 }
 
 .right-main-container {
   width: 30%;
-
+  margin-right: 10%;
 }
 
 
