@@ -235,3 +235,7 @@ body{
     left: 0;
     z-index: 1;
   }
+  a {
+  color: rgb(81, 161, 253);
+  
+}
