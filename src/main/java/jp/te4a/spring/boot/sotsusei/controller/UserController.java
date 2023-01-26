@@ -190,7 +190,7 @@ public class UserController {
       password = password.substring(0, password.length()-1);
       UserForm form = userService.findOne(user_id);
       userService.updatepass(form, password, user_id);
-      return "login";
+      return "Login";
     }
     @GetMapping(path = "User_Password")
     String User_password(Model model){
