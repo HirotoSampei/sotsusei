@@ -144,8 +144,9 @@ body {
 }
 
 .linkbox {
+  display: flex;
   position: relative;
-
+  flex-direction: column;
   /* ここはボタン位置がわかりやすいように設定しています */
   background-color: rgb(84, 84, 84);
 }
@@ -183,9 +184,7 @@ body {
 
 .title-people-container {
   display: flex;
-  /*background-color: rgb(16, 61, 61);*/
-  align-items: center;
-
+  align-self: flex-start;
 }
 
 .schedule {
