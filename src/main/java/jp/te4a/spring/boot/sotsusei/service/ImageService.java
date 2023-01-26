@@ -12,9 +12,9 @@ import org.springframework.ui.Model;
 public class ImageService {
 
 	public void getImage(Model model){
-		File logofileImg = new File("../../images/cat_logo.png");
-		File iconfileImg = new File("../../images/cat_icon.png");
-		File popfileImg = new File("../../images/people.png");
+		File logofileImg = new File("/images/cat_logo.png");
+		File iconfileImg = new File("/images/cat_icon.png");
+		File popfileImg = new File("/images/people.png");
 		try {
 			byte[] logobyteImg = Files.readAllBytes(logofileImg.toPath());
 			byte[] iconbyteImg = Files.readAllBytes(iconfileImg.toPath());
