@@ -166,7 +166,7 @@ public class UserController {
         model.addAttribute("validationError", errorList);
         return password();
       }
-      /*SimpleMailMessage msg = new SimpleMailMessage();
+      SimpleMailMessage msg = new SimpleMailMessage();
       msg.setFrom("13koji25@gmail.com"); // 送信元メールアドレス
       msg.setTo("190088@jc-21.jp"); // 送信先メールアドレス
       //        msg.setCc(); //Cc用
@@ -178,7 +178,7 @@ public class UserController {
           mailSender.send(msg);
       } catch (MailException e) {
           e.printStackTrace();
-      }*/
+      }
       model.addAttribute("user_id", userBean.getUser_id());
       return "users/NewPassword";
     }
