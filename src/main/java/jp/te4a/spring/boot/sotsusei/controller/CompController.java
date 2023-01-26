@@ -100,7 +100,7 @@ public class CompController {
     Boolean check_ban = userRepository.findIs_bannedByUser_id(userBean.getUser_id());
     if(check_ban){
       model.addAttribute("banned", "ban");
-      return "login";
+      return "Login";
     }else{
       model.addAttribute("comp", compService.compAllgamesearch(userBean.getUser_id()));
       model.addAttribute("participated", compService.participated(userBean.getUser_id()));
