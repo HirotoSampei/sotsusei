@@ -121,12 +121,6 @@ body{
 
   }
 
-  #game-checkbox{
-    font-size: 30px;
-    color: black;
-    background-color: rgb(255, 255, 255);
-  }
-
   #description-container{
     display: flex;
     align-items: baseline;

@@ -96,7 +96,6 @@ body{
   .right-play-game-container{
     flex-grow: 1;
     float: right;
-    background-color: rgb(255, 255, 255);
     flex-direction: column;
     justify-content: flex-start;
   }

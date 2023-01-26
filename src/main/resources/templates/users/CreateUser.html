@@ -32,7 +32,7 @@
     <details>
       <summary>プレイするゲーム(複数選択)</summary>
       <div th:each="game:${gameList}">
-        <input type="checkbox" name="game_id" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}">
+        <font color="white"><input type="checkbox" name="game_id" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}"></font>
       </div>
     </details>
     <div id="description-container">
