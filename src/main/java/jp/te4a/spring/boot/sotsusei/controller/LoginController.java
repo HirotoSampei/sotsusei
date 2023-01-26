@@ -16,6 +16,6 @@ public class LoginController {
 	String login(Model model) {
 		/*String base64Data = imageService.getlogoImage();
     	model.addAttribute("cat_logo_image","data:image/png;base64,"+base64Data);*/
-		return "login";
+		return "Login";
 	}
 }
