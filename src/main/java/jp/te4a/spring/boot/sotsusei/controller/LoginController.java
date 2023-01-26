@@ -14,7 +14,7 @@ public class LoginController {
 	
 	@GetMapping(path="login")
 	String login(Model model) {
-		imageService.getImage(model);
+		
 		return "Login";
 	}
 }
