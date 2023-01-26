@@ -73,6 +73,7 @@ body{
     font-size: 27px;
     width: 60%;
   }
+  
   #button-container{
     display: flex;
     justify-content: space-between;
