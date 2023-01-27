@@ -286,14 +286,15 @@ public class CompController {
   }
 
   @PostMapping(path="searchgamecomp", params = "form") //大会ゲーム名検索
-  String comp_gamesearch(@RequestParam Integer game_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+  String comp_gamesearch(@RequestParam String game_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    Integer g_id = Integer.parseInt(game_id.split(",")[0]);
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getImage(model);
     model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     model.addAttribute("participated", compService.participated(userBean.getUser_id()));
-    model.addAttribute("comp", compService.compgamesearch(game_id));
+    model.addAttribute("comp", compService.compgamesearch(g_id));
     return "home/Home";
 
   }

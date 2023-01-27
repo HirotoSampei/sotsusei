@@ -20,15 +20,21 @@
             <input type="search" class="comp_name" name="comp_name" placeholder="大会を検索">
             <input type="submit" class="form" name="form" value="検索">
           </form>
-          <form th:action="@{/comp/searchgamecomp}" method="post">
-            <select class="input-item game_id" name="game_id">
-              <option value="0" selected>ゲーム名検索</option>
-              <option th:each="game:${gameList}" th:value="${game.game_id}"
+          <form>
+            <select class="test-number" id="testnumber">
+              <option value="0">ゲームジャンル選択</option>
+              <option id="1" value="FPS">FPS</option>
+              <option id="2" value="music">音ゲー</option>
+            </select>
+          </form>
+          <form id=searchgamecomp name="searchgamecomp" th:action="@{/comp/searchgamecomp}" method="post">
+            <select class="input-item game_id" name="game_id" id="game">
+              <option value="0">ゲーム名検索</option>
+              <option th:each="game:${gameList}" style="display:none" th:value="${game.game_id} + ',' + ${game.genre}"
                 th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}">
               </option>
             </select>
             <input type="submit" name="form" value="検索">
-
           </form>
         </div>
         <div class="header-item">
@@ -94,6 +100,22 @@
     <div id="temp-footer">©Competition Assistance Tool</div>
   </footer>
 
+  <script type="text/javascript">
+    const genreSelect = document.getElementById('testnumber');
+    var gameSelect = document.getElementById('game');
+    genreSelect.addEventListener('change', (e) =>{
+      e.target.options.selected=true;
+      for(let i =0;i<gameSelect.length;i++){
+        var str = gameSelect[i].value.split(',');
+        if(str[1] != e.target.value){
+          gameSelect[i].style.display = "none";
+        }
+        else{
+          gameSelect[i].style.display = "";
+        }
+      }
+    })
+  </script>
 </body>
 
 </html>
