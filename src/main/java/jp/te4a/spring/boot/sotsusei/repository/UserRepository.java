@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import jp.te4a.spring.boot.sotsusei.bean.PopBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 
 public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpecificationExecutor<UserBean>{
@@ -31,6 +30,9 @@ public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpe
 
 	@Query("SELECT X FROM UserBean X WHERE X.user_id = ?1")
 	List<UserBean> findByUser_id(Integer user_id);
+
+	@Query("SELECT X FROM UserBean X WHERE X.user_id = ?1")
+	UserBean findByUser(Integer user_id);
 
 	@Query("SELECT X.user_name FROM UserBean X WHERE X.user_id = ?1")
 	String findUser_nameByUser_id(Integer user_id);
