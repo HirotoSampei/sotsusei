@@ -17,7 +17,6 @@ import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
-import jp.te4a.spring.boot.sotsusei.bean.PopBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.PrivateCommentForm;
 import jp.te4a.spring.boot.sotsusei.form.PublicCommentForm;
@@ -26,7 +25,6 @@ import jp.te4a.spring.boot.sotsusei.form.ParticipatedForm;
 import jp.te4a.spring.boot.sotsusei.form.PopuserForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
-import jp.te4a.spring.boot.sotsusei.repository.PopRepository;
 import jp.te4a.spring.boot.sotsusei.repository.PrivateCommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.PublicCommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
@@ -55,8 +53,6 @@ public class CompService {
   @Autowired
   PublicCommentRepository publicCommentRepository;
 
-  @Autowired
-  PopRepository popRepository;
 
   public CompForm create(CompForm compForm, Integer game_id, String user_pass, boolean radio_button) {
 	  CompBean compBean = new CompBean();
@@ -202,7 +198,7 @@ public class CompService {
       List<Integer> userList = compPartRepository.findByUser_id(comp_id);
     for(Integer uid:userList){
       PopuserForm popuserForm = new PopuserForm();
-      PopBean popuser = popRepository.findByUser(uid);
+      UserBean popuser = userRepository.findByPopUser(uid);
       BeanUtils.copyProperties(popuser, popuserForm);
       popuserForm.setLogin_id(user_id);
       popuserForm.setNickname(compPartRepository.findByNickname(comp_id, uid));
