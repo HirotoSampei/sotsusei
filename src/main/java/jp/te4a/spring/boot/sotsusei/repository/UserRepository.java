@@ -31,7 +31,7 @@ public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpe
 	@Query("SELECT X FROM UserBean X WHERE X.user_id = ?1")
 	List<UserBean> findByUser_id(Integer user_id);
 
-	@Query(value="SELECT X.user_id, X.REPLACE(REPLACE(note, CHAR(13), ''), CHAR(10), '') as note, X.nickname FROM UserBean X WHERE X.user_id = ?1",nativeQuery=true)
+	@Query(value="SELECT X.user_id, X.REPLACE(REPLACE(note, CHAR(13), ''), CHAR(10), '') as note, X.nickname FROM users X WHERE X.user_id = ?1",nativeQuery=true)
 	UserBean findByUser(Integer user_id);
 
 	@Query("SELECT X.user_name FROM UserBean X WHERE X.user_id = ?1")
