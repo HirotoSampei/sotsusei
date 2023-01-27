@@ -34,8 +34,7 @@
                 th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}">
               </option>
             </select>
-            <!--<input type="submit" name="form" value="検索">-->
-            <button id="btn">検索</button>
+            <input type="submit" name="form" value="検索">
           </form>
         </div>
         <div class="header-item">
@@ -115,15 +114,6 @@
           gameSelect[i].style.display = "";
         }
       }
-    })
-    var btn = document.getElementById('btn');
-    btn.addEventListener('click', function(){
-      var str = document.searchgamecomp.game_id.value.split(',');
-      alert(document.searchgamecomp.game_id.value);
-      document.searchgamecomp.game_id.value=str[0];
-      alert(str[0]);
-      alert(document.searchgamecomp.game_id.value);
-      ('searchgamecomp').submit(); //ここ
     })
   </script>
 </body>
