@@ -30,7 +30,7 @@
           <form id=searchgamecomp name="searchgamecomp" th:action="@{/comp/searchgamecomp}" method="post">
             <select class="input-item game_id" name="game_id" id="game">
               <option value="0">ゲーム名検索</option>
-              <option th:each="game:${gameList}" th:value="${game.game_id} + ',' + ${game.genre}"
+              <option th:each="game:${gameList}" style="display:none" th:value="${game.game_id} + ',' + ${game.genre}"
                 th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}">
               </option>
             </select>
