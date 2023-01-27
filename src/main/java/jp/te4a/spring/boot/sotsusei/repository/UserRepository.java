@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import jp.te4a.spring.boot.sotsusei.bean.PopBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 
 public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpecificationExecutor<UserBean>{
@@ -32,7 +33,7 @@ public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpe
 	List<UserBean> findByUser_id(Integer user_id);
 
 	@Query(value="SELECT user_id, REPLACE(REPLACE(note, CHAR(13), ''), CHAR(10), '') as note FROM users WHERE user_id = ?1",nativeQuery=true)
-	UserBean findByUser(Integer user_id);
+	PopBean findByUser(Integer user_id);
 
 	@Query("SELECT X.user_name FROM UserBean X WHERE X.user_id = ?1")
 	String findUser_nameByUser_id(Integer user_id);

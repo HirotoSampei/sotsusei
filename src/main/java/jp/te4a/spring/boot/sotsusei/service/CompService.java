@@ -17,6 +17,7 @@ import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
+import jp.te4a.spring.boot.sotsusei.bean.PopBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.PrivateCommentForm;
 import jp.te4a.spring.boot.sotsusei.form.PublicCommentForm;
@@ -197,10 +198,11 @@ public class CompService {
       List<Integer> userList = compPartRepository.findByUser_id(comp_id);
     for(Integer uid:userList){
       PopuserForm popuserForm = new PopuserForm();
-      UserBean popuser = userRepository.findByUser(uid);
+      PopBean popuser = userRepository.findByUser(uid);
       BeanUtils.copyProperties(popuser, popuserForm);
       popuserForm.setLogin_id(user_id);
       popuserForm.setNickname(compPartRepository.findByNickname(comp_id, uid));
+
       formList.add(popuserForm);
     }
       return formList;
