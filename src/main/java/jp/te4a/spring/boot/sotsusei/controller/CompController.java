@@ -143,7 +143,7 @@ public class CompController {
     model.addAttribute("overview", compService.hostoverview(userBean.getUser_id()));
     model.addAttribute("commentList",compService.publiccomment(compRepository.findComp_id(userBean.getUser_id())));
     model.addAttribute("comp_id", compRepository.findComp_id(userBean.getUser_id()));
-    return "comp/OverViewForHost";
+    return "comp/OverviewForHost";
   }
   @PostMapping(path="Overview")
   String overview(Model model, @RequestParam Integer comp_id, ModelMap modelMap, HttpServletRequest httpServletRequest){
