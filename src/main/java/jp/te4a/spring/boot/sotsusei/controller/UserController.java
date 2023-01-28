@@ -151,7 +151,8 @@ public class UserController {
       return "redirect:/login";
     }
     @GetMapping(path = "Password")
-    String password(){
+    String password(Model model){
+      imageService.getImage(model);
       return "users/Password";
     }
     @PostMapping(path = "new_password")//新しいパスワード
@@ -161,12 +162,12 @@ public class UserController {
       if(userBean == null){
         errorList.add("一致するメールアドレスがありません");
         model.addAttribute("validationError", errorList);
-        return password();
+        return password(model);
       }
       if(userBean.is_banned()){
         errorList.add("そのメールアドレスは現在使用することは出来ません。");
         model.addAttribute("validationError", errorList);
-        return password();
+        return password(model);
       }
       Random random = new Random();
       Integer authentication_pass = random.nextInt(99999999);
@@ -183,6 +184,7 @@ public class UserController {
       } catch (MailException e) {
           e.printStackTrace();
       }
+      imageService.getImage(model);
       model.addAttribute("authentication_pass", authentication_pass);
       model.addAttribute("user_id", userBean.getUser_id());
       return "users/Authentication";
@@ -190,9 +192,11 @@ public class UserController {
     @PostMapping(path = "authentication")//認証処理
     String authentication(@RequestParam Integer input_pass, Integer authentication_pass, Integer user_id, Model model){
       if(input_pass.equals(authentication_pass)){
+        imageService.getImage(model);
         model.addAttribute("user_id", user_id);
         return "users/NewPassword";
       }
+      imageService.getImage(model);
       model.addAttribute("authentication_pass", authentication_pass);
       model.addAttribute("user_id", user_id);
       return "users/Authentication";
@@ -200,7 +204,7 @@ public class UserController {
     @PostMapping(path = "updatepass")//パスワード更新処理
     String updatepass(@RequestParam String password, Integer user_id, Model model){
       if(user_id == null || password == null){
-        return password();
+        return password(model);
       }
       password = password.substring(0, password.length()-1);
       UserForm form = userService.findOne(user_id);
@@ -220,6 +224,7 @@ public class UserController {
       String pass_word = userBean.getPassword();
 
       if(mail_address.equals(user_pass) && passwordEncoder.matches(password,pass_word)){
+        imageService.getImage(model);
         model.addAttribute("user_id", userBean.getUser_id());
         return "users/NewPassword";
       }
