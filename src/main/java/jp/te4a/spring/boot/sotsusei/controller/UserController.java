@@ -189,6 +189,8 @@ public class UserController {
     }
     @PostMapping(path = "authentication")//認証処理
     String authentication(@RequestParam Integer input_pass, Integer authentication_pass, Integer user_id, Model model){
+      System.out.print(input_pass);
+      System.out.print(authentication_pass);
       if(input_pass != authentication_pass){
         model.addAttribute("authentication_pass", authentication_pass);
         model.addAttribute("user_id", user_id);
