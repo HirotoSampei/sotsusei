@@ -169,7 +169,7 @@ public class UserController {
         return password(model);
       }
       Random random = new Random();
-      Integer authentication_pass = random.nextInt(99999999);
+      Integer authentication_pass = Integer.valueOf(String.format("%08d", random.nextInt(99999999)));
       SimpleMailMessage msg = new SimpleMailMessage();
       msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
       msg.setTo(mail_address); // 送信先メールアドレス
