@@ -2,6 +2,8 @@ package jp.te4a.spring.boot.sotsusei.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,20 +168,33 @@ public class UserController {
         model.addAttribute("validationError", errorList);
         return password();
       }
+      Random random = new Random();
+      Integer authentication_pass = random.nextInt(99999999);
       SimpleMailMessage msg = new SimpleMailMessage();
-      msg.setFrom("13koji25@gmail.com"); // 送信元メールアドレス
-      msg.setTo("190088@jc-21.jp"); // 送信先メールアドレス
+      msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
+      msg.setTo(mail_address); // 送信先メールアドレス
       //        msg.setCc(); //Cc用
       //        msg.setBcc(); //Bcc用
       msg.setSubject("パスワード変更"); // タイトル               
-      msg.setText("パスワード変更要請がありました。\r\n新しいパスワードを入力してください。"); //本文
+      msg.setText("パスワード変更要請がありました。\r\n認証コードは" + authentication_pass + "です。\r\n認証画面で入力してください。"); //本文
 
       try {
           mailSender.send(msg);
       } catch (MailException e) {
           e.printStackTrace();
       }
+      model.addAttribute("authentication_pass", authentication_pass);
       model.addAttribute("user_id", userBean.getUser_id());
+      return "users/Authentication";
+    }
+    @PostMapping(path = "authentication")//認証処理
+    String authentication(@RequestParam Integer input_pass, Integer authentication_pass, Integer user_id, Model model){
+      if(input_pass != authentication_pass){
+        model.addAttribute("authentication_pass", authentication_pass);
+        model.addAttribute("user_id", user_id);
+        return "users/Authentication";
+      }
+      model.addAttribute("user_id", user_id);
       return "users/NewPassword";
     }
     @PostMapping(path = "updatepass")//パスワード更新処理
