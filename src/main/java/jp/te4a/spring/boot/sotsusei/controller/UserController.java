@@ -156,7 +156,7 @@ public class UserController {
     String new_password(@RequestParam String mail_address, Model model){
       List<String> errorList = new ArrayList<String>();
       UserBean userBean = userRepository.findByMail_address(mail_address);
-      if(userBean.getUser_id() == null){
+      if(userBean == null){
         errorList.add("一致するメールアドレスがありません");
         model.addAttribute("validationError", errorList);
         return password();
