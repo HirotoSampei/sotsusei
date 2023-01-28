@@ -151,7 +151,8 @@ public class UserController {
       return "redirect:/login";
     }
     @GetMapping(path = "Password")
-    String password(){
+    String password(Model model){
+      imageService.getImage(model);
       return "users/Password";
     }
     @PostMapping(path = "new_password")//新しいパスワード
@@ -161,12 +162,12 @@ public class UserController {
       if(userBean == null){
         errorList.add("一致するメールアドレスがありません");
         model.addAttribute("validationError", errorList);
-        return password();
+        return password(model);
       }
       if(userBean.is_banned()){
         errorList.add("そのメールアドレスは現在使用することは出来ません。");
         model.addAttribute("validationError", errorList);
-        return password();
+        return password(model);
       }
       Random random = new Random();
       Integer authentication_pass = random.nextInt(99999999);
@@ -203,7 +204,7 @@ public class UserController {
     @PostMapping(path = "updatepass")//パスワード更新処理
     String updatepass(@RequestParam String password, Integer user_id, Model model){
       if(user_id == null || password == null){
-        return password();
+        return password(model);
       }
       password = password.substring(0, password.length()-1);
       UserForm form = userService.findOne(user_id);
