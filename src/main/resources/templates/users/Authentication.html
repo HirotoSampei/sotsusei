@@ -28,6 +28,11 @@
 
     </header>
     <main>
+      <div class="validationError">
+        <tr th:if="${validationError}" th:each="error : ${validationError}">
+          <td th:text="${error}"></td><br>
+        </tr>
+      </div>
       <form name="form1">
         <p>認証コード　　　　：<input type="number" class="input-item" name="inputpass" id="inputpass" required></p>
       </form>
