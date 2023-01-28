@@ -189,15 +189,13 @@ public class UserController {
     }
     @PostMapping(path = "authentication")//認証処理
     String authentication(@RequestParam Integer input_pass, Integer authentication_pass, Integer user_id, Model model){
-      System.out.println(input_pass);
-      System.out.println(authentication_pass);
       if(input_pass.equals(authentication_pass)){
-        model.addAttribute("authentication_pass", authentication_pass);
         model.addAttribute("user_id", user_id);
-        return "users/Authentication";
+        return "users/NewPassword";
       }
+      model.addAttribute("authentication_pass", authentication_pass);
       model.addAttribute("user_id", user_id);
-      return "users/NewPassword";
+      return "users/Authentication";
     }
     @PostMapping(path = "updatepass")//パスワード更新処理
     String updatepass(@RequestParam String password, Integer user_id, Model model){
