@@ -183,6 +183,7 @@ public class UserController {
       } catch (MailException e) {
           e.printStackTrace();
       }
+      imageService.getImage(model);
       model.addAttribute("authentication_pass", authentication_pass);
       model.addAttribute("user_id", userBean.getUser_id());
       return "users/Authentication";
@@ -190,9 +191,11 @@ public class UserController {
     @PostMapping(path = "authentication")//認証処理
     String authentication(@RequestParam Integer input_pass, Integer authentication_pass, Integer user_id, Model model){
       if(input_pass.equals(authentication_pass)){
+        imageService.getImage(model);
         model.addAttribute("user_id", user_id);
         return "users/NewPassword";
       }
+      imageService.getImage(model);
       model.addAttribute("authentication_pass", authentication_pass);
       model.addAttribute("user_id", user_id);
       return "users/Authentication";
@@ -220,6 +223,7 @@ public class UserController {
       String pass_word = userBean.getPassword();
 
       if(mail_address.equals(user_pass) && passwordEncoder.matches(password,pass_word)){
+        imageService.getImage(model);
         model.addAttribute("user_id", userBean.getUser_id());
         return "users/NewPassword";
       }
