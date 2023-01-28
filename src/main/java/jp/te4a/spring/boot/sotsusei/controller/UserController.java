@@ -169,13 +169,13 @@ public class UserController {
         return password(model);
       }
       Random random = new Random();
-      Integer authentication_pass = random.nextInt(99999999);
+      Integer authentication_pass = Integer.valueOf(String.format("%08d", random.nextInt(99999999)));
       SimpleMailMessage msg = new SimpleMailMessage();
       msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
       msg.setTo(mail_address); // 送信先メールアドレス
       //        msg.setCc(); //Cc用
       //        msg.setBcc(); //Bcc用
-      msg.setSubject("パスワード変更"); // タイトル               
+      msg.setSubject("認証コード送信"); // タイトル               
       msg.setText("パスワード変更要請がありました。\r\n認証コードは" + authentication_pass + "です。\r\n認証画面で入力してください。"); //本文
 
       try {
@@ -211,6 +211,19 @@ public class UserController {
       password = password.substring(0, password.length()-1);
       UserForm form = userService.findOne(user_id);
       userService.updatepass(form, password, user_id);
+      SimpleMailMessage msg = new SimpleMailMessage();
+      msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
+      msg.setTo(form.getMail_address()); // 送信先メールアドレス
+      //        msg.setCc(); //Cc用
+      //        msg.setBcc(); //Bcc用
+      msg.setSubject("パスワード変更"); // タイトル               
+      msg.setText("パスワードが正しく変更されました。"); //本文
+
+      try {
+          mailSender.send(msg);
+      } catch (MailException e) {
+          e.printStackTrace();
+      }
       return "Login";
     }
     @GetMapping(path = "User_Password")
