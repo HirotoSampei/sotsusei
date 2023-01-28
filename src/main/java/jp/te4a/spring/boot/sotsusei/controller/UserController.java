@@ -7,7 +7,6 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -81,7 +80,7 @@ public class UserController {
             errorList.add("パスワードは8文字以上で入力してください。");
           }
           if(game_id == null){
-            errorList.add("プレイ中のゲームを選択してください");
+            errorList.add("プレイ中のゲームを選択してください。");
           }
           model.addAttribute("validationError", errorList);
           return list(model, httpServletRequest);
@@ -129,7 +128,7 @@ public class UserController {
           errorList.add(error.getDefaultMessage());
         }
         if(game_id == null){
-          errorList.add("プレイ中のゲームを選択してください");
+          errorList.add("プレイ中のゲームを選択してください。");
         }
         model.addAttribute("validationError", errorList);
         return editForm(user_id, form, model);
@@ -160,7 +159,7 @@ public class UserController {
       List<String> errorList = new ArrayList<String>();
       UserBean userBean = userRepository.findByMail_address(mail_address);
       if(userBean == null){
-        errorList.add("一致するメールアドレスがありません");
+        errorList.add("一致するメールアドレスがありません。");
         model.addAttribute("validationError", errorList);
         return password(model);
       }
@@ -196,6 +195,9 @@ public class UserController {
         model.addAttribute("user_id", user_id);
         return "users/NewPassword";
       }
+      List<String> errorList = new ArrayList<String>();
+      errorList.add("認証コードが違います。");
+      model.addAttribute("validationError", errorList);
       imageService.getImage(model);
       model.addAttribute("authentication_pass", authentication_pass);
       model.addAttribute("user_id", user_id);
@@ -216,7 +218,7 @@ public class UserController {
       imageService.getImage(model);
       return "users/UpdatePassword";
     }
-    @PostMapping(path = "up_password")
+    @PostMapping(path = "up_password")//パスワード変更
     String up_password(@RequestParam String mail_address, String password, Model model, HttpServletRequest httpServletRequest, Pbkdf2PasswordEncoder passwordEncoder){
       String user_pass = httpServletRequest.getRemoteUser();
       UserBean userBean = userRepository.findByMail_address(user_pass);
