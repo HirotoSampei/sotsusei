@@ -224,7 +224,7 @@ public class UserController {
       } catch (MailException e) {
           e.printStackTrace();
       }
-      return "Login";
+      return "redirect:/login";
     }
     @GetMapping(path = "User_Password")
     String User_password(Model model){
