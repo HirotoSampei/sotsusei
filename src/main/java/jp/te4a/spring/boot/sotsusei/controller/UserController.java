@@ -248,5 +248,14 @@ public class UserController {
       model.addAttribute("validationError", errorList);
       return User_password(model);
     }
+    @GetMapping(path = "bifurcation")
+    String bifurcation(Model model,ModelMap modelMap ,HttpServletRequest httpServletRequest){
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
+      if(userBean == null){
+        return "redirect:/login";
+      }
+      return profile_list(model, modelMap, httpServletRequest);
+    }
 
 }
