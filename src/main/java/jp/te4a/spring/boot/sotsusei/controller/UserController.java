@@ -98,6 +98,7 @@ public class UserController {
     String profile_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
       String user_pass = httpServletRequest.getRemoteUser();
       UserBean userBean = userRepository.findByMail_address(user_pass);
+      userBean.setNote(userBean.getNote().replace("❣", " "));
       List<GameBean> game_List = new ArrayList<GameBean>();
       List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(userBean.getUser_id());
         for (int i = 0; i < gameplay_idList.size(); i++){
@@ -117,6 +118,7 @@ public class UserController {
       imageService.getImage(model);
       model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+      userBean.setNote(userBean.getNote().replace("❣", "\n"));
       model.addAttribute("edit",userBean);
       return "users/Edituser2";
     }
