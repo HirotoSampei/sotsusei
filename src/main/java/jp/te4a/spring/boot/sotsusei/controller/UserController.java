@@ -118,7 +118,7 @@ public class UserController {
       imageService.getImage(model);
       model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
-      userBean.setNote(userBean.getNote().replace(",", "\n"));
+      userBean.setNote(userBean.getNote().replace(",", "\r\n"));
       model.addAttribute("edit",userBean);
       return "users/Edituser2";
     }
