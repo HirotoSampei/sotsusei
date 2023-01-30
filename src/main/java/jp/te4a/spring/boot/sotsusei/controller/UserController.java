@@ -227,8 +227,11 @@ public class UserController {
       return "redirect:/login";
     }
     @GetMapping(path = "User_Password")
-    String User_password(Model model){
+    String User_password(Model model, HttpServletRequest httpServletRequest){
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       return "users/UpdatePassword";
     }
     @PostMapping(path = "up_password")//パスワード変更
@@ -241,12 +244,13 @@ public class UserController {
       if(mail_address.equals(user_pass) && passwordEncoder.matches(password,pass_word)){
         imageService.getImage(model);
         model.addAttribute("user_id", userBean.getUser_id());
+        model.addAttribute("user_name", userBean.getUser_name());
         return "users/NewPassword";
       }
       List<String> errorList = new ArrayList<String>();
       errorList.add("メールアドレス又はパスワードが違います。");
       model.addAttribute("validationError", errorList);
-      return User_password(model);
+      return User_password(model, httpServletRequest);
     }
     @GetMapping(path = "bifurcation")
     String bifurcation(Model model,ModelMap modelMap ,HttpServletRequest httpServletRequest){
