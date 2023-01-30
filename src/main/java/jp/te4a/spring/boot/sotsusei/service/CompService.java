@@ -202,7 +202,7 @@ public class CompService {
       BeanUtils.copyProperties(popuser, popuserForm);
       popuserForm.setLogin_id(user_id);
       popuserForm.setNickname(compPartRepository.findByNickname(comp_id, uid));
-      popuserForm.setNote(popuserForm.getNote().replace("❣", "<br>"));
+      popuserForm.setNote(popuserForm.getNote().replace("|", "<br>"));
 
       formList.add(popuserForm);
     }
