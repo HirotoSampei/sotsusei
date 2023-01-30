@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -75,9 +76,8 @@ public class CompController {
   CompForm setUpForm() {
     return new CompForm();
   }
-  @GetMapping //ホーム画面
-  String display_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
-    //開催終了から一か月経った大会を削除
+  @Scheduled(initialDelay = 1000, fixedRate = 3600000)
+  public void compend_check(){//開催終了から一か月経った大会を削除
     LocalDateTime check = (LocalDateTime.now()).minusMonths(1);
     List<CompBean> comp_c = compRepository.findAllOrderByComp_id();
     for(int i = 0; i < comp_c.size(); i++){
@@ -88,7 +88,9 @@ public class CompController {
       }
     }
     System.out.println("competitions_end_date checked.");
-
+  }
+  @GetMapping //ホーム画面
+  String display_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     imageService.getImage(model);
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     String user_pass = httpServletRequest.getRemoteUser();
