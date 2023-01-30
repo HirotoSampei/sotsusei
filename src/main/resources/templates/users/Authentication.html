@@ -26,26 +26,23 @@
       </div>
     </div>
 
-    </header>
-    <main>
+  </header>
+  <main>
+    <form th:action="@{/users/authentication}" method="post">
       <div class="validationError">
         <tr th:if="${validationError}" th:each="error : ${validationError}">
           <td th:text="${error}"></td><br>
         </tr>
       </div>
-      <form name="form1">
         <p>認証コード　　　　：<input type="number" class="input-item" name="inputpass" id="inputpass" required></p>
-      </form>
       <div id="button-container">
         <input type="button" class="button-item" onclick="location.href='/login'" value="戻る">
-      
-      <form th:action="@{/users/authentication}" method="post">
         <input type="submit" class="button-item" th:onclick="|func()|" value="確認"> 
         <input type="hidden" name="input_pass" id="input_pass" />
         <input type="hidden" name="authentication_pass" th:value="${authentication_pass}" />
         <input type="hidden" name="user_id" th:value="${user_id}" />
-      </form>
       </div>
+    </form>
   </main>
     <footer>
     <div id="temp-footer">©Competition Assistance Tool</div>
