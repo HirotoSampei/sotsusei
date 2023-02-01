@@ -58,31 +58,10 @@
       </table>
     </div>
     <div class="right-main-container">
-      <div class="chat">
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。あああああああああああああああああああああああああああああああああああああああああああああ</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
-        <div class="comment-log">hoge_user : こんにちは。</div>
+      <div class="chat" id="commentBox">
+        <div  th:each="data : ${commentList}">
+            <label class="comment-log" th:text="${data.user_name + ':' + data.comment}">hoge_user : コメント</label>
+        </div>
       </div>
       <div class="comment">
       </div>

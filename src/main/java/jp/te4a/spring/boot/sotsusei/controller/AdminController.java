@@ -127,8 +127,11 @@ public class AdminController {
   }
 
   @PostMapping(path="compdetail")//大会の詳細の表示
-  String comp_detail(@RequestParam Integer comp_id, Model model){
+  String comp_detail(@RequestParam Integer comp_id, Model model, HttpServletRequest httpServletRequest){
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
     model.addAttribute("compDetail", compRepository.findByComp_id(comp_id));
+    model.addAttribute("commentList",compService.publiccomment(compRepository.findComp_id(userBean.getUser_id())));
     return "admin/OverviewForAdmin";
   }
   @GetMapping("/reportlist") //通報一覧
