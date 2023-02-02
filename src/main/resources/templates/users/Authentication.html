@@ -3,14 +3,12 @@
 
 <head>
   <meta charset="utf-8">
-  <title>パスワードを変更</title>
+  <title>認証</title>
   <link rel="stylesheet" href="..\..\static\css\CreateUserStyle.css" th:href="@{/css/CreateUserStyle.css}">
   <script type="text/javascript">
     function func() {
-      const hiddenField = document.getElementById('mail_address');
-      const hiddenField2 = document.getElementById('password');
-      hiddenField.value = document.getElementById('mailaddress').value;
-      hiddenField2.value = document.getElementById('password').value;
+      const hiddenField = document.getElementById('input_pass');
+      hiddenField.value = document.getElementById('inputpass').value;
     }
   </script>
   <style>
@@ -38,19 +36,19 @@
 
   </header>
   <main>
-    <form th:action="@{/users/up_password}" name="form1" method="post">
+    <form th:action="@{/users/authentication}" method="post">
       <div class="validationError">
         <tr th:if="${validationError}" th:each="error : ${validationError}">
           <td th:text="${error}"></td><br>
         </tr>
       </div>
-      <p>メールアドレス　　：<input type="email" class="input-item" name="mailaddress" id="mailaddress" required></p>
-      <p>パスワード　　　　：<input type="password" class="input-item" name="password" id="password" required></p>
+        <p>認証コード　　　　：<input type="number" class="input-item" name="inputpass" id="inputpass" required></p>
       <div id="button-container">
-        <input type="button" class="button-item" onclick="location.href='/users/profile'" value="戻る">
-        <input type="submit" class="button-item" th:onclick="|func()|" value="確認">
-        <input type="hidden" name="mail_address" id="mail_address" />
-        <input type="hidden" name="password" id="password" />
+        <input type="button" class="button-item" onclick="location.href='/login'" value="戻る">
+        <input type="submit" class="button-item" th:onclick="|func()|" value="確認"> 
+        <input type="hidden" name="input_pass" id="input_pass" />
+        <input type="hidden" name="authentication_pass" th:value="${authentication_pass}" />
+        <input type="hidden" name="user_id" th:value="${user_id}" />
       </div>
     </form>
   </main>

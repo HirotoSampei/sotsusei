@@ -4,6 +4,16 @@
   <meta charset="utf-8">
   <title>ユーザー作成</title>
   <link rel="stylesheet" href="../../static/css/EditUserStyle.css" th:href="@{/css/EditUserStyle.css}">
+  <script type="text/javascript">
+    function nameCheck(user_name){
+      var name = user_name.value;
+      if(name.length >= 50){
+        user_name.setCustomValidity("名前は50桁以内で入力してください");
+      }else{
+        user_name.setCustomValidity('');
+      }
+    }
+  </script>
 </head>
 <body>
 
@@ -42,7 +52,7 @@
   </div>
   <form th:action="@{/users/edit}" th:object="${userForm}" method="post">
     <th th:each="us : ${edit}">
-      <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:value="${us.user_name}" required></p>
+      <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" id="user_name" th:value="${us.user_name}" oninput="nameCheck(this)" required></p>
       <!--<p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>
       <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:value="${us.mail_address}"></p>-->
     <details>

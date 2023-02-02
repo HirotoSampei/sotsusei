@@ -53,6 +53,7 @@ public class CompService {
   @Autowired
   PublicCommentRepository publicCommentRepository;
 
+
   public CompForm create(CompForm compForm, Integer game_id, String user_pass, boolean radio_button) {
 	  CompBean compBean = new CompBean();
     GameBean gameBean = new GameBean();
@@ -197,10 +198,12 @@ public class CompService {
       List<Integer> userList = compPartRepository.findByUser_id(comp_id);
     for(Integer uid:userList){
       PopuserForm popuserForm = new PopuserForm();
-      UserBean popuser = userRepository.findByUser(uid);
+      UserBean popuser = userRepository.findByPopUser(uid);
       BeanUtils.copyProperties(popuser, popuserForm);
       popuserForm.setLogin_id(user_id);
       popuserForm.setNickname(compPartRepository.findByNickname(comp_id, uid));
+      popuserForm.setNote(popuserForm.getNote().replace(",", "<br>"));
+      System.out.println(popuserForm);
       formList.add(popuserForm);
     }
       return formList;

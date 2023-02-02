@@ -27,6 +27,7 @@ public class UserService {
     userForm.setPassword(new Pbkdf2PasswordEncoder().encode(userForm.getPassword()));
     GameplayBean gameplayBean = new GameplayBean();            
     UserBean userBean = new UserBean();
+    userForm.setNote(userForm.getNote().replace("\r\n", ","));
     BeanUtils.copyProperties(userForm, userBean);
 
     userRepository.save(userBean);
@@ -53,6 +54,7 @@ public class UserService {
   public UserEditForm update(UserEditForm userEditForm, String[] game_id) {
     UserBean userBean = new UserBean();
     GameplayBean gameplayBean = new GameplayBean();
+    userEditForm.setNote(userEditForm.getNote().replace("\r\n", ","));
     BeanUtils.copyProperties(userEditForm, userBean);
     userRepository.save(userBean);
       

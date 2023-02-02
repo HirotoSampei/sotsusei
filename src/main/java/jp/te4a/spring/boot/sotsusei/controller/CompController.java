@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -13,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,7 +26,6 @@ import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.form.PrivateCommentForm;
 import jp.te4a.spring.boot.sotsusei.form.PublicCommentForm;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
-import jp.te4a.spring.boot.sotsusei.form.PopuserForm;
 import jp.te4a.spring.boot.sotsusei.repository.PrivateCommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.PublicCommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
@@ -77,9 +76,8 @@ public class CompController {
   CompForm setUpForm() {
     return new CompForm();
   }
-  @GetMapping //ホーム画面
-  String display_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
-    //開催終了から一か月経った大会を削除
+  @Scheduled(initialDelay = 1000, fixedRate = 3600000)
+  public void compend_check(){//開催終了から一か月経った大会を削除
     LocalDateTime check = (LocalDateTime.now()).minusMonths(1);
     List<CompBean> comp_c = compRepository.findAllOrderByComp_id();
     for(int i = 0; i < comp_c.size(); i++){
@@ -90,7 +88,9 @@ public class CompController {
       }
     }
     System.out.println("competitions_end_date checked.");
-
+  }
+  @GetMapping //ホーム画面
+  String display_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     imageService.getImage(model);
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     String user_pass = httpServletRequest.getRemoteUser();
@@ -286,14 +286,15 @@ public class CompController {
   }
 
   @PostMapping(path="searchgamecomp", params = "form") //大会ゲーム名検索
-  String comp_gamesearch(@RequestParam Integer game_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+  String comp_gamesearch(@RequestParam String game_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    Integer g_id = Integer.parseInt(game_id.split(",")[0]);
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getImage(model);
     model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     model.addAttribute("participated", compService.participated(userBean.getUser_id()));
-    model.addAttribute("comp", compService.compgamesearch(game_id));
+    model.addAttribute("comp", compService.compgamesearch(g_id));
     return "home/Home";
 
   }

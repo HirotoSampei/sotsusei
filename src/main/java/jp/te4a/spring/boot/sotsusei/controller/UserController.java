@@ -2,10 +2,11 @@ package jp.te4a.spring.boot.sotsusei.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -79,7 +80,7 @@ public class UserController {
             errorList.add("パスワードは8文字以上で入力してください。");
           }
           if(game_id == null){
-            errorList.add("プレイ中のゲームを選択してください");
+            errorList.add("プレイ中のゲームを選択してください。");
           }
           model.addAttribute("validationError", errorList);
           return list(model, httpServletRequest);
@@ -97,6 +98,7 @@ public class UserController {
     String profile_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
       String user_pass = httpServletRequest.getRemoteUser();
       UserBean userBean = userRepository.findByMail_address(user_pass);
+      userBean.setNote(userBean.getNote().replace(",", " "));
       List<GameBean> game_List = new ArrayList<GameBean>();
       List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(userBean.getUser_id());
         for (int i = 0; i < gameplay_idList.size(); i++){
@@ -116,6 +118,7 @@ public class UserController {
       imageService.getImage(model);
       model.addAttribute("user_name", userBean.getUser_name());
       model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
+      userBean.setNote(userBean.getNote().replace(",", "\r\n"));
       model.addAttribute("edit",userBean);
       return "users/Edituser2";
     }
@@ -127,7 +130,7 @@ public class UserController {
           errorList.add(error.getDefaultMessage());
         }
         if(game_id == null){
-          errorList.add("プレイ中のゲームを選択してください");
+          errorList.add("プレイ中のゲームを選択してください。");
         }
         model.addAttribute("validationError", errorList);
         return editForm(user_id, form, model);
@@ -149,55 +152,91 @@ public class UserController {
       return "redirect:/login";
     }
     @GetMapping(path = "Password")
-    String password(){
+    String password(Model model){
+      imageService.getImage(model);
       return "users/Password";
     }
     @PostMapping(path = "new_password")//新しいパスワード
     String new_password(@RequestParam String mail_address, Model model){
       List<String> errorList = new ArrayList<String>();
       UserBean userBean = userRepository.findByMail_address(mail_address);
-      if(userBean.getUser_id() == null){
-        errorList.add("一致するメールアドレスがありません");
+      if(userBean == null){
+        errorList.add("一致するメールアドレスがありません。");
         model.addAttribute("validationError", errorList);
-        return password();
+        return password(model);
       }
       if(userBean.is_banned()){
         errorList.add("そのメールアドレスは現在使用することは出来ません。");
         model.addAttribute("validationError", errorList);
-        return password();
+        return password(model);
       }
+      Random random = new Random();
+      Integer authentication_pass = Integer.valueOf(String.format("%08d", random.nextInt(99999999)));
       SimpleMailMessage msg = new SimpleMailMessage();
-      msg.setFrom("13koji25@gmail.com"); // 送信元メールアドレス
-      msg.setTo("190088@jc-21.jp"); // 送信先メールアドレス
+      msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
+      msg.setTo(mail_address); // 送信先メールアドレス
       //        msg.setCc(); //Cc用
       //        msg.setBcc(); //Bcc用
-      msg.setSubject("パスワード変更"); // タイトル               
-      msg.setText("パスワード変更要請がありました。\r\n新しいパスワードを入力してください。"); //本文
+      msg.setSubject("認証コード送信"); // タイトル               
+      msg.setText("パスワード変更要請がありました。\r\n認証コードは" + authentication_pass + "です。\r\n認証画面で入力してください。"); //本文
 
       try {
           mailSender.send(msg);
       } catch (MailException e) {
           e.printStackTrace();
       }
+      imageService.getImage(model);
+      model.addAttribute("authentication_pass", authentication_pass);
       model.addAttribute("user_id", userBean.getUser_id());
-      return "users/NewPassword";
+      return "users/Authentication";
+    }
+    @PostMapping(path = "authentication")//認証処理
+    String authentication(@RequestParam Integer input_pass, Integer authentication_pass, Integer user_id, Model model){
+      if(input_pass.equals(authentication_pass)){
+        imageService.getImage(model);
+        model.addAttribute("user_id", user_id);
+        return "users/NewPassword";
+      }
+      List<String> errorList = new ArrayList<String>();
+      errorList.add("認証コードが違います。");
+      model.addAttribute("validationError", errorList);
+      imageService.getImage(model);
+      model.addAttribute("authentication_pass", authentication_pass);
+      model.addAttribute("user_id", user_id);
+      return "users/Authentication";
     }
     @PostMapping(path = "updatepass")//パスワード更新処理
     String updatepass(@RequestParam String password, Integer user_id, Model model){
       if(user_id == null || password == null){
-        return password();
+        return password(model);
       }
       password = password.substring(0, password.length()-1);
       UserForm form = userService.findOne(user_id);
       userService.updatepass(form, password, user_id);
-      return "Login";
+      SimpleMailMessage msg = new SimpleMailMessage();
+      msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
+      msg.setTo(form.getMail_address()); // 送信先メールアドレス
+      //        msg.setCc(); //Cc用
+      //        msg.setBcc(); //Bcc用
+      msg.setSubject("パスワード変更"); // タイトル               
+      msg.setText("パスワードが正しく変更されました。"); //本文
+
+      try {
+          mailSender.send(msg);
+      } catch (MailException e) {
+          e.printStackTrace();
+      }
+      return "redirect:/login";
     }
     @GetMapping(path = "User_Password")
-    String User_password(Model model){
+    String User_password(Model model, HttpServletRequest httpServletRequest){
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
       imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
       return "users/UpdatePassword";
     }
-    @PostMapping(path = "up_password")
+    @PostMapping(path = "up_password")//パスワード変更
     String up_password(@RequestParam String mail_address, String password, Model model, HttpServletRequest httpServletRequest, Pbkdf2PasswordEncoder passwordEncoder){
       String user_pass = httpServletRequest.getRemoteUser();
       UserBean userBean = userRepository.findByMail_address(user_pass);
@@ -205,13 +244,24 @@ public class UserController {
       String pass_word = userBean.getPassword();
 
       if(mail_address.equals(user_pass) && passwordEncoder.matches(password,pass_word)){
+        imageService.getImage(model);
         model.addAttribute("user_id", userBean.getUser_id());
+        model.addAttribute("user_name", userBean.getUser_name());
         return "users/NewPassword";
       }
       List<String> errorList = new ArrayList<String>();
       errorList.add("メールアドレス又はパスワードが違います。");
       model.addAttribute("validationError", errorList);
-      return User_password(model);
+      return User_password(model, httpServletRequest);
+    }
+    @GetMapping(path = "bifurcation")
+    String bifurcation(Model model,ModelMap modelMap ,HttpServletRequest httpServletRequest){
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
+      if(userBean == null){
+        return "redirect:/login";
+      }
+      return profile_list(model, modelMap, httpServletRequest);
     }
 
 }

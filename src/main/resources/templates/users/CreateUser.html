@@ -4,6 +4,28 @@
   <meta charset="utf-8">
   <title>ユーザー作成</title>
   <link rel="stylesheet" href="..\..\static\css\CreateUserStyle.css" th:href="@{/css/CreateUserStyle.css}">
+  <script src="../../js/errorcheck.js"></script>
+  <script type="text/javascript">
+    function nameCheck(user_name){
+      var name = user_name.value;
+      if(name.length >= 50){
+        user_name.setCustomValidity("名前は50桁以内で入力してください");
+      }else{
+        user_name.setCustomValidity('');
+      }
+    }
+
+    function passwordCheck(password){
+      var pass = password.value;
+      if(pass.length >= 100){
+        password.setCustomValidity("パスワードは100桁以内で入力してください");
+      }else if(pass.length <= 8){
+        password.setCustomValidity('パスワードは8桁以上で入力してください');
+      }else{
+        password.setCustomValidity('');
+      }
+    }
+  </script>
 </head>
 <body>
 
@@ -26,8 +48,8 @@
         <td th:text="${error}"></td><br>
       </tr>
     </div>
-    <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:field="*{user_name}" required></p>
-    <p>パスワード　　　：<input type="password" class="input-item" name="password" th:field="*{password}" required></p>
+    <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" id="user_name" th:field="*{user_name}" oninput="nameCheck(this)" required></p>
+    <p>パスワード　　　：<input type="password" class="input-item" name="password" id="password" th:field="*{password}" oninput="passwordCheck(this)" required></p>
     <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:field="*{mail_address}"required></p>
     <details>
       <summary>プレイするゲーム(複数選択)</summary>
