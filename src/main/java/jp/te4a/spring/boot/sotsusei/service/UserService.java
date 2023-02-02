@@ -68,13 +68,22 @@ public class UserService {
     userRepository.save(userBean);
       
     UserBean user = userRepository.findByMail_address(userEditForm.getMail_address());
-      for (int i = 0; i < game_id.length; i++){
-        gameplayBean.setUser_id(user.getUser_id());
-        gameplayBean.setGame_id(Integer.parseInt(game_id[i]));
-        gameplayRepository.save(gameplayBean);
-      }
-    return userEditForm;
-  }
+        if(game_id[0].contains(",")){
+        }else{
+          gameplayBean.setUser_id(user.getUser_id());
+          gameplayBean.setGame_id(Integer.parseInt(game_id[0]));
+          gameplayRepository.save(gameplayBean);
+          return userEditForm;
+        }
+          for (int i = 0; i < game_id.length; i++){
+          String[] g_value=game_id[i].split(",");
+          Integer g_id = Integer.parseInt(g_value[0]);
+          gameplayBean.setUser_id(user.getUser_id());
+          gameplayBean.setGame_id(g_id);
+          gameplayRepository.save(gameplayBean);
+        }
+      return userEditForm;
+    }
   public void delete(Integer id) { userRepository.deleteById(id); }
   public UserForm findOne(Integer id) {
     Optional<UserBean> userBean = userRepository.findById(id);

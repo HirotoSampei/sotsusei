@@ -172,7 +172,7 @@ public class CompController {
   }
 
   @PostMapping(path="create") //大会作成処理
-  String create(@RequestParam boolean radio_button, @Validated CompForm form, BindingResult result, Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+  String create(@RequestParam boolean radio_button, @Validated CompForm form, BindingResult result, Model model, String game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     if(result.hasErrors()) {
       compValidate.compval(form, result, model, modelMap, httpServletRequest);
       return create_list(model, modelMap, httpServletRequest);
@@ -186,7 +186,8 @@ public class CompController {
       return create_list(model, modelMap, httpServletRequest);
     }
     String user_pass = httpServletRequest.getRemoteUser();
-    compService.create(form, game_id, user_pass, radio_button);
+    Integer g_id=Integer.parseInt(game_id.split(",")[0]);
+    compService.create(form, g_id, user_pass, radio_button);
     return "redirect:/comp/OverViewForHost";
   }
 
@@ -250,7 +251,7 @@ public class CompController {
     return "comp/EditComp";
   }
   @PostMapping(path = "edit") //編集した内容を登録する時の動き
-  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest,Model model) {
+  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, String game_id, ModelMap modelMap, HttpServletRequest httpServletRequest,Model model) {
   if(result.hasErrors()) {
     compValidate.compval(form, result, model, modelMap, httpServletRequest);
     return editForm(comp_id, form, model, httpServletRequest);
@@ -263,9 +264,10 @@ public class CompController {
     compValidate.compdeadlineval(model);
     return editForm(comp_id, form, model, httpServletRequest);
   }
+  Integer g_id=Integer.parseInt(game_id.split(",")[0]);
   String user_pass = httpServletRequest.getRemoteUser();
   UserBean userBean = userRepository.findByMail_address(user_pass);
-  compService.update(form,game_id,userBean.getUser_id());
+  compService.update(form,g_id,userBean.getUser_id());
   return "redirect:/comp/OverViewForHost";
   }
 
