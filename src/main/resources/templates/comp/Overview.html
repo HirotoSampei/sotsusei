@@ -98,7 +98,7 @@
         <div class="comment">
           <form th:action="@{/comp/publiccheck}" method="post" id="comment_form">
             <input type="text" id="comment" name="comment" class="comment-box" required>
-            <button type="submit">投稿</button>
+            <button type="submit"class="form">投稿</button>
             <input type="hidden" id="comp_id_for_comment" th:value="${comp_id}">
           </form>
         </div>
