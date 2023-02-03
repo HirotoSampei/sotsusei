@@ -5,12 +5,7 @@
   <meta charset="utf-8">
   <title>認証</title>
   <link rel="stylesheet" href="..\..\static\css\CreateUserStyle.css" th:href="@{/css/CreateUserStyle.css}">
-  <script type="text/javascript">
-    function func() {
-      const hiddenField = document.getElementById('input_pass');
-      hiddenField.value = document.getElementById('inputpass').value;
-    }
-  </script>
+  <script th:inline="javascript" src="../../js/authentication.js" ></script>
   <style>
     footer {
       position: fixed;
@@ -36,7 +31,7 @@
 
   </header>
   <main>
-    <form th:action="@{/users/authentication}" method="post">
+    <form th:action="@{/users/new_password}" method="post">
       <div class="validationError">
         <tr th:if="${validationError}" th:each="error : ${validationError}">
           <td th:text="${error}"></td><br>
@@ -47,8 +42,7 @@
         <input type="button" class="button-item" onclick="location.href='/login'" value="戻る">
         <input type="submit" class="button-item" th:onclick="|func()|" value="確認"> 
         <input type="hidden" name="input_pass" id="input_pass" />
-        <input type="hidden" name="authentication_pass" th:value="${authentication_pass}" />
-        <input type="hidden" name="user_id" th:value="${user_id}" />
+        <input type="hidden" name="mail_address" th:value="${mail_address}" />
       </div>
     </form>
   </main>

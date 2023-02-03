@@ -23,11 +23,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import jp.te4a.spring.boot.sotsusei.bean.AuthenticationBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.UserEditForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
+import jp.te4a.spring.boot.sotsusei.repository.AuthenticationRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
@@ -52,6 +55,8 @@ public class UserController {
     GameplayRepository gameplayRepository;
     @Autowired
     CompPartRepository compPartRepository;
+    @Autowired
+    AuthenticationRepository authenticationRepository;
     @Autowired
 	  ImageService imageService;
     private final MailSender mailSender;
@@ -156,8 +161,8 @@ public class UserController {
       imageService.getImage(model);
       return "users/Password";
     }
-    @PostMapping(path = "new_password")//新しいパスワード
-    String new_password(@RequestParam String mail_address, Model model){
+    @PostMapping(path = "authentication")//新しいパスワード
+    String authentication(@RequestParam String mail_address, Model model){
       List<String> errorList = new ArrayList<String>();
       UserBean userBean = userRepository.findByMail_address(mail_address);
       if(userBean == null){
@@ -170,6 +175,11 @@ public class UserController {
         model.addAttribute("validationError", errorList);
         return password(model);
       }
+
+      if(authenticationRepository.findByuser_id(userBean.getUser_id()) != null){
+        authenticationRepository.deleteById(userBean.getUser_id());
+      }
+      
       Random random = new Random();
       Integer authentication_pass = Integer.valueOf(String.format("%08d", random.nextInt(99999999)));
       SimpleMailMessage msg = new SimpleMailMessage();
@@ -185,34 +195,39 @@ public class UserController {
       } catch (MailException e) {
           e.printStackTrace();
       }
+      System.out.println(authentication_pass);
       imageService.getImage(model);
-      model.addAttribute("authentication_pass", authentication_pass);
-      model.addAttribute("user_id", userBean.getUser_id());
+      AuthenticationBean authenticationBean = new AuthenticationBean();
+      authenticationBean.setUser_id(userBean.getUser_id());
+      authenticationBean.setAuthentication_pass(authentication_pass);
+      authenticationRepository.save(authenticationBean);
+      model.addAttribute("mail_address", mail_address);
       return "users/Authentication";
     }
-    @PostMapping(path = "authentication")//認証処理
-    String authentication(@RequestParam Integer input_pass, Integer authentication_pass, Integer user_id, Model model){
-      if(input_pass.equals(authentication_pass)){
+    @PostMapping(path = "new_password")//認証処理
+    String new_password(@RequestParam Integer input_pass, String mail_address, Model model){
+      if(authenticationRepository.findByAuthentication_pass(input_pass) != null){
         imageService.getImage(model);
-        model.addAttribute("user_id", user_id);
+        model.addAttribute("mail_address", mail_address);
         return "users/NewPassword";
       }
       List<String> errorList = new ArrayList<String>();
       errorList.add("認証コードが違います。");
       model.addAttribute("validationError", errorList);
       imageService.getImage(model);
-      model.addAttribute("authentication_pass", authentication_pass);
-      model.addAttribute("user_id", user_id);
       return "users/Authentication";
     }
     @PostMapping(path = "updatepass")//パスワード更新処理
-    String updatepass(@RequestParam String password, Integer user_id, Model model){
+    String updatepass(@RequestParam String password, String mail_address, Model model){
+      UserBean userBean = userRepository.findByMail_address(mail_address);
+      Integer user_id = userBean.getUser_id();
       if(user_id == null || password == null){
         return password(model);
       }
       password = password.substring(0, password.length()-1);
       UserForm form = userService.findOne(user_id);
       userService.updatepass(form, password, user_id);
+      authenticationRepository.deleteById(user_id);
       SimpleMailMessage msg = new SimpleMailMessage();
       msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
       msg.setTo(form.getMail_address()); // 送信先メールアドレス
