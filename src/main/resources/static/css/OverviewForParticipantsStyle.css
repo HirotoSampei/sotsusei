@@ -308,7 +308,6 @@ main {
   position: relative;
   z-index: 1;
  }
- 
  .button-item:hover {
   border: 1px solid #FF4655;
   color: white;
@@ -316,7 +315,11 @@ main {
  }
  
  
+
  
+
+ 
+
  .shape {
   fill: #0E1822;
  }
