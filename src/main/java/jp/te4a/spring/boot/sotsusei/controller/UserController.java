@@ -195,7 +195,6 @@ public class UserController {
       } catch (MailException e) {
           e.printStackTrace();
       }
-      System.out.println(authentication_pass);
       imageService.getImage(model);
       AuthenticationBean authenticationBean = new AuthenticationBean();
       authenticationBean.setUser_id(userBean.getUser_id());
