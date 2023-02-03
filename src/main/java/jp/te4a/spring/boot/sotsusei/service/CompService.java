@@ -203,7 +203,6 @@ public class CompService {
       popuserForm.setLogin_id(user_id);
       popuserForm.setNickname(compPartRepository.findByNickname(comp_id, uid));
       popuserForm.setNote(popuserForm.getNote().replace(",", "<br>"));
-      System.out.println(popuserForm);
       formList.add(popuserForm);
     }
       return formList;
