@@ -60,9 +60,13 @@ public class UserService {
     return formList;
   }
 
-  public UserEditForm update(UserEditForm userEditForm, String[] game_id) {
-    UserBean userBean = new UserBean();
+  public UserEditForm update(UserBean userBean, UserEditForm userEditForm, String[] game_id) {
     GameplayBean gameplayBean = new GameplayBean();
+    userEditForm.setUser_id(userBean.getUser_id());
+    userEditForm.setPassword(userBean.getPassword());
+    userEditForm.setMail_address(userBean.getMail_address());
+    userEditForm.setRole(userBean.getRole());
+    userEditForm.set_banned(userBean.is_banned());
     userEditForm.setNote(userEditForm.getNote().replace("\r\n", ","));
     BeanUtils.copyProperties(userEditForm, userBean);
     userRepository.save(userBean);

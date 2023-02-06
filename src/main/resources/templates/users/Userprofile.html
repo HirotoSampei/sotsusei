@@ -45,8 +45,6 @@
       <form th:action="@{/logout}" method="post"><input type="submit" class="button-item" value="ログアウト" /></form>
       <form th:action="@{/users/edit}" method="post">
         <input type="submit" class="button-item" name="form" value="編集" />
-        <input type="hidden" name="user_id" th:value="${us.user_id}"/>
-        <!--<input type="hidden" name="password" th:value="${game_List}"/>-->
       </form>
     </div>
     <div id="button-container">
