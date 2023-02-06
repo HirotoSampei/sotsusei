@@ -116,9 +116,10 @@ public class UserController {
       return "users/Userprofile";
     }
     @PostMapping(path = "edit", params = "form") //編集画面遷移
-    String editForm(@RequestParam Integer user_id,/*@RequestParam List<GameBean> game_List,*/ UserEditForm form, Model model) {
-      UserForm userForm = userService.findOne(user_id);
-      UserBean userBean = userRepository.getById(user_id);
+    String editForm(UserEditForm form, Model model, HttpServletRequest httpServletRequest) {
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
+      UserForm userForm = userService.findOne(userBean.getUser_id());
       BeanUtils.copyProperties(userForm,  form);
       imageService.getImage(model);
       model.addAttribute("user_name", userBean.getUser_name());
@@ -128,7 +129,7 @@ public class UserController {
       return "users/Edituser2";
     }
     @PostMapping(path = "edit") //編集内容登録機能
-    String edit(@RequestParam Integer user_id, @Validated UserEditForm form, BindingResult result, String[] game_id ,Model model) {
+    String edit(@Validated UserEditForm form, BindingResult result, String[] game_id ,Model model, HttpServletRequest httpServletRequest) {
       if(result.hasErrors() || game_id == null) {
         List<String> errorList = new ArrayList<String>();
         for (ObjectError error : result.getAllErrors()) {
@@ -138,19 +139,20 @@ public class UserController {
           errorList.add("プレイ中のゲームを選択してください。");
         }
         model.addAttribute("validationError", errorList);
-        return editForm(user_id, form, model);
+        return editForm(form, model, httpServletRequest);
       }
-      UserBean userBean = userRepository.getById(user_id);
-      form.setPassword(userBean.getPassword());
-      form.setMail_address(userBean.getMail_address());
-      form.setRole(userBean.getRole());
-      form.set_banned(userBean.is_banned());
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
+      Integer user_id = userBean.getUser_id();
       gameplayRepository.deleteByuser_id(user_id);
-      userService.update(form, game_id);
+      userService.update(userBean, form, game_id);
       return "redirect:/users/profile";
     }
     @PostMapping(path = "delete") //削除
-    String delete(@RequestParam Integer user_id) {
+    String delete(HttpServletRequest httpServletRequest) {
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
+      Integer user_id = userBean.getUser_id();
       userService.delete(user_id);
       gameplayRepository.deleteByuser_id(user_id);
       compPartRepository.deleteByuser_id(user_id);

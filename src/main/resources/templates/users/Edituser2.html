@@ -42,7 +42,6 @@
       このユーザーを削除します。本当によろしいですか？
       <form th:action="@{/users/delete}" method="post">
         <input type="submit" class="button-item" value="はい">
-        <input type="hidden" name="user_id" th:value="${param.user_id[0]}" />
       </form>
       </form>
       <button id="no" class="button-item">いいえ</button>
@@ -91,7 +90,6 @@
         <div id="button-container">
           <input type="button" class="button-item" onclick="location.href='/users/profile'" value="戻る">
           <input type="submit" class="button-item" value="更新">
-          <input type="hidden" name="user_id" th:value="${param.user_id[0]}">
     </form>
       <input type="button" id="deletebtn" class="button-item" value="削除">
     </div>

@@ -15,7 +15,7 @@ function passwordCheck(password){
 	// エラーチェック
 	if(pass.length >= 100){
 		password.setCustomValidity("パスワードは100桁以内で入力してください");
-	}else if(pass.length <= 8){
+	}else if(pass.length < 8){
 		password.setCustomValidity('パスワードは8桁以上で入力してください');
 	}else{
 		password.setCustomValidity('');
