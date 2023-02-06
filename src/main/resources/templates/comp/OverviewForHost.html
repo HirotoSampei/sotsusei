@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>大会概要 - 主催者</title>
-  <link rel="stylesheet" href="..\..\static\css\OverviewStyle.css" th:href="@{/css/OverviewStyle.css}">
+  <link rel="stylesheet" href="../../static/css/OverviewStyle.css" th:href="@{/css/OverviewStyle.css}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="../../js/publiccomment.js"></script>
   <script src="../../js/publicreload.js"></script>
@@ -28,6 +28,17 @@
 </header>
 
 <main>
+  <div id="mask"></div>
+    <div id="dialog">
+      大会を削除します。本当によろしいですか？
+      <form th:action="@{/comp/delete}" method="post">
+      <div th:each="ov : ${overview}">  
+        <input type="submit" class="button-item" name="form" value="削除" />
+        <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
+      </div>
+      </form>
+      <button id="no" class="button-item">いいえ</button>
+    </div>
   <div class="main-container">
     <div class="left-main-container">
       <table>
@@ -79,10 +90,7 @@
         <input type="submit" class="button-item" name="form" value="編集" />
         <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
       </form>
-      <form th:action="@{/comp/delete}" method="post">
-        <input type="submit" class="button-item" name="form" value="削除" />
-        <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
-      </form>
+      <input type="button" id="deletebtn" class="button-item" value="削除">
       <form th:action="@{/comp/OverviewForParticipants}" method="post">
         <input type="submit" class="button-item" value="参加者用ページ">
         <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
@@ -95,6 +103,21 @@
 <footer>
   <div id="temp-footer">©Competition Assistance Tool</div>
 </footer>
+
+<script th:inline="javascript">
+  const deletebtn = document.getElementById('deletebtn')
+  const dialog = document.getElementById('dialog')
+  const mask = document.getElementById('mask')
+  const no = document.getElementById('no')
+  deletebtn.addEventListener('click',function start() {
+    dialog.style.display = 'block'
+    mask.style.display = 'block'
+  })
+  no.addEventListener('click',function back(){
+    dialog.style.display = 'none'
+    mask.style.display = 'none'
+  })
+</script>
 
 </body>
 </html>
