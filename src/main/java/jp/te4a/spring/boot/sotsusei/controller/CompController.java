@@ -32,6 +32,7 @@ import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
+import jp.te4a.spring.boot.sotsusei.repository.NGWordRepository;
 import jp.te4a.spring.boot.sotsusei.repository.ReportRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
@@ -65,12 +66,12 @@ public class CompController {
   CompSearchRepository compSearchRepository;
   @Autowired
   ReportRepository reportRepository;
-
   @Autowired
   PrivateCommentRepository privateCommentRepository;
-
   @Autowired
   PublicCommentRepository publicCommentRepository;
+  @Autowired
+  NGWordRepository ngWordRepository;
 
   @ModelAttribute 
   CompForm setUpForm() {
@@ -143,6 +144,7 @@ public class CompController {
     model.addAttribute("overview", compService.hostoverview(userBean.getUser_id()));
     model.addAttribute("commentList",compService.publiccomment(compRepository.findComp_id(userBean.getUser_id())));
     model.addAttribute("comp_id", compRepository.findComp_id(userBean.getUser_id()));
+    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
     return "comp/OverviewForHost";
   }
   @PostMapping(path="Overview")
@@ -158,6 +160,7 @@ public class CompController {
       model.addAttribute("commentList",compService.privatecomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     else{
@@ -167,6 +170,7 @@ public class CompController {
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/Overview";//参加前大会概要画面
     } 
   }
@@ -207,6 +211,7 @@ public class CompController {
         model.addAttribute("commentList",compService.publiccomment(comp_id));
         model.addAttribute("comp_id", comp_id);
         model.addAttribute("user_id",userBean.getUser_id());
+        model.addAttribute("NGWordList", ngWordRepository.findNGWords());
         return "comp/Overview";//参加前大会概要画面
       }
     }
@@ -218,6 +223,7 @@ public class CompController {
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/Overview";//参加前大会概要画面
     }
     else{
@@ -234,6 +240,7 @@ public class CompController {
     model.addAttribute("commentList",compService.privatecomment(comp_id));
     model.addAttribute("comp_id", comp_id);
     model.addAttribute("user_id",userBean.getUser_id());
+    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
     return "comp/OverviewForParticipants";//参加者専用画面
     }
   }
@@ -329,6 +336,7 @@ public class CompController {
     model.addAttribute("commentList",compService.privatecomment(comp_id));
     model.addAttribute("comp_id", comp_id);
     model.addAttribute("user_id",userBean.getUser_id());
+    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
     return "comp/OverviewForParticipants";
   }
 
@@ -374,6 +382,7 @@ public class CompController {
       model.addAttribute("commentList",compService.privatecomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     imageService.getImage(model);
@@ -381,6 +390,7 @@ public class CompController {
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/Overview";//参加前大会概要画面
   }
 
@@ -392,21 +402,38 @@ public class CompController {
     return "comp/Report";
   }
 
+  @PostMapping(path = "kick") //強制退出処理
+  String kick(@RequestParam Integer user_id, Integer comp_id, Model model, HttpServletRequest httpServletRequest) {
+    compPartRepository.deleteByuser(user_id, comp_id);
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    imageService.getImage(model);
+    model.addAttribute("user_name", userBean.getUser_name());
+    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
+    model.addAttribute("comp", compService.partoverview(comp_id));
+    model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
+    model.addAttribute("commentList",compService.privatecomment(comp_id));
+    model.addAttribute("comp_id", comp_id);
+    model.addAttribute("user_id",userBean.getUser_id());
+    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
+    return "comp/OverviewForParticipants";
+  }
+
   @PostMapping("/privatecheck")
   @ResponseBody
   String private_comp_comment(@RequestParam String comp_id, String comment, ModelMap modelMap, HttpServletRequest httpServletRequest){
-    int comp_Id = Integer.parseInt(comp_id);
-    String user_pass = httpServletRequest.getRemoteUser();
-    UserBean userBean = userRepository.findByMail_address(user_pass);
-    PrivateCommentBean commentBean = new PrivateCommentBean();
-    commentBean.setComp_id(comp_Id);
-    commentBean.setUser_id(userBean.getUser_id());
-    commentBean.setCommented_date(LocalDateTime.now());
-    commentBean.setComment(comment);
-    privateCommentRepository.save(commentBean);
+      int comp_Id = Integer.parseInt(comp_id);
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
+      PrivateCommentBean commentBean = new PrivateCommentBean();
+      commentBean.setComp_id(comp_Id);
+      commentBean.setUser_id(userBean.getUser_id());
+      commentBean.setCommented_date(LocalDateTime.now());
+      commentBean.setComment(comment);
+      privateCommentRepository.save(commentBean);
 
-    return privategetJson(compService.privatecomment(comp_Id));
-  }
+      return privategetJson(compService.privatecomment(comp_Id));
+    }
   
   @PostMapping("/privatereload")
   @ResponseBody
@@ -487,4 +514,6 @@ private String publicgetJson(List<PublicCommentForm> list){
     compService.delete_public_comment(comp_Id,date);
     return publicgetJson(compService.publiccomment(comp_Id));
   }
+
+
 }

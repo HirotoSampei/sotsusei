@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="..\..\static\css\OverviewForParticipantsStyle.css" th:href="@{/css/OverviewForParticipantsStyle.css}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="../../js/privatecomment.js"></script>
-  <script src="../../js/privatereload.js"></script>
+  <!--<script src="../../js/privatereload.js"></script>-->
   <script src="../../js/deleteprivatecomment.js"></script>
   <script type="text/javascript" >
-    function func(nickname,note,user_id,login_id,comp_id) {
+    function func(nickname,note,user_id,login_id,comp_id,host_user_id) {
       document.getElementById('nickname').innerHTML = nickname;
       document.getElementById('note').innerHTML = note;
       const hiddenField = document.getElementById('user_id');
@@ -23,11 +23,31 @@
       else{
         document.getElementById('button1').style.visibility = 'visible'
       }
+
+      if(host_user_id == login_id & user_id != login_id){
+        document.getElementById('button2').style.visibility = 'visible'
+      }
+      else{
+        document.getElementById('button2').style.visibility = 'hidden'
+      }
     }</script>
     <!--
     <script>
       document.body.onclick = clickscreen();
-    </script>-->
+    </script>
+    <script th:inline="javascript">
+      var ngWordList = /*[[${NGWordList}]]*/"NGWordList";
+      console.log(ngWordList);
+    </script>
+    <script type="text/javascript" >
+      function commentCheck(comment){
+	      var comment = comment.value;
+        if(comment.includes(ngWordList)){
+          comment.setCustomValidity("NGワードが含まれているためコメントできません")
+	}
+
+}-->
+    </script>
 </head>
 
 <body>
@@ -79,7 +99,7 @@
                 <div class="people">参加者一覧</div>
                 <div class="participants">
                   <div th:each="user: ${user}">
-                    <label for="hoge_user-pop-up" th:onclick="|func('__${user.nickname}__','__${user.note}__','__${user.user_id}__','__${user.login_id}__','__${cp.comp_id}__')|" th:text="${user.nickname}">hoge_user</label>
+                    <label for="hoge_user-pop-up" th:onclick="|func('__${user.nickname}__','__${user.note}__','__${user.user_id}__','__${user.login_id}__','__${cp.comp_id}__','__${cp.host_user_id}__')|" th:text="${user.nickname}">hoge_user</label>
                     <input type="checkbox" id="hoge_user-pop-up">
                     <div class="overlay">
                       <div class="window">
@@ -89,6 +109,11 @@
                         </div>
                         <div class="button-container">
                           <label class="button-item" for="hoge_user-pop-up">戻る</label>
+                          <form th:action="@{/comp/kick}" method="post">
+                            <input type="submit" class="button-item" id="button2" value="強制退出">
+                            <input type="hidden" name="user_id" id="user_id">
+                            <input type="hidden" name="comp_id" id="comp_id">
+                          </form>
                           <form th:action="@{/comp/report}" method="post">
                             <input type="submit" class="button-item" id="button1" value="報告">
                             <input type="hidden" name="user_id" id="user_id">
@@ -117,9 +142,10 @@
           <!--th:fragment="fragmentComment" th:insert="comp/fragment :: hogehoge" th:fragment="fragmentComment"-->
           <div class="comment">
             <form th:action="@{/comp/privatecheck}" method="post" id="comment_form">
-              <input type="text" id="comment" name="comment" class="comment-box" required>
+              <input type="text" id="comment" name="comment" class="comment-box" required >
               <button type="submit" id="add"class="form">投稿</button>
               <input type="hidden" id="comp_id_for_comment" th:value="${comp_id}">
+              <input type="hidden" id="ngWordList" th:value="${NGWordList}">
             </form>
           </div>
       </div>
