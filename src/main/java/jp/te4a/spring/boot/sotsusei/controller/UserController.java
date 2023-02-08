@@ -1,10 +1,12 @@
 package jp.te4a.spring.boot.sotsusei.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
@@ -26,12 +28,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jp.te4a.spring.boot.sotsusei.bean.AuthenticationBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
+import jp.te4a.spring.boot.sotsusei.bean.CompBean;
+import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.UserEditForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
 import jp.te4a.spring.boot.sotsusei.repository.AuthenticationRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
+import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
@@ -53,6 +58,8 @@ public class UserController {
     UserRepository userRepository;
     @Autowired
     GameplayRepository gameplayRepository;
+    @Autowired
+    CompRepository compRepository;
     @Autowired
     CompPartRepository compPartRepository;
     @Autowired
@@ -280,4 +287,30 @@ public class UserController {
       return profile_list(model, modelMap, httpServletRequest);
     }
 
+    @Scheduled(cron="0 10 11 * * *",zone="Asia/Tokyo")
+    public void compday_check(){//開催日当日に参加者にメール送信
+      System.out.println("mail start.");
+      LocalDateTime now = LocalDateTime.now();
+      LocalDateTime check = (now).plusDays(1);
+      List<CompBean> comp = compRepository.findOnlyStart(now,check);
+      for(int i = 0; i < comp.size(); i++){
+        List<CompPartBean> comp_part = compPartRepository.findByComp_id(comp.get(i).getComp_id());
+        for(int j = 0; j < comp_part.size(); j++){
+          String comp_name = compRepository.findComp_nameByComp_id(comp.get(i).getComp_id());
+          SimpleMailMessage msg = new SimpleMailMessage();
+          msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
+          msg.setTo(userRepository.findMail_address(comp_part.get(j).getUser_id())); // 送信先メールアドレス
+      //        msg.setCc(); //Cc用
+      //        msg.setBcc(); //Bcc用
+          msg.setSubject("大会開始日当日です"); // タイトル               
+          msg.setText("本日はあなたが参加している大会の開始日です。忘れずに参加しましょう。"); //本文
+          msg.setText("大会名："+ comp_name);
+          try {
+              mailSender.send(msg);
+          } catch (MailException e) {
+              e.printStackTrace();
+          }
+        }
+      }
+    }
 }
