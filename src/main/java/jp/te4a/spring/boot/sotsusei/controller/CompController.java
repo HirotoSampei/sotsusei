@@ -2,6 +2,7 @@ package jp.te4a.spring.boot.sotsusei.controller;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,16 +178,22 @@ public class CompController {
 
   @PostMapping(path="create") //大会作成処理
   String create(@RequestParam boolean radio_button, @Validated CompForm form, BindingResult result, Model model, String game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+    List<String> errorList = new ArrayList<String>();
     if(result.hasErrors()) {
-      compValidate.compval(form, result, model, modelMap, httpServletRequest);
+      compValidate.compval(form, errorList, result, model, modelMap, httpServletRequest);
       return create_list(model, modelMap, httpServletRequest);
     }
     else if(form.getEnd_date().isBefore(form.getStart_date())){
-      compValidate.compend_dataval(model);
+      compValidate.compend_dataval(errorList, model);
       return create_list(model, modelMap, httpServletRequest);
     }
     else if(form.getDeadline().isAfter(form.getStart_date())){
-      compValidate.compdeadlineval(model);
+      compValidate.compdeadlineval(errorList, model);
+      return create_list(model, modelMap, httpServletRequest);
+    }
+    else if(game_id == null){
+      errorList.add("プレイ中のゲームを選択してください。");
+      model.addAttribute("validationError", errorList);
       return create_list(model, modelMap, httpServletRequest);
     }
     String user_pass = httpServletRequest.getRemoteUser();
@@ -259,23 +266,29 @@ public class CompController {
   }
   @PostMapping(path = "edit") //編集した内容を登録する時の動き
   String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, String game_id, ModelMap modelMap, HttpServletRequest httpServletRequest,Model model) {
-  if(result.hasErrors()) {
-    compValidate.compval(form, result, model, modelMap, httpServletRequest);
-    return editForm(comp_id, form, model, httpServletRequest);
-  }
-  else if(form.getEnd_date().isBefore(form.getStart_date())){
-    compValidate.compend_dataval(model);
-    return editForm(comp_id, form, model, httpServletRequest);
-  }
-  else if(form.getDeadline().isAfter(form.getStart_date())){
-    compValidate.compdeadlineval(model);
-    return editForm(comp_id, form, model, httpServletRequest);
-  }
-  Integer g_id=Integer.parseInt(game_id.split(",")[0]);
-  String user_pass = httpServletRequest.getRemoteUser();
-  UserBean userBean = userRepository.findByMail_address(user_pass);
-  compService.update(form,g_id,userBean.getUser_id());
-  return "redirect:/comp/OverViewForHost";
+    List<String> errorList = new ArrayList<String>();
+    if(result.hasErrors()) {
+      compValidate.compval(form, errorList, result, model, modelMap, httpServletRequest);
+      return editForm(comp_id, form, model, httpServletRequest);
+    }
+    else if(form.getEnd_date().isBefore(form.getStart_date())){
+      compValidate.compend_dataval(errorList, model);
+      return editForm(comp_id, form, model, httpServletRequest);
+    }
+    else if(form.getDeadline().isAfter(form.getStart_date())){
+      compValidate.compdeadlineval(errorList, model);
+      return editForm(comp_id, form, model, httpServletRequest);
+    }
+    else if(game_id == null){
+      errorList.add("プレイ中のゲームを選択してください。");
+      model.addAttribute("validationError", errorList);
+      return editForm(comp_id, form, model, httpServletRequest);
+    }
+    Integer g_id=Integer.parseInt(game_id.split(",")[0]);
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    compService.update(form,g_id,userBean.getUser_id());
+    return "redirect:/comp/OverViewForHost";
   }
 
 

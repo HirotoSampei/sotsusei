@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>大会作成</title>
   <link rel="stylesheet" type="text/css" href="../../static/css/CreateCompStyle.css" th:href="@{/css/CreateCompStyle.css}">
+  <script src="../../js/comperrorcheck.js"></script>
 </head>
 <body>
 
@@ -32,7 +33,7 @@
     </div>
     <table>
       <div id="input-container">
-        <p>大会名　  :<input type="text" class="input-item" name="comp_name" th:field="*{comp_name}" required></p> 
+        <p>大会名　  :<input type="text" class="input-item" name="comp_name" th:field="*{comp_name}" oninput="compnameCheck(this)" required></p> 
         <p>ゲーム　  :
           <div>
             <select class="test-number" id="testnumber">
@@ -62,15 +63,15 @@
         </p>
         <div id="description-container">
           <p>概要　  :</p>
-          <textarea class="input-item-ta" name="description" cols="30" rows="5" style="resize: none"></textarea>
+          <textarea class="input-item-ta" name="description" cols="30" rows="5" oninput="descriptionCheck(this)" style="resize: none"></textarea>
         </div>
-          <p>主催者名　：<input type="text" class="input-item" name="host_nickname" th:field="*{host_nickname}" required></p>
+          <p>主催者名　：<input type="text" class="input-item" name="host_nickname" th:field="*{host_nickname}" oninput="nicknameCheck(this)" required></p>
           <p>主催者も大会に参加しますか？　<input type="radio" id="yes"name="radio_button" value="True"><label for="yes">はい</label>
                                         <input type="radio" id="no"name="radio_button" value="False" checked><label for="no">いいえ</label></p>
-          <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" th:field="*{start_date}" required></p>
-          <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:field="*{end_date}" required></p>
-          <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:field="*{limit_of_participants}" required></p>
-          <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:field="*{deadline}" required></p>
+          <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" id="start_date" th:field="*{start_date}" oninput="startdateCheck(this)" required></p>
+          <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:field="*{end_date}" oninput="enddateCheck(this)" required></p>
+          <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:field="*{limit_of_participants}" oninput="limitCheck(this)" required></p>
+          <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:field="*{deadline}" oninput="deadlineCheck(this)" required></p>
         </div>
       <div id="button-container">
         <input type="button" class="button-item" onclick="location.href='/comp'" value="戻る">
