@@ -128,3 +128,19 @@ body{
    .shape {
     fill: #0E1822;
    }
+   .test-number {
+    height: 45px;
+    width: 60%;
+    margin-bottom: 20px;
+    font-size: 30px;
+    font-weight: 500;
+    background-color: #ddd;
+  }
+
+  .game-to-play{
+    background-color: #ddd;
+    width: 60%;
+    height: 45px;
+    line-height: 50px;
+    font-size: 30px;
+  }
