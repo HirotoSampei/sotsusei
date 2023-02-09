@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang=ja dir="ltr">
+
 <head>
   <meta charset="utf-8">
   <title>大会概要 - 主催者</title>
@@ -8,117 +9,124 @@
   <script src="../../js/publiccomment.js"></script>
   <script src="../../js/publicreload.js"></script>
 </head>
+
 <body>
 
-<header>
-  <div class="header-container">
-    <div class="left-container">
-      <a href="/comp">
-        <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
-      </a>
-    </div>
-    <div class="right-container">
-      <a href="/users/profile">
-        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
-      </a>
-      <div class="header-item-name" th:text="${user_name}">user</div>
+  <header>
+    <div class="header-container">
+      <div class="left-container">
+        <a href="/comp">
+          <img th:src="${cat_logo_image}" class="header-item" width="90px" height="60px">
+        </a>
       </div>
-  </div>
+      <div class="right-container">
+        <a href="/users/profile">
+          <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+        </a>
+        <div class="header-item-name" th:text="${user_name}">user</div>
+      </div>
+    </div>
 
-</header>
+  </header>
 
-<main>
-  <div id="mask"></div>
+  <main>
+    <div id="mask"></div>
     <div id="dialog">
       大会を削除します。本当によろしいですか？
-      <form th:action="@{/comp/delete}" method="post">
-      <div th:each="ov : ${overview}">  
-        <input type="submit" class="button-item" name="form" value="削除" />
-        <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
+      <div class="dialog-button-container">
+        <form th:action="@{/comp/delete}" method="post">
+          <div th:each="ov : ${overview}">
+            <input type="submit" class="button-item" name="form" value="削除" />
+            <input type="hidden" name="comp_id" th:value="${ov.comp_id}" />
+          </div>
+        </form>
+        <button id="no" class="button-item">いいえ</button>
       </div>
-      </form>
-      <button id="no" class="button-item">いいえ</button>
     </div>
-  <div class="main-container">
-    <div class="left-main-container">
-      <table>
-        <tr th:each="ov : ${overview}"> 
-          <div class="title-people-container">
-            <div class="title"th:text="${ov.comp_name}">初心者歓迎！ほげほげ大会</div>
-            <img th:src="${people_image}" class="people-logo">
-            <div class="people"th:text="${ ov.count + '/' + ov.limit_of_participants}">20/50</div> 
-          </div>  
-          <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom Clansy's Reinbow Six Siege</div>
-          <div class="host-container">
-            <div class="people" th:text="${'主催者：'+ ov.host_nickname}">hoge_host_user</div>
-          </div>
-          <div class="schedule-container">
-            <div class="date">開催日時：</div>
-            <div class="date"th:text="${ov.start_date + '~' + ov.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
-          </div>
-          <div class="deadline-container">
-            <div class="date">締め切り：</div>
-            <div class="date"th:text="${ov.deadline + ''}">2023/3/5 23:59</div>
-          </div>
-          <div class="date">概要</div>
-          <div class="overview"th:text="${ov.description}">ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される</div>
-          
-        </tr>
-      </table>
-    </div>
-    <div class="right-main-container">
-      <div class="chat" id="commentBox">
-        <div  th:each="data : ${commentList}">
+    <div class="main-container">
+      <div class="left-main-container">
+        <table>
+          <tr th:each="ov : ${overview}">
+            <div class="title-people-container">
+              <div class="title" th:text="${ov.comp_name}">初心者歓迎！ほげほげ大会</div>
+              <img th:src="${people_image}" class="people-logo">
+              <div class="people" th:text="${ ov.count + '/' + ov.limit_of_participants}">20/50</div>
+            </div>
+            <div class="game-title" th:text="${'🎮【' + ov.gameBean.hard + '】' + ov.gameBean.game_name}">🎮【PC】Tom
+              Clansy's Reinbow Six Siege</div>
+            <div class="host-container">
+              <div class="people" th:text="${'主催者：'+ ov.host_nickname}">hoge_host_user</div>
+            </div>
+            <div class="schedule-container">
+              <div class="date">開催日時：</div>
+              <div class="date" th:text="${ov.start_date + '~' + ov.end_date}">2023/3/10 13:00 ~ 2023/3/10 18:00</div>
+            </div>
+            <div class="deadline-container">
+              <div class="date">締め切り：</div>
+              <div class="date" th:text="${ov.deadline + ''}">2023/3/5 23:59</div>
+            </div>
+            <div class="date">概要</div>
+            <div class="overview" th:text="${ov.description}">
+              ここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示されるここに概要が表示される
+            </div>
+
+          </tr>
+        </table>
+      </div>
+      <div class="right-main-container">
+        <div class="chat" id="commentBox">
+          <div th:each="data : ${commentList}">
             <label class="comment-log" th:text="${data.user_name + ':' + data.comment}">hoge_user : コメント</label>
+          </div>
+        </div>
+        <div class="comment">
+          <form th:action="@{/comp/publiccheck}" method="post" id="comment_form">
+            <input type="text" id="comment" name="comment" class="comment-box" required>
+            <button type="submit" class="form">投稿</button>
+            <input type="hidden" id="comp_id_for_comment" th:value="${comp_id}">
+            <input type="hidden" id="ngWordList" th:value="${NGWordList}">
+          </form>
         </div>
       </div>
-      <div class="comment">
-        <form th:action="@{/comp/publiccheck}" method="post" id="comment_form">
-          <input type="text" id="comment" name="comment" class="comment-box" required>
-          <button type="submit"class="form">投稿</button>
-          <input type="hidden" id="comp_id_for_comment" th:value="${comp_id}">
-          <input type="hidden" id="ngWordList" th:value="${NGWordList}">
-        </form>
-      </div>
     </div>
-  </div>
 
-  <table>
-    <tr th:each="ov : ${overview}"> 
-    <div class="button-container">
-      <input type="button" class="button-item" onclick="location.href='/comp'" value="ホーム画面">
-      <form th:action="@{/comp/edit}" method="post">
-        <input type="submit" class="button-item" name="form" value="編集" />
-        <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
-      </form>
-      <input type="button" id="deletebtn" class="button-item" value="削除">
-      <form th:action="@{/comp/OverviewForParticipants}" method="post">
-        <input type="submit" class="button-item" value="参加者用ページ">
-        <input type="hidden" name="comp_id" th:value="${ov.comp_id}"/>
-      </form>
-    </div>
-    </tr>
-  </table>
-</main>
+    <table>
+      <tr th:each="ov : ${overview}">
+        <div class="button-container">
+          <input type="button" class="button-item" onclick="location.href='/comp'" value="ホーム画面">
+          <form th:action="@{/comp/edit}" method="post">
+            <input type="submit" class="button-item" name="form" value="編集" />
+            <input type="hidden" name="comp_id" th:value="${ov.comp_id}" />
+          </form>
+          <input type="button" id="deletebtn" class="button-item" value="削除">
+          <form th:action="@{/comp/OverviewForParticipants}" method="post">
+            <input type="submit" class="button-item" value="参加者用ページ">
+            <input type="hidden" name="comp_id" th:value="${ov.comp_id}" />
+          </form>
+        </div>
+      </tr>
+    </table>
+  </main>
 
-<footer>
-  <div id="temp-footer">©Competition Assistance Tool</div>
-</footer>
+  <footer>
+    <div id="temp-footer">©Competition Assistance Tool</div>
+  </footer>
 
-<script th:inline="javascript">
-  const deletebtn = document.getElementById('deletebtn')
-  const dialog = document.getElementById('dialog')
-  const mask = document.getElementById('mask')
-  const no = document.getElementById('no')
-  deletebtn.addEventListener('click',function start() {
-    dialog.style.display = 'block'
-    mask.style.display = 'block'
-  })
-  no.addEventListener('click',function back(){
-    dialog.style.display = 'none'
-    mask.style.display = 'none'
-  })
-</script>
+  <script th:inline="javascript">
+    const deletebtn = document.getElementById('deletebtn')
+    const dialog = document.getElementById('dialog')
+    const mask = document.getElementById('mask')
+    const no = document.getElementById('no')
+    deletebtn.addEventListener('click', function start() {
+      dialog.style.display = 'block'
+      mask.style.display = 'block'
+    })
+    no.addEventListener('click', function back() {
+      dialog.style.display = 'none'
+      mask.style.display = 'none'
+    })
+  </script>
 
 </body>
+
 </html>
