@@ -143,7 +143,8 @@ public class CompService {
 
    public List<ParticipatedForm> compgamesearch(Integer game_id){
     List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
-    List<CompBean> compList = compRepository.findByGame_idLike(game_id);
+    LocalDateTime now = (LocalDateTime.now()).plusHours(9);
+    List<CompBean> compList = compRepository.findByGame_idLike(game_id, now);
     for(CompBean compBean: compList) { 
       ParticipatedForm participatedForm = new ParticipatedForm();
       BeanUtils.copyProperties(compBean, participatedForm);
@@ -158,8 +159,9 @@ public class CompService {
     List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(user_id);
     List<CompBean> compList;
     Integer count = 0;
+    LocalDateTime now = (LocalDateTime.now()).plusHours(9);
     for (int i = 0; i < gameplay_idList.size(); i++){
-      compList = compRepository.findByGame_idLike(gameplay_idList.get(i).getGame_id());
+      compList = compRepository.findByGame_idLike(gameplay_idList.get(i).getGame_id(),now);
       for(CompBean compBean: compList) { 
         ParticipatedForm participatedForm = new ParticipatedForm();
         BeanUtils.copyProperties(compBean, participatedForm);
