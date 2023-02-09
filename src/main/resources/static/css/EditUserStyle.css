@@ -228,19 +228,25 @@ input[type=checkbox] {
 #dialog {
   position: fixed;
   z-index: 2;
+  top: 50%;
+  left: 50%;
   width: 400px;
   margin: auto;
+  transform: translate(-50%, -50%);
   padding: 30px 20px;
   text-align: center;
   font-size: 35px;
-  color: rgb(0, 0, 0);
+  color:rgb(0, 0, 0);
   border: 1px solid #aaa;
   box-shadow: 2px 2px 4px #888;
   display: none;
   background: rgba(255, 255, 255, 0.9);
-
 }
-
+.dialog-button-container{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20%;
+}
 #mask {
   display: none;
   background: rgba(0, 0, 0, 0.397);
