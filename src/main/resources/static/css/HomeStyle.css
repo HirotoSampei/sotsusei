@@ -275,7 +275,10 @@ main p {
   background-position: 40%;
  }
 
- .comp_name{
+ .search-bar{
   background-color: black;
-  color:#fff
+  color:#fff;
+  height: 35px;
+  margin-top: 5px;
+  border: none;
  }
