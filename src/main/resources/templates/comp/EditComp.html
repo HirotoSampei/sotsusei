@@ -53,7 +53,7 @@
               </select>
             </div>
             <details>
-              <summary>プレイするゲーム(１つ選択)</summary>
+              <summary class="game-to-play">プレイするゲーム(１つ選択)</summary>
               <div name="game" th:each="game:${gameList}">
                 <input type="radio" th:id="${game.game_id}" th:name="game_id"
                   th:value="${game.game_id} + ',' + ${game.genre}" style="display:none">
