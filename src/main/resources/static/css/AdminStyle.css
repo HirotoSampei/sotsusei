@@ -46,3 +46,14 @@ body {
 .button-item:active{
   background-color: gray;
 }
+
+.button_item {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 150px;
+  padding: 10px;
+  font-size: 30px;
+  border: solid 2px #cccccc;
+  border-radius: 5px;
+}

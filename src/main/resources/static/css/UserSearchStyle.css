@@ -48,7 +48,7 @@ input[type="input-item"] {
     border-radius: 5px;
 }
 
-.buck_button {
+.back_button {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -76,3 +76,13 @@ input[type="input-item"] {
     flex-direction: column;
     margin-top: 20%;
 }
+.buck_button{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 150px;
+    padding: 10px;
+    font-size: 30px;
+    border: solid 2px #cccccc;
+    border-radius: 5px;
+  }
