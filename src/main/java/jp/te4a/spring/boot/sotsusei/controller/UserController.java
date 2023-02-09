@@ -282,6 +282,9 @@ public class UserController {
       LocalDateTime now = LocalDateTime.now();
       LocalDateTime check = (now).plusDays(1);
       LocalDateTime check2 = (now).plusHours(23);
+      System.out.println(now);
+      System.out.println(check);
+      System.out.println(check2);
       List<CompBean> comp = compRepository.findOnlyStart(now,check,check2);
       for(int i = 0; i < comp.size(); i++){
         List<CompPartBean> comp_part = compPartRepository.findByComp_id(comp.get(i).getComp_id());
