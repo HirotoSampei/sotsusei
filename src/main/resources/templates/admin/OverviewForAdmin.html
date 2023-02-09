@@ -1,101 +1,106 @@
 <!DOCTYPE html>
 <html lang=ja dir="ltr">
+
 <head>
   <meta charset="utf-8">
   <title>大会概要 - 管理者</title>
   <link rel="stylesheet" type="text/css" href="../../static/css/OverviewStyle.css" th:href="@{/css/OverviewStyle.css}">
 </head>
+
 <body>
 
-<header>
-  <div class="header-container">
-    <div class="left-container">
-      <div class="header-item">
-      </div>
-    </div>
-    <div class="right-container">
-    </div>
-  </div>
-
-</header>
-
-<main>
-  <div id="mask"></div>
-    <div id="dialog">
-      大会を削除します。本当によろしいですか？
-      <form th:action="@{/admin/compdelete}" name="form" method="post">
-      <div th:each="cd : ${compDetail}">
-        <input type="submit" class="button-item" name="form" value="削除" />
-        <input type="hidden" name="comp_id" th:value="${cd.comp_id}"/>
-      </div>
-      </form>
-      <button id="no" class="button-item">いいえ</button>
-    </div>
-  <div class="main-container">
-    <div class="left-main-container">
-      <table>
-        <tr th:each="cd : ${compDetail}"> 
-          <div class="title-people-container">
-            <div class="title" th:text="${cd.comp_name}"></div>
-            <img src="..\..\images\people.png" class="people-logo">
-            <div class="people">参加人数：</div> 
-            <div class="people" th:text="${'2/' + cd.limit_of_participants}"></div> 
-          </div>  
-          <div class="game-title" th:text="${'🎮【' + cd.gameBean.hard + '】' + cd.gameBean.game_name}"></div>
-          <div class="host_name">主催者 　:</div>
-          <div class="host_name" th:text="${cd.host_nickname}"></div>
-          <div class="schedule-container">
-            <div class="date">開催日時：</div>
-            <div class="date"th:text="${cd.start_date + '~' + cd.end_date}"></div>
-          </div>
-          <div class="date">概要　　：</div>
-          <div class="overview"th:text="${cd.description}"></div>
-          <div class="deadline-container">
-            <div class="deadline">締め切り：</div>
-            <div class="deadline"th:text="${cd.deadline}"></div>
-          </div>
-        </tr>
-      </table>
-    </div>
-    <div class="right-main-container">
-      <div class="chat" id="commentBox">
-        <div  th:each="data : ${commentList}">
-            <label class="comment-log" th:text="${data.user_name + ':' + data.comment}">hoge_user : コメント</label>
+  <header>
+    <div class="header-container">
+      <div class="left-container">
+        <div class="header-item">
         </div>
       </div>
-      <div class="comment">
+      <div class="right-container">
       </div>
     </div>
-  </div>
 
-  <table>
-    <tr th:each="cd : ${compDetail}"> 
-    <div class="button-container">
-      <input type="button" class="button-item" onclick="location.href='/admin/complist'" value="戻る">
-      <input type="button" id="deletebtn" class="button-item" value="削除">
+  </header>
+
+  <main>
+    <div id="mask"></div>
+    <div id="dialog">
+      大会を削除します。本当によろしいですか？
+      <div class="dialog-button-container">
+        <form th:action="@{/admin/compdelete}" name="form" method="post">
+          <div th:each="cd : ${compDetail}">
+            <input type="submit" class="button-item" name="form" value="削除" />
+            <input type="hidden" name="comp_id" th:value="${cd.comp_id}" />
+          </div>
+        </form>
+        <button id="no" class="button-item">いいえ</button>
+      </div>
     </div>
-    </tr>
-  </table>
-</main>
+    <div class="main-container">
+      <div class="left-main-container">
+        <table>
+          <tr th:each="cd : ${compDetail}">
+            <div class="title-people-container">
+              <div class="title" th:text="${cd.comp_name}"></div>
+              <img src="..\..\images\people.png" class="people-logo">
+              <div class="people">参加人数：</div>
+              <div class="people" th:text="${'2/' + cd.limit_of_participants}"></div>
+            </div>
+            <div class="game-title" th:text="${'🎮【' + cd.gameBean.hard + '】' + cd.gameBean.game_name}"></div>
+            <div class="host_name">主催者 　:</div>
+            <div class="host_name" th:text="${cd.host_nickname}"></div>
+            <div class="schedule-container">
+              <div class="date">開催日時：</div>
+              <div class="date" th:text="${cd.start_date + '~' + cd.end_date}"></div>
+            </div>
+            <div class="date">概要　　：</div>
+            <div class="overview" th:text="${cd.description}"></div>
+            <div class="deadline-container">
+              <div class="deadline">締め切り：</div>
+              <div class="deadline" th:text="${cd.deadline}"></div>
+            </div>
+          </tr>
+        </table>
+      </div>
+      <div class="right-main-container">
+        <div class="chat" id="commentBox">
+          <div th:each="data : ${commentList}">
+            <label class="comment-log" th:text="${data.user_name + ':' + data.comment}">hoge_user : コメント</label>
+          </div>
+        </div>
+        <div class="comment">
+        </div>
+      </div>
+    </div>
 
-<footer>
-  <div id="temp-footer">©Competition Assistance Tool</div>
-</footer>
+    <table>
+      <tr th:each="cd : ${compDetail}">
+        <div class="button-container">
+          <input type="button" class="button-item" onclick="location.href='/admin/complist'" value="戻る">
+          <input type="button" id="deletebtn" class="button-item" value="削除">
+        </div>
+      </tr>
+    </table>
+  </main>
 
-<script th:inline="javascript">
-  const deletebtn = document.getElementById('deletebtn')
-  const dialog = document.getElementById('dialog')
-  const mask = document.getElementById('mask')
-  const no = document.getElementById('no')
-  deletebtn.addEventListener('click',function start() {
-    dialog.style.display = 'block'
-    mask.style.display = 'block'
-  })
-  no.addEventListener('click',function back(){
-    dialog.style.display = 'none'
-    mask.style.display = 'none'
-  })
-</script>
+  <footer>
+    <div id="temp-footer">©Competition Assistance Tool</div>
+  </footer>
+
+  <script th:inline="javascript">
+    const deletebtn = document.getElementById('deletebtn')
+    const dialog = document.getElementById('dialog')
+    const mask = document.getElementById('mask')
+    const no = document.getElementById('no')
+    deletebtn.addEventListener('click', function start() {
+      dialog.style.display = 'block'
+      mask.style.display = 'block'
+    })
+    no.addEventListener('click', function back() {
+      dialog.style.display = 'none'
+      mask.style.display = 'none'
+    })
+  </script>
 
 </body>
+
 </html>
