@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>ユーザープロフィール</title>
-  <link rel="stylesheet" type="text/css" href="../../static/css/UserProfileForAdminStyle.css" th:href="@{/css/UserProfileForAdminStyle.css}">
+  <link rel="stylesheet" type="text/css" href="../../static/css/UserProfileForAdminStyle.css"
+    th:href="@{/css/UserProfileForAdminStyle.css}">
 </head>
 
 <body>
@@ -17,23 +18,25 @@
       </div>
       <div class="right-container">
       </div>
-      </div>
+    </div>
     </div>
 
   </header>
 
   <main>
-        <div id="mask"></div>
-        <div id="dialog">
-          BANします。本当によろしいですか？
-          <form th:action="@{/admin/ban_from_user}" name="form" method="post">
-          <div th:each="ud : ${userDetail}" > 
-            <input type="hidden" name="user_id" th:value="${ud.user_id}"/>
+    <div id="mask"></div>
+    <div id="dialog">
+      BANします。本当によろしいですか？
+      <div class="dialog-button-container">
+        <form th:action="@{/admin/ban_from_user}" name="form" method="post">
+          <div th:each="ud : ${userDetail}">
+            <input type="hidden" name="user_id" th:value="${ud.user_id}" />
             <input type="submit" class="button-item">
           </div>
-          </form>
-          <button id="no" class="button-item">いいえ</button>
-        </div>
+        </form>
+        <button id="no" class="button-item">いいえ</button>
+      </div>
+    </div>
     <tr th:each="ud : ${userDetail}">
       <p>
       <div class="display-item" th:text="${'ユーザー名    : ' + ud.user_name}"></div>
@@ -73,21 +76,21 @@
     const dialog = document.getElementById('dialog')
     const mask = document.getElementById('mask')
     const no = document.getElementById('no')
-    banbtn.addEventListener('click',function start() {
+    banbtn.addEventListener('click', function start() {
       dialog.style.display = 'block'
       mask.style.display = 'block'
     })
-    no.addEventListener('click',function back(){
+    no.addEventListener('click', function back() {
       dialog.style.display = 'none'
       mask.style.display = 'none'
     })
   </script>
   <script type="text/javascript">
-    window.addEventListener('DOMContentLoaded', function(){
-  // 戻るボタンを制御
+    window.addEventListener('DOMContentLoaded', function () {
+      // 戻るボタンを制御
       console.log("A")
       window.history.pushState(null, null, null)
-      window.addEventListener('popstate', function(e){
+      window.addEventListener('popstate', function (e) {
         console.log("B")
         window.history.pushState(null, null, null)
       })
