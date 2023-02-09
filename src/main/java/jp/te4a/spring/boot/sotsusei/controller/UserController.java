@@ -287,20 +287,17 @@ public class UserController {
       return profile_list(model, modelMap, httpServletRequest);
     }
 
-    @Scheduled(cron="0 13 * * * *",zone="Asia/Tokyo")
+    @Scheduled(cron="0 0 * * * *",zone="Asia/Tokyo")
     public void compday_check(){//開催日当日に参加者にメール送信
-      System.out.println("mail start.");
       LocalDateTime now = LocalDateTime.now();
       LocalDateTime check = (now).plusDays(1);
       LocalDateTime check2 = (now).plusHours(23);
       List<CompBean> comp = compRepository.findOnlyStart(now,check,check2);
-      System.out.println(comp.get(0));
       for(int i = 0; i < comp.size(); i++){
         List<CompPartBean> comp_part = compPartRepository.findByComp_id(comp.get(i).getComp_id());
         for(int j = 0; j < comp_part.size(); j++){
           String comp_name = compRepository.findComp_nameByComp_id(comp.get(i).getComp_id());
           SimpleMailMessage msg = new SimpleMailMessage();
-          System.out.println(userRepository.findMail_address(comp_part.get(j).getUser_id()));
           msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
           msg.setTo(userRepository.findMail_address(comp_part.get(j).getUser_id())); // 送信先メールアドレス
       //        msg.setCc(); //Cc用
