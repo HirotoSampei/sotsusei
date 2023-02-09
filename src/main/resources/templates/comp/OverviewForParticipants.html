@@ -17,6 +17,10 @@
       const hiddenField2 = document.getElementById('comp_id');
       hiddenField.value = user_id;
       hiddenField2.value = comp_id;
+      const hiddenField3 = document.getElementById('user_id2');
+      const hiddenField4 = document.getElementById('comp_id2');
+      hiddenField3.value = user_id;
+      hiddenField4.value = comp_id;
       if(user_id == login_id){
         document.getElementById('button1').style.visibility = 'hidden'
       }
@@ -116,8 +120,8 @@
                           </form>
                           <form th:action="@{/comp/report}" method="post">
                             <input type="submit" class="button-item" id="button1" value="報告">
-                            <input type="hidden" name="user_id" id="user_id">
-                            <input type="hidden" name="comp_id" id="comp_id">
+                            <input type="hidden" name="user_id" id="user_id2">
+                            <input type="hidden" name="comp_id" id="comp_id2">
                           </form>
                         </div>
                       </div>
