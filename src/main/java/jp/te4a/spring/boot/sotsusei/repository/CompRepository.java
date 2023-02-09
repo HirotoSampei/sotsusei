@@ -41,8 +41,8 @@ public interface CompRepository extends JpaRepository<CompBean, Integer>{
 	@Query("SELECT X.comp_id FROM CompBean X WHERE X.host_user_id = ?1")
 	 Integer findComp_id(Integer host_user_id);
 
-	@Query("SELECT X FROM CompBean X WHERE X.end_date >= ?1 AND X.start_date <= ?2 ORDER BY X.comp_id")
-	 List<CompBean> findOnlyStart(LocalDateTime now,LocalDateTime check);
+	@Query("SELECT X FROM CompBean X WHERE X.end_date >= ?1 AND X.start_date <= ?2 AND X.start_date > ?3 ORDER BY X.comp_id")
+	 List<CompBean> findOnlyStart(LocalDateTime now,LocalDateTime check,LocalDateTime check2);
 
 	}
 
