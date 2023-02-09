@@ -55,9 +55,9 @@
             <details>
               <summary class="game-to-play">プレイするゲーム(１つ選択)</summary>
               <div name="game" th:each="game:${gameList}">
-                <input type="radio" th:id="${game.game_id}" th:name="game_id"
+                <input type="radio" class="game-radio-button" th:id="${game.game_id}" th:name="game_id"
                   th:value="${game.game_id} + ',' + ${game.genre}" style="display:none">
-                <label for="${game.game_id}" th:name="gamename" th:text="${game.game_name + '(' + game.hard + ')'}"
+                <label class="game-name" for="${game.game_id}" th:name="gamename" th:text="${game.game_name + '(' + game.hard + ')'}"
                   style="color:white; display:none"></label>
               </div>
             </details>
