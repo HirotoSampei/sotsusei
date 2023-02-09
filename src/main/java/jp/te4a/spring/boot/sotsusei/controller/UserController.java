@@ -276,28 +276,27 @@ public class UserController {
       return profile_list(model, modelMap, httpServletRequest);
     }
 
-    @Scheduled(cron="0 0 * * * *",zone="Asia/Tokyo")
+    @Scheduled(cron="0 30 * * * *",zone="Asia/Tokyo")
     public void compday_check(){//開催日当日に参加者にメール送信
+      System.out.println("mail start");
       LocalDateTime now = LocalDateTime.now();
       LocalDateTime check = (now).plusDays(1);
       LocalDateTime check2 = (now).plusHours(23);
       List<CompBean> comp = compRepository.findOnlyStart(now,check,check2);
       for(int i = 0; i < comp.size(); i++){
         List<CompPartBean> comp_part = compPartRepository.findByComp_id(comp.get(i).getComp_id());
+        System.out.println(comp_part.size());
         for(int j = 0; j < comp_part.size(); j++){
           String comp_name = compRepository.findComp_nameByComp_id(comp.get(i).getComp_id());
           SimpleMailMessage msg = new SimpleMailMessage();
+          System.out.println(userRepository.findMail_address(comp_part.get(j).getUser_id()));
           msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
           msg.setTo(userRepository.findMail_address(comp_part.get(j).getUser_id())); // 送信先メールアドレス
       //        msg.setCc(); //Cc用
       //        msg.setBcc(); //Bcc用
           msg.setSubject("大会開始前通知"); // タイトル               
           msg.setText("あなたが参加している大会の開始まで24時間を切りました。\r\n忘れずに参加しましょう。\r\n大会名："+ comp_name); //本文
-          try {
-              mailSender.send(msg);
-          } catch (MailException e) {
-              e.printStackTrace();
-          }
+          mailSender.send(msg);
         }
       }
     }
