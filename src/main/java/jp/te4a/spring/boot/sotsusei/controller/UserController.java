@@ -287,15 +287,12 @@ public class UserController {
       return profile_list(model, modelMap, httpServletRequest);
     }
 
-    @Scheduled(cron="0 * * * * *",zone="Asia/Tokyo")
+    @Scheduled(cron="0 0 * * * *",zone="Asia/Tokyo")
     public void compday_check(){//開催日当日に参加者にメール送信
       System.out.println("mail start");
       LocalDateTime now = (LocalDateTime.now()).plusHours(9);
       LocalDateTime check = (now).plusDays(1);
       LocalDateTime check2 = (now).plusHours(23);
-      System.out.println(now);
-      System.out.println(check);
-      System.out.println(check2);
       List<CompBean> comp = compRepository.findOnlyStart(now,check,check2);
       for(int i = 0; i < comp.size(); i++){
         List<CompPartBean> comp_part = compPartRepository.findByComp_id(comp.get(i).getComp_id());
@@ -309,7 +306,7 @@ public class UserController {
       //        msg.setCc(); //Cc用
       //        msg.setBcc(); //Bcc用
           msg.setSubject("大会開始前通知"); // タイトル               
-          msg.setText("あなたが参加している大会の開始まで24時間を切りました。\r\n忘れずに参加しましょう。\r\n大会名："+ comp_name); //本文
+          msg.setText("あなたが参加している大会の開始まで24時間を切りました。\r\n忘れずに参加しましょう。\r\n\r\n大会名："+ comp_name +"\r\n大会開始日時："+ compRepository.findStart_dateByComp_id(comp.get(i).getComp_id())); //本文
           mailSender.send(msg);
         }
       }
