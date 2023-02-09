@@ -290,7 +290,7 @@ public class UserController {
     @Scheduled(cron="0 * * * * *",zone="Asia/Tokyo")
     public void compday_check(){//開催日当日に参加者にメール送信
       System.out.println("mail start");
-      LocalDateTime now = LocalDateTime.now();
+      LocalDateTime now = (LocalDateTime.now()).plusHours(9);
       LocalDateTime check = (now).plusDays(1);
       LocalDateTime check2 = (now).plusHours(23);
       System.out.println(now);
