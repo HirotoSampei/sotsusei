@@ -17,11 +17,11 @@
         </a>
         <div class="header-item">
           <form th:action="@{/comp/searchcomp}" method="post">
-            <input type="search" class="comp_name" name="comp_name" placeholder="大会を検索">
+            <input type="search" class="search-bar" name="comp_name" placeholder="大会を検索">
             <input type="submit" class="form" name="form" value="検索">
           </form>
           <form>
-            <select class="test-number" id="testnumber">
+            <select class="search-bar" id="testnumber">
               <option value="0">ゲームジャンル選択</option>
               <option id="1" value="FPS">FPS</option>
               <option id="2" value="TPS">TPS</option>
@@ -37,7 +37,7 @@
             </select>
           </form>
           <form id=searchgamecomp name="searchgamecomp" th:action="@{/comp/searchgamecomp}" method="post">
-            <select class="input-item game_id" name="game_id" id="game">
+            <select class="search-bar" name="game_id" id="game">
               <option value="0">ゲーム名検索</option>
               <option th:each="game:${gameList}" style="display:none" th:value="${game.game_id} + ',' + ${game.genre}"
                 th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}">
