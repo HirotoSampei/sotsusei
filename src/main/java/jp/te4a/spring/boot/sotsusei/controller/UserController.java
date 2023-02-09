@@ -303,8 +303,8 @@ public class UserController {
           msg.setTo(userRepository.findMail_address(comp_part.get(j).getUser_id())); // 送信先メールアドレス
       //        msg.setCc(); //Cc用
       //        msg.setBcc(); //Bcc用
-          msg.setSubject("大会開始日当日です"); // タイトル               
-          msg.setText("本日はあなたが参加している大会の開始日です。\r\n忘れずに参加しましょう。\r\n大会名："+ comp_name); //本文
+          msg.setSubject("大会開始前通知"); // タイトル               
+          msg.setText("あなたが参加している大会の開始まで24時間を切りました。\r\n忘れずに参加しましょう。\r\n大会名："+ comp_name); //本文
           try {
               mailSender.send(msg);
           } catch (MailException e) {
