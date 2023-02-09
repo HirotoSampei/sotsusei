@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import jp.te4a.spring.boot.sotsusei.bean.AuthenticationBean;
 import jp.te4a.spring.boot.sotsusei.bean.GameBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompBean;
 import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
@@ -34,7 +33,6 @@ import jp.te4a.spring.boot.sotsusei.bean.GameplayBean;
 import jp.te4a.spring.boot.sotsusei.bean.UserBean;
 import jp.te4a.spring.boot.sotsusei.form.UserEditForm;
 import jp.te4a.spring.boot.sotsusei.form.UserForm;
-import jp.te4a.spring.boot.sotsusei.repository.AuthenticationRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
@@ -62,8 +60,6 @@ public class UserController {
     CompRepository compRepository;
     @Autowired
     CompPartRepository compPartRepository;
-    @Autowired
-    AuthenticationRepository authenticationRepository;
     @Autowired
 	  ImageService imageService;
     private final MailSender mailSender;
@@ -184,13 +180,10 @@ public class UserController {
         model.addAttribute("validationError", errorList);
         return password(model);
       }
-
-      if(authenticationRepository.findByuser_id(userBean.getUser_id()) != null){
-        authenticationRepository.deleteById(userBean.getUser_id());
-      }
       
       Random random = new Random();
-      Integer authentication_pass = Integer.valueOf(String.format("%08d", random.nextInt(99999999)));
+      String authentication_pass = String.format("%08d", random.nextInt(99999999));
+      
       SimpleMailMessage msg = new SimpleMailMessage();
       msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
       msg.setTo(mail_address); // 送信先メールアドレス
@@ -205,16 +198,13 @@ public class UserController {
           e.printStackTrace();
       }
       imageService.getImage(model);
-      AuthenticationBean authenticationBean = new AuthenticationBean();
-      authenticationBean.setUser_id(userBean.getUser_id());
-      authenticationBean.setAuthentication_pass(authentication_pass);
-      authenticationRepository.save(authenticationBean);
+      model.addAttribute("authentication_pass", new Pbkdf2PasswordEncoder().encode(authentication_pass));
       model.addAttribute("mail_address", mail_address);
       return "users/Authentication";
     }
     @PostMapping(path = "new_password")//認証処理
-    String new_password(@RequestParam Integer input_pass, String mail_address, Model model){
-      if(authenticationRepository.findByAuthentication_pass(input_pass) != null){
+    String new_password(@RequestParam String input_pass, String mail_address, String authentication_pass, Model model, Pbkdf2PasswordEncoder passwordEncoder){
+      if(passwordEncoder.matches(input_pass,authentication_pass)){
         imageService.getImage(model);
         model.addAttribute("mail_address", mail_address);
         return "users/NewPassword";
@@ -235,7 +225,6 @@ public class UserController {
       password = password.substring(0, password.length()-1);
       UserForm form = userService.findOne(user_id);
       userService.updatepass(form, password, user_id);
-      authenticationRepository.deleteById(user_id);
       SimpleMailMessage msg = new SimpleMailMessage();
       msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
       msg.setTo(form.getMail_address()); // 送信先メールアドレス
