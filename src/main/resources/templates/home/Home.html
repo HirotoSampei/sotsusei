@@ -59,6 +59,7 @@
         </a>
         <div class="header-item-name" th:text="${user_name}">user</div>
       </div>
+      <input type="button" id="colorchange">
   </header>
 
   <main class="main-container">
@@ -110,7 +111,10 @@
   </footer>
 
   <script type="text/javascript">
+    const colorchange = document.getElementById('colorchange');
     const genreSelect = document.getElementById('testnumber');
+    const head = document.getElementsByClassName('header-container')[0];
+    const foot = document.getElementById('temp-footer');
     var gameSelect = document.getElementById('game');
     genreSelect.addEventListener('change', (e) =>{
       e.target.options.selected=true;
@@ -123,6 +127,12 @@
           gameSelect[i].style.display = "";
         }
       }
+    })
+    colorchange.addEventListener('click', function change() {
+      head.style.background='linear-gradient(to right,#c70000,#d28300,#dfd000,#00873c,#005aa0,#181878,#800073) 0 / 200%';
+      foot.style.background='linear-gradient(to right,#c70000,#d28300,#dfd000,#00873c,#005aa0,#181878,#800073) 0 / 200%';
+      head.style.animation='5s move linear infinite';
+      foot.style.animation='5s move linear infinite';
     })
   </script>
 </body>
