@@ -282,3 +282,14 @@ main p {
   margin-top: 5px;
   border: none;
  }
+ 
+ #colorchange{
+  width:5px;
+  height:5px;
+  background:transparent;
+  border:none;
+ }
+
+ @keyframes move{
+  100% { background-position: 200%; }
+  }
