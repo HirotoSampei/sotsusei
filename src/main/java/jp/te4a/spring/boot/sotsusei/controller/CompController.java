@@ -337,9 +337,10 @@ public class CompController {
   }
 
   @PostMapping("/OverviewForParticipants") //主催者ページから参加者専用画面に遷移
-  String overviewForParticipants(@RequestParam Integer comp_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+  String overviewForParticipants(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
+    Integer comp_id = compRepository.findBeanByHost_user_id(userBean.getUser_id()).getComp_id();
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
       model.addAttribute("message", "True");
     }
