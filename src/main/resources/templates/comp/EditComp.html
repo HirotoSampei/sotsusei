@@ -1,111 +1,126 @@
 <!DOCTYPE html>
 <html lang=ja dir="ltr">
+
 <head>
   <meta charset="utf-8">
   <title>大会編集</title>
-  <link rel="stylesheet" type="text/css" href="../../static/css/CreateCompStyle.css" th:href="@{/css/CreateCompStyle.css}">
+  <link rel="stylesheet" type="text/css" href="../../static/css/CreateCompStyle.css"
+    th:href="@{/css/CreateCompStyle.css}">
   <script src="../../js/comperrorcheck.js"></script>
 </head>
+
 <body>
 
-<header>
-  <div class="header-container">
-    <div class="left-container">
-      <a href="/comp">
-        <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
-      </a>
-    </div>
-    <div class="right-container">
-      <a href="/users/profile">
-        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
-      </a>
-      <div class="header-item-name" th:text="${user_name}">user</div>
+  <header>
+    <div class="header-container">
+      <div class="left-container">
+        <a href="/comp">
+          <img th:src="${cat_logo_image}" class="header-item" width="90px" height="60px">
+        </a>
       </div>
-  </div>
-
-</header>
-<form th:action="@{/comp/edit}" th:object="${compForm}" method="post">
-  <main>
-    <div class="validationError">
-      <tr th:if="${validationError}" th:each="error : ${validationError}">
-        <td th:text="${error}"></td><br>
-      </tr>
+      <div class="right-container">
+        <a href="/users/profile">
+          <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+        </a>
+        <div class="header-item-name" th:text="${user_name}">user</div>
+      </div>
     </div>
-    <table>
-      <div id="input-container">
-          <tr th:each="el : ${editlist}">
-          <p>大会名　  :<input type="text" class="input-item" name="comp_name" th:value="${el.comp_name}" oninput="compnameCheck(this)" required></p> 
-          <p>ゲーム　  :
-            <div>
-              <select class="test-number" id="testnumber">
-                <option value="0">ゲームジャンル選択</option>
-                <option id="1" value="FPS">FPS</option>
-                <option id="2" value="TPS">TPS</option>
-                <option id="3" value="格闘">格闘</option>
-                <option id="4" value="音楽">音楽</option>
-                <option id="5" value="MOBA">MOBA</option>
-                <option id="6" value="スポーツ">スポーツ</option>
-                <option id="7" value="パズル">パズル</option>
-                <option id="8" value="レース">レース</option>
-                <option id="9" value="DCG">DCG</option>
-                <option id="10" value="その他">その他</option>
-                <option id="11" value="FPS・TPS">FPS・TPS</option>
-              </select>
-            </div>
-            <details>
-              <summary class="game-to-play">プレイするゲーム(１つ選択)</summary>
-              <div name="game" th:each="game:${gameList}">
-                <input type="radio" class="game-radio-button" th:id="${game.game_id}" th:name="game_id"
-                  th:value="${game.game_id} + ',' + ${game.genre}" style="display:none">
-                <label class="game-name" for="${game.game_id}" th:name="gamename" th:text="${game.game_name + '(' + game.hard + ')'}"
-                  style="color:white; display:none"></label>
-              </div>
-            </details>
-          </p>  
-          <div id="description-container">
-            <p>概要　  :</p>
-            <textarea class="input-item-ta" name="description" cols="30" rows="5" oninput="descriptionCheck(this)" style="resize: none">[[${el.description}]]</textarea>
-          </div>
-          <p>主催者名　：<input type="text" class="input-item" name="host_nickname" th:value="${el.host_nickname}" oninput="nicknameCheck(this)" required></p>
-          <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" id="start_date" th:value="${el.start_date}" oninput="startdateCheck(this)" required></p>
-          <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:value="${el.end_date}" oninput="enddateCheck(this)" required></p>
-          <p>参加者上限：<input type="number"  class="input-item" name="limit_of_participants" th:value="${el.limit_of_participants}" oninput="limitCheck(this)" required></p>
-          <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:value="${el.deadline}" oninput="deadlineCheck(this)" required></p>
+
+  </header>
+  <form th:action="@{/comp/edit}" th:object="${compForm}" method="post">
+    <main>
+      <div class="validationError">
+        <tr th:if="${validationError}" th:each="error : ${validationError}">
+          <td th:text="${error}"></td><br>
         </tr>
       </div>
-      <div id="button-container">
-        <input type="button" class="button-item" onclick="location.href='OverViewForHost'" value="戻る">
-        <input type="hidden" name="comp_id" th:value="${param.comp_id[0]}" />
-        <input type="submit" class="button-item" value="更新" />
-      </div>
-    </table>
-  </main>
-</form>
-<footer>
-  <div id="temp-footer">©Competition Assistance Tool</div>
-</footer>
+      <table>
+        <div id="input-container">
+          <tr th:each="el : ${editlist}">
+            <p>大会名　　:<input type="text" class="input-item" name="comp_name" th:value="${el.comp_name}"
+                oninput="compnameCheck(this)" required></p>
+            <div class="game-select-container">
+              <p style="margin-top: 0px;">ゲーム　　:</p>
+              <div class="select-container">
+                <div>
+                  <select class="test-number" id="testnumber">
+                    <option value="0">ゲームジャンル選択</option>
+                    <option id="1" value="FPS">FPS</option>
+                    <option id="2" value="TPS">TPS</option>
+                    <option id="3" value="格闘">格闘</option>
+                    <option id="4" value="音楽">音楽</option>
+                    <option id="5" value="MOBA">MOBA</option>
+                    <option id="6" value="スポーツ">スポーツ</option>
+                    <option id="7" value="パズル">パズル</option>
+                    <option id="8" value="レース">レース</option>
+                    <option id="9" value="DCG">DCG</option>
+                    <option id="10" value="その他">その他</option>
+                    <option id="11" value="FPS・TPS">FPS・TPS</option>
+                  </select>
+                </div>
+                <details>
+                  <summary class="game-to-play">プレイするゲーム(１つ選択)</summary>
+                  <div name="game" th:each="game:${gameList}">
+                    <input type="radio" class="game-radio-button" th:id="${game.game_id}" th:name="game_id"
+                      th:value="${game.game_id} + ',' + ${game.genre}" style="display:none">
+                    <label class="game-name" for="${game.game_id}" th:name="gamename"
+                      th:text="${game.game_name + '(' + game.hard + ')'}" style="color:white; display:none"></label>
+                  </div>
+                </details>
+              </div>
+            </div>
+            </p>
+            <div id="description-container">
+              <p>概要　　　:</p>
+              <textarea class="input-item-ta" name="description" cols="30" rows="5" oninput="descriptionCheck(this)"
+                style="resize: none">[[${el.description}]]</textarea>
+            </div>
+            <p>主催者名　:<input type="text" class="input-item" name="host_nickname" th:value="${el.host_nickname}"
+                oninput="nicknameCheck(this)" required></p>
+            <p>開始日時　:<input type="datetime-local" class="input-item" name="start_date" id="start_date"
+                th:value="${el.start_date}" oninput="startdateCheck(this)" required></p>
+            <p>終了日時　:<input type="datetime-local" class="input-item" name="end_date" th:value="${el.end_date}"
+                oninput="enddateCheck(this)" required></p>
+            <p>参加者上限:<input type="number" class="input-item" name="limit_of_participants"
+                th:value="${el.limit_of_participants}" oninput="limitCheck(this)" required></p>
+            <p>締め切り　:<input type="datetime-local" class="input-item" name="deadline" th:value="${el.deadline}"
+                oninput="deadlineCheck(this)" required></p>
+          </tr>
+        </div>
+        <div id="button-container">
+          <input type="button" class="button-item" onclick="location.href='OverViewForHost'" value="戻る">
+          <input type="hidden" name="comp_id" th:value="${param.comp_id[0]}" />
+          <input type="submit" class="button-item" value="更新" />
+        </div>
+      </table>
+    </main>
+  </form>
+  <footer>
+    <div id="temp-footer">©Competition Assistance Tool</div>
+  </footer>
 
-<script type="text/javascript">
-  const genreSelect = document.getElementById('testnumber');
-  const gameSelect = document.getElementsByName('game_id');
-  const gameName = document.getElementsByName('gamename');
-  genreSelect.addEventListener('change', (e) =>{
-    e.target.options.selected=true;
-    console.log(gameSelect[0].value);
-    for(let i =0;i<gameSelect.length;i++){
-      var str = gameSelect[i].value.split(',');
-      console.log(str[1]);
-      console.log(e.target.value);
-      if(str[1] != e.target.value){
-        gameSelect[i].style.display = "none";
-        gameName[i].style.display = "none";
+  <script type="text/javascript">
+    const genreSelect = document.getElementById('testnumber');
+    const gameSelect = document.getElementsByName('game_id');
+    const gameName = document.getElementsByName('gamename');
+    genreSelect.addEventListener('change', (e) => {
+      e.target.options.selected = true;
+      console.log(gameSelect[0].value);
+      for (let i = 0; i < gameSelect.length; i++) {
+        var str = gameSelect[i].value.split(',');
+        console.log(str[1]);
+        console.log(e.target.value);
+        if (str[1] != e.target.value) {
+          gameSelect[i].style.display = "none";
+          gameName[i].style.display = "none";
+        }
+        else {
+          gameSelect[i].style.display = "";
+          gameName[i].style.display = "";
+        }
       }
-      else{
-        gameSelect[i].style.display = "";
-        gameName[i].style.display = "";
-      }
-    }
-  })
-</script>
+    })
+  </script>
 </body>
+
 </html>
