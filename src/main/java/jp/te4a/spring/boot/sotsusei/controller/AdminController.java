@@ -153,6 +153,11 @@ public class AdminController {
     compPartRepository.deleteByuser_id(comp_id);
     return "redirect:/admin/complist";
   }
+  @PostMapping(path="reportdelete")//通報削除処理
+  String report_delete(@RequestParam Integer report_id){
+    reportRepository.deleteByReport_id(report_id);
+    return "redirect:/admin/reportlist";
+  }
   @PostMapping(path="ban_from_report")//通報詳細からのBAN処理
   String ban_r(@RequestParam Integer suspicious_user_id, Model model){
     userRepository.updateByUser_id(suspicious_user_id);
