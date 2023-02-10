@@ -253,36 +253,35 @@ public class CompController {
   }
 
   @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
-  String editForm(@RequestParam Integer comp_id, CompForm form, Model model, HttpServletRequest httpServletRequest) {
-    //CompForm compForm = compService.findOne(comp_id);
-    //BeanUtils.copyProperties(compForm,  form);
+  String editForm(CompForm form, Model model, HttpServletRequest httpServletRequest) {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
+    CompBean compBean = compRepository.findBeanByHost_user_id(userBean.getUser_id());
     imageService.getImage(model);
     model.addAttribute("user_name", userBean.getUser_name());
-    model.addAttribute("editlist",compRepository.findByComp_id(comp_id));
+    model.addAttribute("editlist",compRepository.findByComp_id(compBean.getComp_id()));
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     return "comp/EditComp";
   }
   @PostMapping(path = "edit") //編集した内容を登録する時の動き
-  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, String game_id, ModelMap modelMap, HttpServletRequest httpServletRequest,Model model) {
+  String edit(@Validated CompForm form, BindingResult result, String game_id, ModelMap modelMap, HttpServletRequest httpServletRequest,Model model) {
     List<String> errorList = new ArrayList<String>();
     if(result.hasErrors()) {
       compValidate.compval(form, errorList, result, model, modelMap, httpServletRequest);
-      return editForm(comp_id, form, model, httpServletRequest);
+      return editForm(form, model, httpServletRequest);
     }
     else if(form.getEnd_date().isBefore(form.getStart_date())){
       compValidate.compend_dataval(errorList, model);
-      return editForm(comp_id, form, model, httpServletRequest);
+      return editForm(form, model, httpServletRequest);
     }
     else if(form.getDeadline().isAfter(form.getStart_date())){
       compValidate.compdeadlineval(errorList, model);
-      return editForm(comp_id, form, model, httpServletRequest);
+      return editForm(form, model, httpServletRequest);
     }
     else if(game_id == null){
       errorList.add("プレイ中のゲームを選択してください。");
       model.addAttribute("validationError", errorList);
-      return editForm(comp_id, form, model, httpServletRequest);
+      return editForm(form, model, httpServletRequest);
     }
     Integer g_id=Integer.parseInt(game_id.split(",")[0]);
     String user_pass = httpServletRequest.getRemoteUser();
@@ -293,8 +292,11 @@ public class CompController {
 
 
   @PostMapping(path = "delete") //削除
-  String delete(@RequestParam Integer comp_id) {
-    compService.delete(comp_id);
+  String delete(HttpServletRequest httpServletRequest) {
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    CompBean compBean = compRepository.findBeanByHost_user_id(userBean.getUser_id());
+    compService.delete(compBean.getComp_id());
     return "redirect:/comp";
   }
 
