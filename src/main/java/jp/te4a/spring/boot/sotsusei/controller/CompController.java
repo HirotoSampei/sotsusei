@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -73,7 +76,11 @@ public class CompController {
   PublicCommentRepository publicCommentRepository;
   @Autowired
   NGWordRepository ngWordRepository;
+  private final MailSender mailSender;
 
+  public CompController(MailSender mailSender) { 
+      this.mailSender = mailSender;
+  }
   @ModelAttribute 
   CompForm setUpForm() {
     return new CompForm();
@@ -387,6 +394,16 @@ public class CompController {
 
     }
     reportService.report(user_id, rpuser_id, comp_id, remarks);
+
+    SimpleMailMessage msg = new SimpleMailMessage();
+    msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
+    msg.setTo("190738@jc-21.jp"); // 送信先メールアドレス
+    //        msg.setCc(); //Cc用
+    //        msg.setBcc(); //Bcc用
+    msg.setSubject("通報がありました。"); // タイトル               
+    msg.setText("CAT内で通報がありました。確認して下さい。\r\n大会名："+ compRepository.findComp_nameByComp_id(comp_id)); //本文
+    mailSender.send(msg);
+    
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
       imageService.getImage(model);
       model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
