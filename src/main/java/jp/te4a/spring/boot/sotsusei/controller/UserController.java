@@ -99,14 +99,14 @@ public class UserController {
           model.addAttribute("validationError", errorList);
           return list(model, httpServletRequest);
         }
-        if(userRepository.findByMail_address(form.getMail_address()) != null){
-          List<String> errorList = new ArrayList<String>();
-          errorList.add("そのメールアドレスは使用出来ません");
-          model.addAttribute("validationError", errorList);
-          return list(model, httpServletRequest);
+        if(userRepository.findByMail_address(form.getMail_address()) == null){
+          userService.create(form, game_id);
+          return "redirect:/login";
         }
-        userService.create(form, game_id);
-        return "redirect:/login";
+        List<String> errorList = new ArrayList<String>();
+        errorList.add("そのメールアドレスは使用出来ません");
+        model.addAttribute("validationError", errorList);
+        return list(model, httpServletRequest);
     }
     @GetMapping(path = "profile") //プロフィール画面遷移
     String profile_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
