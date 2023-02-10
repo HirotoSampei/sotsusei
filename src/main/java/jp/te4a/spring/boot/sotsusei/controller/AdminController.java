@@ -161,11 +161,13 @@ public class AdminController {
   @PostMapping(path="ban_from_report")//通報詳細からのBAN処理
   String ban_r(@RequestParam Integer suspicious_user_id, Model model){
     userRepository.updateByUser_id(suspicious_user_id);
+    compPartRepository.deleteByuser_id(suspicious_user_id);
     return "redirect:/admin/reportlist";
   }
   @PostMapping(path="ban_from_user")//ユーザー詳細からのBAN処理
   String ban_u(@RequestParam Integer user_id, Model model){
     userRepository.updateByUser_id(user_id);
+    compPartRepository.deleteByuser_id(user_id);
     return "redirect:/admin/userlist";
   }
 }

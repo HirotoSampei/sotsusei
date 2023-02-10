@@ -99,6 +99,12 @@ public class UserController {
           model.addAttribute("validationError", errorList);
           return list(model, httpServletRequest);
         }
+        if(userRepository.findByMail_address(form.getMail_address()) != null){
+          List<String> errorList = new ArrayList<String>();
+          errorList.add("そのメールアドレスは使用出来ません");
+          model.addAttribute("validationError", errorList);
+          return list(model, httpServletRequest);
+        }
         userService.create(form, game_id);
         return "redirect:/login";
     }
