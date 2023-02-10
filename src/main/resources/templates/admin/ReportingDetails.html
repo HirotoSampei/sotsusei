@@ -36,6 +36,18 @@
           <button id="no" class="button-item">いいえ</button>
         </div>
       </div>
+      <div id="dialog2">
+        この通報を削除します。本当によろしいですか？
+        <div class="dialog-button-container">
+          <form th:action="@{/admin/reportdelete}" name="form" method="post">
+            <div th:each="rd : ${reportDetail}">
+              <input type="submit" class="button-item" name="form" value="削除" />
+              <input type="hidden" name="report_id" th:value="${rd.report_id}" />
+            </div>
+          </form>
+          <button id="no2" class="button-item">いいえ</button>
+        </div>
+      </div>
       <div id="input-container">
         <tr th:each="rd : ${reportDetail}">
           <p>大会名　 :<input readonly type="text" class="input-item" name="comp_name" th:value="${rd.compBean.comp_name}">
@@ -62,6 +74,7 @@
       <div id="button-container">
         <input type="button" class="button-item" onclick="location.href='/admin/reportlist'" value="戻る">
         <input type="button" id="banbtn" class="button-item" value="BAN">
+        <input type="button" id="delbtn" class="button-item" value="削除">
       </div>
     </table>
   </main>
@@ -71,15 +84,26 @@
 
   <script th:inline="javascript">
     const banbtn = document.getElementById('banbtn')
+    const delbtn = document.getElementById('delbtn')
     const dialog = document.getElementById('dialog')
+    const dialog2 = document.getElementById('dialog2')
     const mask = document.getElementById('mask')
     const no = document.getElementById('no')
+    const no2 = document.getElementById('no2')
     banbtn.addEventListener('click', function start() {
       dialog.style.display = 'block'
       mask.style.display = 'block'
     })
+    delbtn.addEventListener('click', function start() {
+      dialog2.style.display = 'block'
+      mask.style.display = 'block'
+    })
     no.addEventListener('click', function back() {
       dialog.style.display = 'none'
+      mask.style.display = 'none'
+    })
+    no2.addEventListener('click', function back() {
+      dialog2.style.display = 'none'
       mask.style.display = 'none'
     })
   </script>
