@@ -96,12 +96,10 @@
           <input type="button" class="button-item" onclick="location.href='/comp'" value="ホーム画面">
           <form th:action="@{/comp/edit}" method="post">
             <input type="submit" class="button-item" name="form" value="編集" />
-            <input type="hidden" name="comp_id" th:value="${ov.comp_id}" />
           </form>
           <input type="button" id="deletebtn" class="button-item" value="削除">
           <form th:action="@{/comp/OverviewForParticipants}" method="post">
             <input type="submit" class="button-item" value="参加者用ページ">
-            <input type="hidden" name="comp_id" th:value="${ov.comp_id}" />
           </form>
         </div>
       </tr>
