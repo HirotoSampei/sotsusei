@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import jp.te4a.spring.boot.sotsusei.bean.PrivateCommentBean;
 import jp.te4a.spring.boot.sotsusei.bean.PublicCommentBean;
@@ -25,6 +26,7 @@ import jp.te4a.spring.boot.sotsusei.form.ParticipatedForm;
 import jp.te4a.spring.boot.sotsusei.form.PopuserForm;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameplayRepository;
+import jp.te4a.spring.boot.sotsusei.repository.NGWordRepository;
 import jp.te4a.spring.boot.sotsusei.repository.PrivateCommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.PublicCommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
@@ -34,24 +36,22 @@ import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 public class CompService {
   @Autowired
   CompRepository compRepository;
-
   @Autowired
   UserRepository userRepository;
-
   @Autowired
   GameRepository gameRepository;
-
   @Autowired
   CompPartRepository compPartRepository;
-
   @Autowired
   GameplayRepository gameplayRepository;
-
   @Autowired
   PrivateCommentRepository privateCommentRepository;
-
   @Autowired
   PublicCommentRepository publicCommentRepository;
+  @Autowired
+  NGWordRepository ngWordRepository;
+  @Autowired
+  ImageService imageService;
 
 
   public CompForm create(CompForm compForm, Integer game_id, String user_pass, boolean radio_button) {
@@ -248,6 +248,18 @@ public class CompService {
 
     public void delete_public_comment(Integer comp_id,LocalDateTime comment_date){
       publicCommentRepository.deleteComment(comp_id, comment_date);
+    }
+
+    public void overviewForParticipants(Model model, UserBean userBean, Integer comp_id){
+      imageService.getImage(model);
+      model.addAttribute("user_name", userBean.getUser_name());
+      model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
+      model.addAttribute("comp", partoverview(comp_id));
+      model.addAttribute("user", popuser(comp_id, userBean.getUser_id()));
+      model.addAttribute("commentList",privatecomment(comp_id));
+      model.addAttribute("comp_id", comp_id);
+      model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
     }
    
 }
