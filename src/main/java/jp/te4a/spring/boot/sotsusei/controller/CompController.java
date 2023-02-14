@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
-import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.ui.Model;
@@ -351,15 +350,7 @@ public class CompController {
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
       model.addAttribute("message", "True");
     }
-    imageService.getImage(model);
-    model.addAttribute("user_name", userBean.getUser_name());
-    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
-    model.addAttribute("comp", compService.partoverview(comp_id));
-    model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
-    model.addAttribute("commentList",compService.privatecomment(comp_id));
-    model.addAttribute("comp_id", comp_id);
-    model.addAttribute("user_id",userBean.getUser_id());
-    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
+    compService.overviewForParticipants(model, userBean, comp_id);//model.addAttribute
     return "comp/OverviewForParticipants";
   }
 
@@ -408,14 +399,7 @@ public class CompController {
     mailSender.send(msg);
     
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
-      imageService.getImage(model);
-      model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
-      model.addAttribute("comp", compService.partoverview(comp_id));
-      model.addAttribute("user", compService.popuser(comp_id, user_id));
-      model.addAttribute("commentList",compService.privatecomment(comp_id));
-      model.addAttribute("comp_id", comp_id);
-      model.addAttribute("user_id",userBean.getUser_id());
-      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
+      compService.overviewForParticipants(model, userBean, comp_id);
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     imageService.getImage(model);
@@ -436,19 +420,15 @@ public class CompController {
   }
 
   @PostMapping(path = "kick") //強制退出処理
-  String kick(@RequestParam Integer user_id, Integer comp_id, Model model, HttpServletRequest httpServletRequest) {
-    compPartRepository.deleteByuser(user_id, comp_id);
+  String kick(@RequestParam Integer user_id, Integer comp_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
-    imageService.getImage(model);
-    model.addAttribute("user_name", userBean.getUser_name());
-    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
-    model.addAttribute("comp", compService.partoverview(comp_id));
-    model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
-    model.addAttribute("commentList",compService.privatecomment(comp_id));
-    model.addAttribute("comp_id", comp_id);
-    model.addAttribute("user_id",userBean.getUser_id());
-    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
+    if(userBean.getUser_id()!= compRepository.findByComp_id(comp_id).getHost_user_id()){//主催者以外だったら強制退出せずに戻る
+      compService.overviewForParticipants(model, userBean, comp_id);
+      return "comp/OverviewForParticipants";
+    }
+    compPartRepository.deleteByuser(user_id, comp_id);
+    compService.overviewForParticipants(model, userBean, comp_id);
     return "comp/OverviewForParticipants";
   }
 
