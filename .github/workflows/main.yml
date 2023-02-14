@@ -2,7 +2,7 @@ name: Maven build and Deploy to ec2
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ main ]
 
 
 env:
