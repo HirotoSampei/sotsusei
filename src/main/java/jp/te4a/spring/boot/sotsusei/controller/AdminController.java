@@ -127,8 +127,11 @@ public class AdminController {
   }
 
   @PostMapping(path="compdetail")//大会の詳細の表示
-  String comp_detail(@RequestParam Integer comp_id, Model model){
+  String comp_detail(@RequestParam Integer comp_id, Model model, HttpServletRequest httpServletRequest){
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
     model.addAttribute("compDetail", compRepository.findByComp_id(comp_id));
+    model.addAttribute("commentList",compService.publiccomment(compRepository.findComp_id(userBean.getUser_id())));
     return "admin/OverviewForAdmin";
   }
   @GetMapping("/reportlist") //通報一覧
@@ -150,14 +153,21 @@ public class AdminController {
     compPartRepository.deleteByuser_id(comp_id);
     return "redirect:/admin/complist";
   }
+  @PostMapping(path="reportdelete")//通報削除処理
+  String report_delete(@RequestParam Integer report_id){
+    reportRepository.deleteByReport_id(report_id);
+    return "redirect:/admin/reportlist";
+  }
   @PostMapping(path="ban_from_report")//通報詳細からのBAN処理
   String ban_r(@RequestParam Integer suspicious_user_id, Model model){
     userRepository.updateByUser_id(suspicious_user_id);
+    compPartRepository.deleteByuser_id(suspicious_user_id);
     return "redirect:/admin/reportlist";
   }
   @PostMapping(path="ban_from_user")//ユーザー詳細からのBAN処理
   String ban_u(@RequestParam Integer user_id, Model model){
     userRepository.updateByUser_id(user_id);
+    compPartRepository.deleteByuser_id(user_id);
     return "redirect:/admin/userlist";
   }
 }

@@ -47,5 +47,11 @@ public interface UserRepository extends JpaRepository<UserBean, Integer>, JpaSpe
 	@Modifying
 	@Query("UPDATE UserBean X set X.is_banned = true WHERE X.user_id = ?1")
 	void updateByUser_id(Integer user_id);
+
+	@Query(value="SELECT user_id, user_name, password, mail_address, REPLACE(REPLACE(note, CHAR(13), ''), CHAR(10), '') as note, is_banned, role FROM users WHERE user_id = ?1",nativeQuery=true)
+	UserBean findByPopUser(Integer user_id);
+
+	@Query("SELECT X.mail_address FROM UserBean X WHERE X.user_id = ?1")
+	String findMail_address(Integer user_id);
 }
 

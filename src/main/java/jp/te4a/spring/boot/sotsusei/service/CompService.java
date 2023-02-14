@@ -53,6 +53,7 @@ public class CompService {
   @Autowired
   PublicCommentRepository publicCommentRepository;
 
+
   public CompForm create(CompForm compForm, Integer game_id, String user_pass, boolean radio_button) {
 	  CompBean compBean = new CompBean();
     GameBean gameBean = new GameBean();
@@ -142,7 +143,8 @@ public class CompService {
 
    public List<ParticipatedForm> compgamesearch(Integer game_id){
     List<ParticipatedForm> formList = new ArrayList<ParticipatedForm>();
-    List<CompBean> compList = compRepository.findByGame_idLike(game_id);
+    LocalDateTime now = (LocalDateTime.now()).plusHours(9);
+    List<CompBean> compList = compRepository.findByGame_idLike(game_id, now);
     for(CompBean compBean: compList) { 
       ParticipatedForm participatedForm = new ParticipatedForm();
       BeanUtils.copyProperties(compBean, participatedForm);
@@ -157,8 +159,9 @@ public class CompService {
     List<GameplayBean> gameplay_idList = gameplayRepository.findAllByGame_id(user_id);
     List<CompBean> compList;
     Integer count = 0;
+    LocalDateTime now = (LocalDateTime.now()).plusHours(9);
     for (int i = 0; i < gameplay_idList.size(); i++){
-      compList = compRepository.findByGame_idLike(gameplay_idList.get(i).getGame_id());
+      compList = compRepository.findByGame_idLike(gameplay_idList.get(i).getGame_id(),now);
       for(CompBean compBean: compList) { 
         ParticipatedForm participatedForm = new ParticipatedForm();
         BeanUtils.copyProperties(compBean, participatedForm);
@@ -197,10 +200,11 @@ public class CompService {
       List<Integer> userList = compPartRepository.findByUser_id(comp_id);
     for(Integer uid:userList){
       PopuserForm popuserForm = new PopuserForm();
-      UserBean popuser = userRepository.findByUser(uid);
+      UserBean popuser = userRepository.findByPopUser(uid);
       BeanUtils.copyProperties(popuser, popuserForm);
       popuserForm.setLogin_id(user_id);
       popuserForm.setNickname(compPartRepository.findByNickname(comp_id, uid));
+      popuserForm.setNote(popuserForm.getNote().replace(",", "<br>"));
       formList.add(popuserForm);
     }
       return formList;

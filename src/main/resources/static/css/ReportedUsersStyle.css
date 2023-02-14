@@ -79,23 +79,6 @@ body {
     font-weight: bold;
 }
 
-.left-main-item {
-    background-color: white;
-    margin: 10px;
-    font-size: 20px;
-    font-weight: bolder;
-    padding-top: 30px;
-    padding-left: 60px;
-    padding-right: 60px;
-    padding-bottom: 30px;
-    position: fixed;
-    bottom: 0;
-    right: 1;
-    border-radius: 50px 50px 50px 50px;
-    cursor: pointer;
-    user-select: none;
-}
-
 .nickname {
     color: white;
     font-weight: bold;
@@ -207,4 +190,14 @@ main p {
     background: linear-gradient(black, 20%, red);
     justify-content: center;
 
+}
+.left-main-item{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 150px;
+    padding: 10px;
+    font-size: 30px;
+    border: solid 2px #cccccc;
+    border-radius: 5px;
 }

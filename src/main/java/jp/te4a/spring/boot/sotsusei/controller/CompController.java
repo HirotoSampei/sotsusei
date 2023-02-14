@@ -2,10 +2,15 @@ package jp.te4a.spring.boot.sotsusei.controller;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -13,7 +18,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,13 +30,13 @@ import jp.te4a.spring.boot.sotsusei.bean.CompPartBean;
 import jp.te4a.spring.boot.sotsusei.form.PrivateCommentForm;
 import jp.te4a.spring.boot.sotsusei.form.PublicCommentForm;
 import jp.te4a.spring.boot.sotsusei.form.CompForm;
-import jp.te4a.spring.boot.sotsusei.form.PopuserForm;
 import jp.te4a.spring.boot.sotsusei.repository.PrivateCommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.PublicCommentRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompPartRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompRepository;
 import jp.te4a.spring.boot.sotsusei.repository.CompSearchRepository;
 import jp.te4a.spring.boot.sotsusei.repository.GameRepository;
+import jp.te4a.spring.boot.sotsusei.repository.NGWordRepository;
 import jp.te4a.spring.boot.sotsusei.repository.ReportRepository;
 import jp.te4a.spring.boot.sotsusei.repository.UserRepository;
 import jp.te4a.spring.boot.sotsusei.service.CompService;
@@ -66,20 +70,23 @@ public class CompController {
   CompSearchRepository compSearchRepository;
   @Autowired
   ReportRepository reportRepository;
-
   @Autowired
   PrivateCommentRepository privateCommentRepository;
-
   @Autowired
   PublicCommentRepository publicCommentRepository;
+  @Autowired
+  NGWordRepository ngWordRepository;
+  private final MailSender mailSender;
 
+  public CompController(MailSender mailSender) { 
+      this.mailSender = mailSender;
+  }
   @ModelAttribute 
   CompForm setUpForm() {
     return new CompForm();
   }
-  @GetMapping //ホーム画面
-  String display_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
-    //開催終了から一か月経った大会を削除
+  @Scheduled(initialDelay = 1000, fixedRate = 3600000)
+  public void compend_check(){//開催終了から一か月経った大会を削除
     LocalDateTime check = (LocalDateTime.now()).minusMonths(1);
     List<CompBean> comp_c = compRepository.findAllOrderByComp_id();
     for(int i = 0; i < comp_c.size(); i++){
@@ -90,7 +97,9 @@ public class CompController {
       }
     }
     System.out.println("competitions_end_date checked.");
-
+  }
+  @GetMapping //ホーム画面
+  String display_list(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest) {
     imageService.getImage(model);
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     String user_pass = httpServletRequest.getRemoteUser();
@@ -100,7 +109,7 @@ public class CompController {
     Boolean check_ban = userRepository.findIs_bannedByUser_id(userBean.getUser_id());
     if(check_ban){
       model.addAttribute("banned", "ban");
-      return "login";
+      return "Login";
     }else{
       model.addAttribute("comp", compService.compAllgamesearch(userBean.getUser_id()));
       model.addAttribute("participated", compService.participated(userBean.getUser_id()));
@@ -143,7 +152,8 @@ public class CompController {
     model.addAttribute("overview", compService.hostoverview(userBean.getUser_id()));
     model.addAttribute("commentList",compService.publiccomment(compRepository.findComp_id(userBean.getUser_id())));
     model.addAttribute("comp_id", compRepository.findComp_id(userBean.getUser_id()));
-    return "comp/OverViewForHost";
+    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
+    return "comp/OverviewForHost";
   }
   @PostMapping(path="Overview")
   String overview(Model model, @RequestParam Integer comp_id, ModelMap modelMap, HttpServletRequest httpServletRequest){
@@ -158,6 +168,7 @@ public class CompController {
       model.addAttribute("commentList",compService.privatecomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     else{
@@ -167,26 +178,34 @@ public class CompController {
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/Overview";//参加前大会概要画面
     } 
   }
 
   @PostMapping(path="create") //大会作成処理
-  String create(@RequestParam boolean radio_button, @Validated CompForm form, BindingResult result, Model model, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+  String create(@RequestParam boolean radio_button, @Validated CompForm form, BindingResult result, Model model, String game_id, ModelMap modelMap, HttpServletRequest httpServletRequest) {
+    List<String> errorList = new ArrayList<String>();
     if(result.hasErrors()) {
-      compValidate.compval(form, result, model, modelMap, httpServletRequest);
+      compValidate.compval(form, errorList, result, model, modelMap, httpServletRequest);
       return create_list(model, modelMap, httpServletRequest);
     }
     else if(form.getEnd_date().isBefore(form.getStart_date())){
-      compValidate.compend_dataval(model);
+      compValidate.compend_dataval(errorList, model);
       return create_list(model, modelMap, httpServletRequest);
     }
     else if(form.getDeadline().isAfter(form.getStart_date())){
-      compValidate.compdeadlineval(model);
+      compValidate.compdeadlineval(errorList, model);
+      return create_list(model, modelMap, httpServletRequest);
+    }
+    else if(game_id == null){
+      errorList.add("プレイ中のゲームを選択してください。");
+      model.addAttribute("validationError", errorList);
       return create_list(model, modelMap, httpServletRequest);
     }
     String user_pass = httpServletRequest.getRemoteUser();
-    compService.create(form, game_id, user_pass, radio_button);
+    Integer g_id=Integer.parseInt(game_id.split(",")[0]);
+    compService.create(form, g_id, user_pass, radio_button);
     return "redirect:/comp/OverViewForHost";
   }
 
@@ -206,6 +225,7 @@ public class CompController {
         model.addAttribute("commentList",compService.publiccomment(comp_id));
         model.addAttribute("comp_id", comp_id);
         model.addAttribute("user_id",userBean.getUser_id());
+        model.addAttribute("NGWordList", ngWordRepository.findNGWords());
         return "comp/Overview";//参加前大会概要画面
       }
     }
@@ -217,6 +237,7 @@ public class CompController {
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/Overview";//参加前大会概要画面
     }
     else{
@@ -233,46 +254,56 @@ public class CompController {
     model.addAttribute("commentList",compService.privatecomment(comp_id));
     model.addAttribute("comp_id", comp_id);
     model.addAttribute("user_id",userBean.getUser_id());
+    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
     return "comp/OverviewForParticipants";//参加者専用画面
     }
   }
 
   @PostMapping(path = "edit", params = "form") //編集画面に飛ぶ際の動き
-  String editForm(@RequestParam Integer comp_id, CompForm form, Model model, HttpServletRequest httpServletRequest) {
-    //CompForm compForm = compService.findOne(comp_id);
-    //BeanUtils.copyProperties(compForm,  form);
+  String editForm(CompForm form, Model model, HttpServletRequest httpServletRequest) {
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
+    CompBean compBean = compRepository.findBeanByHost_user_id(userBean.getUser_id());
     imageService.getImage(model);
     model.addAttribute("user_name", userBean.getUser_name());
-    model.addAttribute("editlist",compRepository.findByComp_id(comp_id));
+    model.addAttribute("editlist",compRepository.findByComp_id(compBean.getComp_id()));
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     return "comp/EditComp";
   }
   @PostMapping(path = "edit") //編集した内容を登録する時の動き
-  String edit(@RequestParam Integer comp_id, @Validated CompForm form, BindingResult result, Integer game_id, ModelMap modelMap, HttpServletRequest httpServletRequest,Model model) {
-  if(result.hasErrors()) {
-    compValidate.compval(form, result, model, modelMap, httpServletRequest);
-    return editForm(comp_id, form, model, httpServletRequest);
-  }
-  else if(form.getEnd_date().isBefore(form.getStart_date())){
-    compValidate.compend_dataval(model);
-    return editForm(comp_id, form, model, httpServletRequest);
-  }
-  else if(form.getDeadline().isAfter(form.getStart_date())){
-    compValidate.compdeadlineval(model);
-    return editForm(comp_id, form, model, httpServletRequest);
-  }
-  String user_pass = httpServletRequest.getRemoteUser();
-  UserBean userBean = userRepository.findByMail_address(user_pass);
-  compService.update(form,game_id,userBean.getUser_id());
-  return "redirect:/comp/OverViewForHost";
+  String edit(@Validated CompForm form, BindingResult result, String game_id, ModelMap modelMap, HttpServletRequest httpServletRequest,Model model) {
+    List<String> errorList = new ArrayList<String>();
+    if(result.hasErrors()) {
+      compValidate.compval(form, errorList, result, model, modelMap, httpServletRequest);
+      return editForm(form, model, httpServletRequest);
+    }
+    else if(form.getEnd_date().isBefore(form.getStart_date())){
+      compValidate.compend_dataval(errorList, model);
+      return editForm(form, model, httpServletRequest);
+    }
+    else if(form.getDeadline().isAfter(form.getStart_date())){
+      compValidate.compdeadlineval(errorList, model);
+      return editForm(form, model, httpServletRequest);
+    }
+    else if(game_id == null){
+      errorList.add("プレイ中のゲームを選択してください。");
+      model.addAttribute("validationError", errorList);
+      return editForm(form, model, httpServletRequest);
+    }
+    Integer g_id=Integer.parseInt(game_id.split(",")[0]);
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    compService.update(form,g_id,userBean.getUser_id());
+    return "redirect:/comp/OverViewForHost";
   }
 
 
   @PostMapping(path = "delete") //削除
-  String delete(@RequestParam Integer comp_id) {
-    compService.delete(comp_id);
+  String delete(HttpServletRequest httpServletRequest) {
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    CompBean compBean = compRepository.findBeanByHost_user_id(userBean.getUser_id());
+    compService.delete(compBean.getComp_id());
     return "redirect:/comp";
   }
 
@@ -286,14 +317,15 @@ public class CompController {
   }
 
   @PostMapping(path="searchgamecomp", params = "form") //大会ゲーム名検索
-  String comp_gamesearch(@RequestParam Integer game_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+  String comp_gamesearch(@RequestParam String game_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+    Integer g_id = Integer.parseInt(game_id.split(",")[0]);
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
     imageService.getImage(model);
     model.addAttribute("user_name", userBean.getUser_name());
     model.addAttribute("gameList", gameRepository.findAllOrderByGame_id());
     model.addAttribute("participated", compService.participated(userBean.getUser_id()));
-    model.addAttribute("comp", compService.compgamesearch(game_id));
+    model.addAttribute("comp", compService.compgamesearch(g_id));
     return "home/Home";
 
   }
@@ -312,9 +344,10 @@ public class CompController {
   }
 
   @PostMapping("/OverviewForParticipants") //主催者ページから参加者専用画面に遷移
-  String overviewForParticipants(@RequestParam Integer comp_id, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
+  String overviewForParticipants(Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
+    Integer comp_id = compRepository.findBeanByHost_user_id(userBean.getUser_id()).getComp_id();
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
       model.addAttribute("message", "True");
     }
@@ -326,6 +359,7 @@ public class CompController {
     model.addAttribute("commentList",compService.privatecomment(comp_id));
     model.addAttribute("comp_id", comp_id);
     model.addAttribute("user_id",userBean.getUser_id());
+    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
     return "comp/OverviewForParticipants";
   }
 
@@ -363,6 +397,16 @@ public class CompController {
 
     }
     reportService.report(user_id, rpuser_id, comp_id, remarks);
+
+    SimpleMailMessage msg = new SimpleMailMessage();
+    msg.setFrom("onlinetaikai605@gmail.com"); // 送信元メールアドレス
+    msg.setTo("190738@jc-21.jp"); // 送信先メールアドレス
+    //        msg.setCc(); //Cc用
+    //        msg.setBcc(); //Bcc用
+    msg.setSubject("通報がありました。"); // タイトル               
+    msg.setText("CAT内で通報がありました。確認して下さい。\r\n大会名："+ compRepository.findComp_nameByComp_id(comp_id)); //本文
+    mailSender.send(msg);
+    
     if(compPartRepository.findByUser_id(comp_id).contains(userBean.getUser_id())){
       imageService.getImage(model);
       model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
@@ -371,6 +415,7 @@ public class CompController {
       model.addAttribute("commentList",compService.privatecomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/OverviewForParticipants";//参加者専用画面
     }
     imageService.getImage(model);
@@ -378,6 +423,7 @@ public class CompController {
       model.addAttribute("commentList",compService.publiccomment(comp_id));
       model.addAttribute("comp_id", comp_id);
       model.addAttribute("user_id",userBean.getUser_id());
+      model.addAttribute("NGWordList", ngWordRepository.findNGWords());
       return "comp/Overview";//参加前大会概要画面
   }
 
@@ -389,21 +435,38 @@ public class CompController {
     return "comp/Report";
   }
 
+  @PostMapping(path = "kick") //強制退出処理
+  String kick(@RequestParam Integer user_id, Integer comp_id, Model model, HttpServletRequest httpServletRequest) {
+    compPartRepository.deleteByuser(user_id, comp_id);
+    String user_pass = httpServletRequest.getRemoteUser();
+    UserBean userBean = userRepository.findByMail_address(user_pass);
+    imageService.getImage(model);
+    model.addAttribute("user_name", userBean.getUser_name());
+    model.addAttribute("comppart", compPartRepository.findByComp_id(comp_id));
+    model.addAttribute("comp", compService.partoverview(comp_id));
+    model.addAttribute("user", compService.popuser(comp_id, userBean.getUser_id()));
+    model.addAttribute("commentList",compService.privatecomment(comp_id));
+    model.addAttribute("comp_id", comp_id);
+    model.addAttribute("user_id",userBean.getUser_id());
+    model.addAttribute("NGWordList", ngWordRepository.findNGWords());
+    return "comp/OverviewForParticipants";
+  }
+
   @PostMapping("/privatecheck")
   @ResponseBody
   String private_comp_comment(@RequestParam String comp_id, String comment, ModelMap modelMap, HttpServletRequest httpServletRequest){
-    int comp_Id = Integer.parseInt(comp_id);
-    String user_pass = httpServletRequest.getRemoteUser();
-    UserBean userBean = userRepository.findByMail_address(user_pass);
-    PrivateCommentBean commentBean = new PrivateCommentBean();
-    commentBean.setComp_id(comp_Id);
-    commentBean.setUser_id(userBean.getUser_id());
-    commentBean.setCommented_date(LocalDateTime.now());
-    commentBean.setComment(comment);
-    privateCommentRepository.save(commentBean);
+      int comp_Id = Integer.parseInt(comp_id);
+      String user_pass = httpServletRequest.getRemoteUser();
+      UserBean userBean = userRepository.findByMail_address(user_pass);
+      PrivateCommentBean commentBean = new PrivateCommentBean();
+      commentBean.setComp_id(comp_Id);
+      commentBean.setUser_id(userBean.getUser_id());
+      commentBean.setCommented_date(LocalDateTime.now());
+      commentBean.setComment(comment);
+      privateCommentRepository.save(commentBean);
 
-    return privategetJson(compService.privatecomment(comp_Id));
-  }
+      return privategetJson(compService.privatecomment(comp_Id));
+    }
   
   @PostMapping("/privatereload")
   @ResponseBody
@@ -484,4 +547,6 @@ private String publicgetJson(List<PublicCommentForm> list){
     compService.delete_public_comment(comp_Id,date);
     return publicgetJson(compService.publiccomment(comp_Id));
   }
+
+
 }

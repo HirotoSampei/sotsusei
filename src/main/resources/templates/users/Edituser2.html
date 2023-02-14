@@ -1,91 +1,140 @@
 <!DOCTYPE html>
 <html lang=ja dir="ltr">
+
 <head>
   <meta charset="utf-8">
-  <title>ユーザー作成</title>
+  <title>ユーザー編集</title>
   <link rel="stylesheet" href="../../static/css/EditUserStyle.css" th:href="@{/css/EditUserStyle.css}">
+  <script type="text/javascript">
+    function nameCheck(user_name) {
+      var name = user_name.value;
+      if (name.length >= 50) {
+        user_name.setCustomValidity("名前は50桁以内で入力してください");
+      } else {
+        user_name.setCustomValidity('');
+      }
+    }
+  </script>
 </head>
+
 <body>
 
-<header>
-  <div class="header-container">
-    <div class="left-container">
-      <a href="/comp">
-        <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
-      </a>
-      <div class="header-item">
-        <input type="search" name="search" placeholder="大会を検索">
-        <input type="submit" name="submit" id="search_button" value="検索">
+  <header>
+    <div class="header-container">
+      <div class="left-container">
+        <a href="/comp">
+          <img th:src="${cat_logo_image}" class="header-item" width="90px" height="60px">
+        </a>
+      </div>
+      <div class="right-container">
+        <a href="/users/profile">
+          <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
+        </a>
+        <div class="header-item-name" th:text="${user_name}">user</div>
       </div>
     </div>
-    <div class="right-container">
-      <a href="/users/profile">
-        <img th:src="${cat_icon_image}" class="header-item" width="60px" height="60px">
-      </a>
-      <div class="header-item-name" th:text="${user_name}">user</div>
-      </div>
-  </div>
 
-</header>
-  
-<main>
-  <div id="mask"></div>
+  </header>
+
+  <main>
+    <div id="mask"></div>
     <div id="dialog">
       このユーザーを削除します。本当によろしいですか？
-      <form th:action="@{/users/delete}" method="post">
-        <input type="submit" class="button-item" value="はい">
-        <input type="hidden" name="user_id" th:value="${param.user_id[0]}"/>
-      </form>
-      </form>
-      <button id="no" class="button-item">いいえ</button>
-    </div>
-  <div class="validationError">
-    <tr th:if="${validationError}" th:each="error : ${validationError}">
-      <td th:text="${error}"></td><br>
-    </tr>
-  </div>
-  <form th:action="@{/users/edit}" th:object="${userForm}" method="post">
-    <th th:each="us : ${edit}">
-      <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" th:value="${us.user_name}" required></p>
-      <!--<p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>
-      <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:value="${us.mail_address}"></p>-->
-    <details>
-      <summary>プレイするゲーム(複数選択)</summary>
-        <div th:each="game:${gameList}">
-        <input type="checkbox" name="game_id" th:value="${game.game_id}" th:text="${game.game_name + '(' + game.hard + ')'}">
+      <div class="dialog-button-container">
+        <form th:action="@{/users/delete}" method="post">
+          <input type="submit" class="button-item" value="はい">
+        </form>
+        <button id="no" class="button-item">いいえ</button>
       </div>
-    </details>
-    <div id="description-container">
-      <p>自己紹介　　　：</p><textarea class="input-item-ta" name="note" th:text="${us.note}" cols="30" rows="5" style="resize: none"></textarea>
     </div>
-    <div style="margin: 30px;"></div>
-    <div id="button-container">
-      <input type="button" class="button-item" onclick="location.href='/users/profile'" value="戻る">
-      <input type="submit" class="button-item" value="更新">
-      <input type="hidden" name="user_id" th:value="${param.user_id[0]}"/>
+    <div class="validationError">
+      <tr th:if="${validationError}" th:each="error : ${validationError}">
+        <td th:text="${error}"></td><br>
+      </tr>
+    </div>
+    <form th:action="@{/users/edit}" th:object="${userForm}" method="post">
+      <th th:each="us : ${edit}">
+        <p>ユーザー名　　　：<input type="text" class="input-item" name="user_name" id="user_name" th:value="${us.user_name}"
+            oninput="nameCheck(this)" required></p>
+        <!--<p>パスワード　　　：<input type="text" class="input-item" name="password" th:field="*{password}"></p>
+      <p>メールアドレス　：<input type="email" class="input-item" name="mail_address" th:value="${us.mail_address}"></p>-->
+        <div>
+          <select class="test-number" id="testnumber">
+            <option value="0">ゲームジャンル選択</option>
+            <option id="1" value="FPS">FPS</option>
+            <option id="2" value="TPS">TPS</option>
+            <option id="3" value="格闘">格闘</option>
+            <option id="4" value="音楽">音楽</option>
+            <option id="5" value="MOBA">MOBA</option>
+            <option id="6" value="スポーツ">スポーツ</option>
+            <option id="7" value="パズル">パズル</option>
+            <option id="8" value="レース">レース</option>
+            <option id="9" value="DCG">DCG</option>
+            <option id="10" value="その他">その他</option>
+            <option id="11" value="FPS・TPS">FPS・TPS</option>
+          </select>
+        </div>
+        <details>
+          <summary>プレイするゲーム(複数選択)</summary>
+          <div name="game" th:each="game:${gameList}">
+            <input type="checkbox" th:id="${game.game_id}" th:name="game_id"
+              th:value="${game.game_id} + ',' + ${game.genre}" style="display:none">
+            <label for="${game.game_id}" th:name="gamename" th:text="${game.game_name + '(' + game.hard + ')'}"
+              style="color:white; display:none"></label>
+          </div>
+        </details>
+        <div id="description-container">
+          <p>自己紹介　　　：</p><textarea class="input-item-ta" name="note" th:text="${us.note}" cols="30" rows="5"
+            style="resize: none"></textarea>
+        </div>
+        <div style="margin: 30px;"></div>
+        <div id="button-container">
+          <input type="button" class="button-item" onclick="location.href='/users/profile'" value="戻る">
+          <input type="submit" class="button-item" value="更新">
     </form>
-      <input type="button" id="deletebtn" class="button-item" value="削除">
+    <input type="button" id="deletebtn" class="button-item" value="削除">
     </div>
-  </th>
-</main>
-<footer>
-  <div id="temp-footer">©Competition Assistance Tool</div>
-</footer>
+    </th>
+  </main>
+  <footer>
+    <div id="temp-footer">©Competition Assistance Tool</div>
+  </footer>
 
-<script th:inline="javascript">
-  const deletebtn = document.getElementById('deletebtn')
-  const dialog = document.getElementById('dialog')
-  const mask = document.getElementById('mask')
-  const no = document.getElementById('no')
-  deletebtn.addEventListener('click',function start() {
-    dialog.style.display = 'block'
-    mask.style.display = 'block'
-  })
-  no.addEventListener('click',function back(){
-    dialog.style.display = 'none'
-    mask.style.display = 'none'
-  })
-</script>
+  <script th:inline="javascript">
+    const deletebtn = document.getElementById('deletebtn')
+    const dialog = document.getElementById('dialog')
+    const mask = document.getElementById('mask')
+    const no = document.getElementById('no')
+    deletebtn.addEventListener('click', function start() {
+      dialog.style.display = 'block'
+      mask.style.display = 'block'
+    })
+    no.addEventListener('click', function back() {
+      dialog.style.display = 'none'
+      mask.style.display = 'none'
+    })
+    const genreSelect = document.getElementById('testnumber');
+    const gameSelect = document.getElementsByName('game_id');
+    const gameName = document.getElementsByName('gamename');
+    genreSelect.addEventListener('change', (e) => {
+      e.target.options.selected = true;
+      console.log(gameSelect[0].value);
+      for (let i = 0; i < gameSelect.length; i++) {
+        var str = gameSelect[i].value.split(',');
+        console.log(str[1]);
+        console.log(e.target.value);
+        if (str[1] != e.target.value) {
+          gameSelect[i].style.display = "none";
+          gameName[i].style.display = "none";
+        }
+        else {
+          gameSelect[i].style.display = "";
+          gameName[i].style.display = "";
+        }
+      }
+    })
+  </script>
 
 </body>
+
 </html>

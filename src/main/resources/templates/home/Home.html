@@ -17,18 +17,33 @@
         </a>
         <div class="header-item">
           <form th:action="@{/comp/searchcomp}" method="post">
-            <input type="search" class="comp_name" name="comp_name" placeholder="大会を検索">
+            <input type="search" class="search-bar" style="width: 250px;" name="comp_name" placeholder="大会を検索">
             <input type="submit" class="form" name="form" value="検索">
           </form>
-          <form th:action="@{/comp/searchgamecomp}" method="post">
-            <select class="input-item game_id" name="game_id">
-              <option value="0" selected>ゲーム名検索</option>
-              <option th:each="game:${gameList}" th:value="${game.game_id}"
+          <form>
+            <select class="search-bar" style="width: 250px;" id="testnumber">
+              <option value="0">ゲームジャンル選択</option>
+              <option id="1" value="FPS">FPS</option>
+              <option id="2" value="TPS">TPS</option>
+              <option id="3" value="格闘">格闘</option>
+              <option id="4" value="音楽">音楽</option>
+              <option id="5" value="MOBA">MOBA</option>
+              <option id="6" value="スポーツ">スポーツ</option>
+              <option id="7" value="パズル">パズル</option>
+              <option id="8" value="レース">レース</option>
+              <option id="9" value="DCG">DCG</option>
+              <option id="10" value="その他">その他</option>
+              <option id="11" value="FPS・TPS">FPS・TPS</option>
+            </select>
+          </form>
+          <form id=searchgamecomp name="searchgamecomp" th:action="@{/comp/searchgamecomp}" method="post">
+            <select class="search-bar" name="game_id" id="game">
+              <option value="0">ゲーム名検索</option>
+              <option th:each="game:${gameList}" style="display:none" th:value="${game.game_id} + ',' + ${game.genre}"
                 th:text="${game.game_name + '(' + game.hard + ')'}" th:selected="${game.game_id == selectedValue}">
               </option>
             </select>
-            <input type="submit" name="form" value="検索">
-
+            <input type="submit"class="form" name="form" value="検索">
           </form>
         </div>
         <div class="header-item">
@@ -36,7 +51,7 @@
             <input class="left-main-item" type="button" onclick="location.href='/comp/CreateComp'" value="大会を開く">
           </div>
         </div>
-
+      <input type="button" id="colorchange">
       </div>
       <div class="right-container">
         <a href="/users/profile">
@@ -44,6 +59,7 @@
         </a>
         <div class="header-item-name" th:text="${user_name}">user</div>
       </div>
+      
   </header>
 
   <main class="main-container">
@@ -94,6 +110,31 @@
     <div id="temp-footer">©Competition Assistance Tool</div>
   </footer>
 
+  <script type="text/javascript">
+    const colorchange = document.getElementById('colorchange');
+    const genreSelect = document.getElementById('testnumber');
+    const head = document.getElementsByClassName('header-container')[0];
+    const foot = document.getElementById('temp-footer');
+    var gameSelect = document.getElementById('game');
+    genreSelect.addEventListener('change', (e) =>{
+      e.target.options.selected=true;
+      for(let i =0;i<gameSelect.length;i++){
+        var str = gameSelect[i].value.split(',');
+        if(str[1] != e.target.value){
+          gameSelect[i].style.display = "none";
+        }
+        else{
+          gameSelect[i].style.display = "";
+        }
+      }
+    })
+    colorchange.addEventListener('click', function change() {
+      head.style.background='linear-gradient(to right,#c70000,#d28300,#dfd000,#00873c,#005aa0,#181878,#800073) 0 / 200%';
+      foot.style.background='linear-gradient(to right,#c70000,#d28300,#dfd000,#00873c,#005aa0,#181878,#800073) 0 / 200%';
+      head.style.animation='5s move linear infinite';
+      foot.style.animation='5s move linear infinite';
+    })
+  </script>
 </body>
 
 </html>

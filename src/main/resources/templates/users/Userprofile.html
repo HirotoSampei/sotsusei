@@ -13,10 +13,6 @@
       <a href="/comp">
         <img th:src="${cat_logo_image}"  class="header-item" width="90px" height="60px">
       </a>
-      <div class="header-item">
-        <input type="search" name="search" placeholder="大会を検索">
-        <input type="submit" name="submit" id="search_button" value="検索">
-      </div>
     </div>
     <div class="right-container">
       <a href="/users/profile">
@@ -49,8 +45,6 @@
       <form th:action="@{/logout}" method="post"><input type="submit" class="button-item" value="ログアウト" /></form>
       <form th:action="@{/users/edit}" method="post">
         <input type="submit" class="button-item" name="form" value="編集" />
-        <input type="hidden" name="user_id" th:value="${us.user_id}"/>
-        <!--<input type="hidden" name="password" th:value="${game_List}"/>-->
       </form>
     </div>
     <div id="button-container">

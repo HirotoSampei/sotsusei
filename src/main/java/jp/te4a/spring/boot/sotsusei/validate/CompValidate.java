@@ -16,8 +16,7 @@ import jp.te4a.spring.boot.sotsusei.form.CompForm;
 @Service
 public class CompValidate {
     
-  public Model compval(CompForm form, BindingResult result, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
-    List<String> errorList = new ArrayList<String>();
+  public Model compval(CompForm form, List<String> errorList, BindingResult result, Model model, ModelMap modelMap, HttpServletRequest httpServletRequest){
     for (ObjectError error : result.getAllErrors()) {
       errorList.add(error.getDefaultMessage());
     }
@@ -30,14 +29,12 @@ public class CompValidate {
     return model.addAttribute("validationError", errorList);
   }
 
-  public Model compend_dataval(Model model){
-    List<String> errorList = new ArrayList<String>();
+  public Model compend_dataval(List<String> errorList, Model model){
     errorList.add("終了日時は開始日時以降で入力してください");
     return model.addAttribute("validationError", errorList);
   }
 
-  public Model compdeadlineval(Model model){
-    List<String> errorList = new ArrayList<String>();
+  public Model compdeadlineval(List<String> errorList, Model model){
     errorList.add("締め切り日時は開始日時前で入力してください");
     return model.addAttribute("validationError", errorList);
   }

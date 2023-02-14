@@ -1,6 +1,7 @@
 body {
   margin: 0px;
   background-color: black;
+  min-width: 1200px;
 }
 
 .header-container {
@@ -25,15 +26,46 @@ body {
   justify-content: flex-end;
 }
 
-.agree-container {
-  display: flex;
-}
-
 .header-item {
   /*background: #0bd;*/
   color: #fff;
   margin: 10px;
   padding: 10px;
+}
+
+#ban-button {
+  display: none;
+}
+
+.overlay {
+  display: none;
+}
+
+.window {
+  width: 40%;
+  height: 80%;
+  background-color: #ffffff;
+  border-radius: 6px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#ban-button:checked+.overlay {
+  display: block;
+  z-index: 9999;
+  background-color: #00000070;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+}
+
+.really {
+  font-size: 40px;
+  text-align: center;
 }
 
 #search_button {
@@ -59,32 +91,61 @@ main p {
   color: white;
 }
 
+.play-game-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+.left-play-game-container {
+  width: 270px;
+  height: 45px;
+  float: left;
+  justify-content: flex-start;
+}
+
+.right-play-game-container {
+  flex-grow: 1;
+  float: right;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.play-game-item {
+  font-size: 30px;
+  color: white;
+
+}
+
+#username {
+  color: white;
+}
+
 #input-container {
   display: flex;
   flex-direction: column;
 }
 
-.input-item {
-  height: 30px;
-  width: 30%;
-  font-size: 90%;
-
+.display-item {
+  font-size: 30px;
+  color: white;
 }
 
-.input-item-ta {
+.display-item-ta {
   width: 500px;
-  font-size: 27px;
-  width: 60%;
-}
-
-.date {
-  font-size: 25px;
+  font-size: 30px;
   color: white;
 }
 
 #button-container {
   display: flex;
   justify-content: space-between;
+}
+
+#button-container2 {
+  display: flex;
+  justify-content: space-around;
 }
 
 .button-item {
@@ -97,6 +158,7 @@ main p {
   padding-bottom: 15px;
   border-radius: 30px 30px 30px 30px;
   cursor: pointer;
+  border: solid 3px black;
 }
 
 .button-item:active {
@@ -115,27 +177,15 @@ main p {
   align-items: baseline;
   margin: 0px;
   padding: 0px;
+  overflow-wrap: break-word;
+}
+
+.user-info {
+  color: white;
+
 }
 
 #dialog {
-  position: fixed;
-  z-index: 2;
-  top: 50%;
-  left: 50%;
-  width: 400px;
-  margin: auto;
-  transform: translate(-50%, -50%);
-  padding: 30px 20px;
-  text-align: center;
-  font-size: 35px;
-  color: rgb(0, 0, 0);
-  border: 1px solid #aaa;
-  box-shadow: 2px 2px 4px #888;
-  display: none;
-  background: rgba(255, 255, 255, 0.9);
-}
-
-#dialog2 {
   position: fixed;
   z-index: 2;
   top: 50%;
