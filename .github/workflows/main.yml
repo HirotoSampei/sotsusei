@@ -11,7 +11,7 @@ env:
   SRC_PATH: 'target/*.jar'
   DEST_DIR: '/var/apps'
 
-  APP_NAME: 'cat'    # your app name
+  APP_NAME: 'maincat'    # your app name
   JAVA_VERSION: '11'    #  '1.8' or '11'
   RUN_ARGS: '--spring.profiles.active=prod'
 
