@@ -263,7 +263,7 @@ public class UserController {
 
       if(mail_address.equals(user_pass) && passwordEncoder.matches(password,pass_word)){
         imageService.getImage(model);
-        model.addAttribute("user_id", userBean.getUser_id());
+        model.addAttribute("mail_address", mail_address);
         model.addAttribute("user_name", userBean.getUser_name());
         return "users/NewPassword";
       }
