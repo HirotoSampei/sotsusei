@@ -292,7 +292,8 @@ public class CompController {
     Integer g_id=Integer.parseInt(game_id.split(",")[0]);
     String user_pass = httpServletRequest.getRemoteUser();
     UserBean userBean = userRepository.findByMail_address(user_pass);
-    compService.update(form,g_id,userBean.getUser_id());
+    CompBean compBean = compRepository.findBeanByHost_user_id(userBean.getUser_id());
+    compService.update(compBean,form,g_id,userBean.getUser_id());
     return "redirect:/comp/OverViewForHost";
   }
 
