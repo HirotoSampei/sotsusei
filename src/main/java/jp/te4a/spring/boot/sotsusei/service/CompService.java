@@ -73,9 +73,9 @@ public class CompService {
 	  return compForm;
 	}
 
-  public CompForm update(CompForm compForm, Integer game_id, Integer user_id) {
-	  CompBean compBean = new CompBean();
+  public CompForm update(CompBean compBean, CompForm compForm, Integer game_id, Integer user_id) {
     GameBean gameBean = new GameBean();
+    compForm.setComp_id(compBean.getComp_id());
     gameBean.setGame_id(game_id);
 	  BeanUtils.copyProperties(compForm, compBean);
     compBean.setHost_user_id(user_id);
