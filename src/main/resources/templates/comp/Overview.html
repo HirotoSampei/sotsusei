@@ -30,6 +30,7 @@
   <script src="../../js/publiccomment.js"></script>
   <script src="../../js/publicreload.js"></script>
   <script src="../../js/deletepubliccomment.js"></script>
+  <script src="../../js/overviewerrorcheck.js"></script>
 </head>
 
 <body>
@@ -118,7 +119,7 @@
             <div class="check">ルールを確認し、同意します。</div>
             <input type="checkbox" name="agree" value="agreement" style="transform:scale(3);">
         <div class="containerInput">
-          <input  type="text" class="input-nickname" name="nickname" placeholder="ここにニックネームを入力" font="white"required>
+          <input  type="text" class="input-nickname" name="nickname" placeholder="ここにニックネームを入力" font="white" oninput="nicknameCheck(this)" required>
         </div>
           <input type="submit" class="button-item" name="form" id="submitButton" value="参加する" disabled="disabled"/> 
           <input type="hidden" name="comp_id" th:value="${po.comp_id}"/>
